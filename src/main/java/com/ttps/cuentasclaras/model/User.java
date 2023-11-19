@@ -18,61 +18,57 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@Column(unique = true)
 	private String email;
-	
+
 	@Column(unique = true)
 	private String username;
-	
+
 	@Column
 	private String password;
-	
+
 	@Column
 	private String name;
-	
+
 	@Column
 	private String lastName;
-	
+
 	@Column
 	private String profilepicBase64;
-	
+
 	// Un usuario puede tener 0 o muchos grupos
 	@OneToMany(mappedBy = "owner")
 	private Set<Group> ownedGroups;
-	
+
 	// Un usuario puede tener 0 o muchos gastos
 	@OneToMany(mappedBy = "owner")
 	private Set<Spending> myCreatedSpendings;
-	
+
 	// Un usuario puede tener 0 o muchos pagos (dueño)
 	@OneToMany(mappedBy = "owner")
 	private Set<Payment> ownedPayments;
-	
+
 	@OneToMany(mappedBy = "user")
 	private Set<Payment> payments;
-	
+
 	@ManyToMany
-	@JoinTable(name="user_contact", joinColumns = @JoinColumn(name = "user_id"),
-		inverseJoinColumns = @JoinColumn(name = "contact_id"))
+	@JoinTable(name = "user_contact", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "contact_id"))
 	private Set<UserContact> contacts;
 
 	@ManyToMany
-	@JoinTable(name = "user_group", joinColumns = @JoinColumn(name = "user_id"), 
-	  inverseJoinColumns = @JoinColumn(name = "group_id"))
+	@JoinTable(name = "user_group", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
 	private Set<Group> groups;
-	
+
 	@ManyToMany
-	@JoinTable(name = "user_spending", joinColumns = @JoinColumn(name = "user_id"), 
-	  inverseJoinColumns = @JoinColumn(name = "spending_id"))
+	@JoinTable(name = "user_spending", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "spending_id"))
 	private Set<Spending> spendings;
-	
+
 	public User() {
 		super();
 	}
 
-	public User(String email, String username, String password, String name, String lastName,
-			String profilepicBase64) {
+	public User(String email, String username, String password, String name, String lastName, String profilepicBase64) {
 		super();
 		this.email = email;
 		this.username = username;
@@ -143,6 +139,26 @@ public class User {
 
 	public Set<Spending> getSpendings() {
 		return spendings;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public void setProfilepicBase64(String profilepicBase64) {
+		this.profilepicBase64 = profilepicBase64;
 	}
 
 }

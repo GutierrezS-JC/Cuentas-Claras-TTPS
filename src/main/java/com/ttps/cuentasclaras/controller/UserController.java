@@ -6,25 +6,70 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ttps.cuentasclaras.dto.UserDTO;
 import com.ttps.cuentasclaras.model.User;
-import com.ttps.cuentasclaras.repository.UserRepository;
+import com.ttps.cuentasclaras.service.UserService;
 
 @RestController
 @CrossOrigin
+@RequestMapping("/users")
 public class UserController {
-	
+
 	@Autowired
-	UserRepository userRepository;
-	
-	@GetMapping("/getUsers")
-	public ResponseEntity<List<User>> getUsers(){
-		List<User> users = userRepository.findAll();
-		if(users.isEmpty()) {
-			return new ResponseEntity<List<User>>(HttpStatus.NO_CONTENT);
+	UserService userService;
+
+	@GetMapping
+	public ResponseEntity<List<User>> getAllUsers() {
+		List<User> users = userService.getAllUsers();
+
+		if (users.isEmpty()) {
+			return ResponseEntity.noContent().build();
 		}
-		return new ResponseEntity<List<User>>(users,HttpStatus.OK);
+		return ResponseEntity.ok(users);
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<UserDTO> getUser(@PathVariable(name = "id") Integer id) {
+		UserDTO searchedUser = userService.getUser(id);
+		if (searchedUser == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(searchedUser);
+	}
+
+	@PostMapping
+	public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userRequest) {
+		if (userService.userExist(userRequest)) {
+			return new ResponseEntity<UserDTO>(HttpStatus.CONFLICT);
+		}
+		userService.createUser(userRequest);
+		return new ResponseEntity<UserDTO>(HttpStatus.CREATED);
+	}
+
+	@PutMapping("/{id}")
+	public ResponseEntity<UserDTO> updateUser(@PathVariable(name = "id") Integer id, @RequestBody UserDTO userRequest) {
+		UserDTO searchedUser = userService.updateUser(id, userRequest);
+		if (searchedUser == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(searchedUser);
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<UserDTO> deleteUser(@PathVariable(name = "id") Integer id) {
+		UserDTO searchedUser = userService.deleteUser(id);
+		if (searchedUser == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.noContent().build();
 	}
 }
