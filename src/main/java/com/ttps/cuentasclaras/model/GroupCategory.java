@@ -24,15 +24,13 @@ public class GroupCategory {
 	
 	}
 
-	public GroupCategory(Integer id, String name, String base64Image) {
-		this.id = id;
+	public GroupCategory(String name, String base64Image) {
 		this.name = name;
 		this.base64Image = base64Image;
 	}
 	
-	public GroupCategory(Integer id, String name) {
+	public GroupCategory(String name) {
 		super();
-		this.id = id;
 		this.name = name;
 	}
 

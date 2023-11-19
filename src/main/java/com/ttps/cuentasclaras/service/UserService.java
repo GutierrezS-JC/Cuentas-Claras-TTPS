@@ -21,11 +21,24 @@ public class UserService {
 		return userRepository.findAll();
 	}
 
-	public UserDTO getUser(Integer id) {
+	// DTO
+	public UserDTO getUserDTO(Integer id) {
 		try {
 			Optional<User> searchedUser = userRepository.findById(id);
 			User user = searchedUser.orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
 			return mapUserDto(user);
+		} catch (ResourceNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	// User as defined by Model
+	public User getUser(Integer id) {
+		try {
+			Optional<User> searchedUser = userRepository.findById(id);
+			User user = searchedUser.orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
+			return user;
 		} catch (ResourceNotFoundException e) {
 			e.printStackTrace();
 			return null;

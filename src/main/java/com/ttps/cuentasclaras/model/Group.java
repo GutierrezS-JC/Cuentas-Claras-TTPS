@@ -20,38 +20,37 @@ public class Group {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@Column
 	private String name;
-	
+
 	@Column
 	private Double totalBalance;
-	
+
 	@ManyToOne
-    @JoinColumn(name="owner_user_id", nullable=false)
-    private User owner;
-	
+	@JoinColumn(name = "owner_user_id", nullable = false)
+	private User owner;
+
 	// Usuarios que conforman el grupo
 	@ManyToMany(mappedBy = "groups")
 	private Set<User> users;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "category_id")
 	private GroupCategory groupCategory;
-	
+
 	@OneToMany(mappedBy = "group")
 	private Set<Spending> spendings;
-	
+
 	@OneToMany(mappedBy = "group")
 	private Set<Payment> payments;
-	
+
 	public Group() {
-		
+
 	}
 
-	public Group(Integer id, String name, Double totalBalance, User owner, GroupCategory groupCategory) {
+	public Group(String name, Double totalBalance, User owner, GroupCategory groupCategory) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.totalBalance = totalBalance;
 		this.owner = owner;
@@ -65,32 +64,64 @@ public class Group {
 		return id;
 	}
 
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public String getName() {
 		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Double getTotalBalance() {
 		return totalBalance;
 	}
 
+	public void setTotalBalance(Double totalBalance) {
+		this.totalBalance = totalBalance;
+	}
+
 	public User getOwner() {
 		return owner;
+	}
+
+	public void setOwner(User owner) {
+		this.owner = owner;
 	}
 
 	public Set<User> getUsers() {
 		return users;
 	}
 
+	public void setUsers(Set<User> users) {
+		this.users = users;
+	}
+
 	public GroupCategory getGroupCategory() {
 		return groupCategory;
+	}
+
+	public void setGroupCategory(GroupCategory groupCategory) {
+		this.groupCategory = groupCategory;
 	}
 
 	public Set<Spending> getSpendings() {
 		return spendings;
 	}
 
+	public void setSpendings(Set<Spending> spendings) {
+		this.spendings = spendings;
+	}
+
 	public Set<Payment> getPayments() {
 		return payments;
 	}
-	
+
+	public void setPayments(Set<Payment> payments) {
+		this.payments = payments;
+	}
+
 }

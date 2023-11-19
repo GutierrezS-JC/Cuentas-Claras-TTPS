@@ -39,7 +39,7 @@ public class UserController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<UserDTO> getUser(@PathVariable(name = "id") Integer id) {
-		UserDTO searchedUser = userService.getUser(id);
+		UserDTO searchedUser = userService.getUserDTO(id);
 		if (searchedUser == null) {
 			return ResponseEntity.notFound().build();
 		}
