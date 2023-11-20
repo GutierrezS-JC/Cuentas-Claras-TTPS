@@ -1,5 +1,6 @@
 package com.ttps.cuentasclaras.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,8 +28,15 @@ public class GroupService {
 	@Autowired
 	GroupRepository groupRepository;
 
-	public List<Group> getAllGroups() {
-		return groupRepository.findAll();
+	public List<GroupDTO> getAllGroups() {
+		List<Group> groups = groupRepository.findAll();
+		List<GroupDTO> groupsResponse = new ArrayList<>();
+
+		for (Group group : groups) {
+			groupsResponse.add(new GroupDTO(group.getId(), group.getName(), group.getTotalBalance(),
+					group.getGroupCategory().getId(), group.getOwner().getId()));
+		}
+		return groupsResponse;
 	}
 
 	public Group getGroup(Integer id) {

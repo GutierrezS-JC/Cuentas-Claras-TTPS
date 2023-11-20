@@ -30,8 +30,8 @@ public class GroupController {
 	GroupService groupService;
 
 	@GetMapping
-	public ResponseEntity<List<Group>> getAllGroups() {
-		List<Group> groups = groupService.getAllGroups();
+	public ResponseEntity<List<GroupDTO>> getAllGroups() {
+		List<GroupDTO> groups = groupService.getAllGroups();
 
 		if (groups.isEmpty()) {
 			return ResponseEntity.noContent().build();
@@ -40,12 +40,15 @@ public class GroupController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Group> getGroup(@PathVariable(name = "id") Integer id) {
+	public ResponseEntity<GroupDTO> getGroup(@PathVariable(name = "id") Integer id) {
 		Group searchedGroup = groupService.getGroup(id);
 		if (searchedGroup == null) {
 			return ResponseEntity.notFound().build();
 		}
-		return ResponseEntity.ok(searchedGroup);
+		GroupDTO groupResponse = new GroupDTO(searchedGroup.getId(), searchedGroup.getName(),
+				searchedGroup.getTotalBalance(), searchedGroup.getGroupCategory().getId(),
+				searchedGroup.getOwner().getId());
+		return ResponseEntity.ok(groupResponse);
 	}
 
 	@PostMapping
