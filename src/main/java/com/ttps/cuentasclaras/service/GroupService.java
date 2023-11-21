@@ -1,8 +1,10 @@
 package com.ttps.cuentasclaras.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.ttps.cuentasclaras.dto.GroupCreateDTO;
 import com.ttps.cuentasclaras.dto.GroupDTO;
 import com.ttps.cuentasclaras.dto.GroupEditDTO;
+import com.ttps.cuentasclaras.dto.IdDTO;
 import com.ttps.cuentasclaras.exception.ResourceNotFoundException;
 import com.ttps.cuentasclaras.model.Group;
 import com.ttps.cuentasclaras.model.GroupCategory;
@@ -34,7 +37,7 @@ public class GroupService {
 
 		for (Group group : groups) {
 			groupsResponse.add(new GroupDTO(group.getId(), group.getName(), group.getTotalBalance(),
-					group.getGroupCategory().getId(), group.getOwner().getId()));
+					group.getGroupCategory(), group.getOwner().getId()));
 		}
 		return groupsResponse;
 	}
@@ -62,12 +65,38 @@ public class GroupService {
 	}
 
 	public boolean createGroup(GroupCreateDTO groupRequest) {
+
 		User owner = userService.getUser(groupRequest.getUserOwnerId());
 		GroupCategory groupCategory = groupCategoryService.getGroupCategory(groupRequest.getGroupCategoryId());
 		if (groupCategory != null && owner != null) {
-			Group newGroup = new Group(groupRequest.getName(), groupRequest.getTotalBalance(), owner, groupCategory);
-			groupRepository.save(newGroup);
-			return true;
+
+			// List with members (users) IDs to be added on group creation is either empty
+			// or NULL (not sent in JSON)
+			if (groupRequest.getUsersIds() == null || groupRequest.getUsersIds().isEmpty()) {
+				return false;
+			}
+
+			// If there's an ID in the list that returns NULL on search from DB (Doesn't
+			// exist) then block below should not add it to the list.
+			Set<User> usersList = new HashSet<>();
+			for (IdDTO idObject : groupRequest.getUsersIds()) {
+				User userResult = userService.findUserById(idObject.getId());
+				System.out.println("Usuario buscado antes de crear: " + userResult.getUsername());
+				if (userResult != null) {
+					usersList.add(userResult);
+				}
+			}
+
+			// If there's at least one element (User) on the list then we should save it and
+			// return TRUE
+			if (!usersList.isEmpty()) {
+				Group newGroup = new Group(groupRequest.getName(), groupRequest.getTotalBalance(), owner,
+						groupCategory);
+				newGroup.getUsers().addAll(usersList);
+				groupRepository.save(newGroup);
+				return true;
+			} else
+				return false;
 		}
 		return false;
 	}
@@ -106,7 +135,7 @@ public class GroupService {
 		if (searchedGroup != null) {
 			groupRepository.deleteById(id);
 			return new GroupDTO(searchedGroup.getId(), searchedGroup.getName(), searchedGroup.getTotalBalance(),
-					searchedGroup.getGroupCategory().getId(), searchedGroup.getOwner().getId());
+					searchedGroup.getGroupCategory(), searchedGroup.getOwner().getId());
 		}
 		return null;
 	}

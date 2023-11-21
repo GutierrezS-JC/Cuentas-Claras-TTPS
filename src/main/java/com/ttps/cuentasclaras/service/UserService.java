@@ -1,13 +1,17 @@
 package com.ttps.cuentasclaras.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ttps.cuentasclaras.dto.GroupDTO;
 import com.ttps.cuentasclaras.dto.UserDTO;
+import com.ttps.cuentasclaras.dto.UserWithGroupsDTO;
 import com.ttps.cuentasclaras.exception.ResourceNotFoundException;
+import com.ttps.cuentasclaras.model.Group;
 import com.ttps.cuentasclaras.model.User;
 import com.ttps.cuentasclaras.repository.UserRepository;
 
@@ -21,12 +25,37 @@ public class UserService {
 		return userRepository.findAll();
 	}
 
+	public List<UserWithGroupsDTO> getAllUsersWithGroups() {
+		List<User> users = this.getAllUsers();
+		List<UserWithGroupsDTO> usersResponse = new ArrayList<>();
+
+		for (User user : users) {
+			List<GroupDTO> userGroups = new ArrayList<>();
+			for (Group group : user.getGroups()) {
+				userGroups.add(new GroupDTO(group.getId(), group.getName(), group.getTotalBalance(),
+						group.getGroupCategory(), group.getOwner().getId()));
+			}
+			usersResponse.add(new UserWithGroupsDTO(user.getId(), user.getEmail(), user.getUsername(), user.getName(),
+					user.getLastName(), user.getProfilepicBase64(), userGroups));
+		}
+		return usersResponse;
+	}
+
 	// DTO
-	public UserDTO getUserDTO(Integer id) {
+	public UserWithGroupsDTO getUserDTO(Integer id) {
 		try {
 			Optional<User> searchedUser = userRepository.findById(id);
 			User user = searchedUser.orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
-			return mapUserDto(user);
+
+			List<GroupDTO> userGroups = new ArrayList<>();
+			for (Group group : user.getGroups()) {
+				userGroups.add(new GroupDTO(group.getId(), group.getName(), group.getTotalBalance(),
+						group.getGroupCategory(), group.getOwner().getId()));
+			}
+
+			UserWithGroupsDTO userRes = new UserWithGroupsDTO(user.getId(), user.getEmail(), user.getUsername(),
+					user.getName(), user.getLastName(), user.getProfilepicBase64(), userGroups);
+			return userRes;
 		} catch (ResourceNotFoundException e) {
 			e.printStackTrace();
 			return null;
@@ -46,7 +75,7 @@ public class UserService {
 	}
 
 	// Convert user to DTO in order to get just the necessary info
-	private UserDTO mapUserDto(User user) {
+	public UserDTO mapUserDto(User user) {
 		if (user != null) {
 			return new UserDTO(user.getId(), user.getEmail(), user.getUsername(), user.getName(), user.getLastName(),
 					user.getProfilepicBase64());
@@ -57,6 +86,11 @@ public class UserService {
 	// Check if user is already on database - Used when creating a user
 	public boolean userExist(UserDTO userRequest) {
 		return userRepository.existsByUsernameOrEmail(userRequest.getUsername(), userRequest.getEmail());
+	}
+
+	// Check if user exists by ID
+	public User findUserById(Integer id) {
+		return userRepository.findById(id).orElse(null);
 	}
 
 	public void createUser(UserDTO userRequest) {

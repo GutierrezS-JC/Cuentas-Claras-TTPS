@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ttps.cuentasclaras.dto.UserDTO;
-import com.ttps.cuentasclaras.model.User;
+import com.ttps.cuentasclaras.dto.UserWithGroupsDTO;
 import com.ttps.cuentasclaras.service.UserService;
 
 @RestController
@@ -28,9 +28,8 @@ public class UserController {
 	UserService userService;
 
 	@GetMapping
-	public ResponseEntity<List<User>> getAllUsers() {
-		List<User> users = userService.getAllUsers();
-
+	public ResponseEntity<List<UserWithGroupsDTO>> getAllUsers() {
+		List<UserWithGroupsDTO> users = userService.getAllUsersWithGroups();
 		if (users.isEmpty()) {
 			return ResponseEntity.noContent().build();
 		}
@@ -38,8 +37,8 @@ public class UserController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<UserDTO> getUser(@PathVariable(name = "id") Integer id) {
-		UserDTO searchedUser = userService.getUserDTO(id);
+	public ResponseEntity<UserWithGroupsDTO> getUser(@PathVariable(name = "id") Integer id) {
+		UserWithGroupsDTO searchedUser = userService.getUserDTO(id);
 		if (searchedUser == null) {
 			return ResponseEntity.notFound().build();
 		}

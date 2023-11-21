@@ -46,7 +46,7 @@ public class GroupController {
 			return ResponseEntity.notFound().build();
 		}
 		GroupDTO groupResponse = new GroupDTO(searchedGroup.getId(), searchedGroup.getName(),
-				searchedGroup.getTotalBalance(), searchedGroup.getGroupCategory().getId(),
+				searchedGroup.getTotalBalance(), searchedGroup.getGroupCategory(),
 				searchedGroup.getOwner().getId());
 		return ResponseEntity.ok(groupResponse);
 	}
@@ -59,7 +59,7 @@ public class GroupController {
 		if (groupService.createGroup(groupRequest)) {
 			return new ResponseEntity<Group>(HttpStatus.CREATED);
 		}
-		return new ResponseEntity<Group>(HttpStatus.CONFLICT);
+		return new ResponseEntity<Group>(HttpStatus.BAD_REQUEST);
 	}
 
 	@PutMapping("/{id}")
