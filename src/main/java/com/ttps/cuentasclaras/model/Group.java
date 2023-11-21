@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -32,7 +33,8 @@ public class Group {
 	private User owner;
 
 	// Usuarios que conforman el grupo
-	@ManyToMany(mappedBy = "groups")
+	@ManyToMany
+	@JoinTable(name = "group_user", joinColumns = @JoinColumn(name = "group_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private Set<User> users;
 
 	@ManyToOne
@@ -58,6 +60,15 @@ public class Group {
 		this.groupCategory = groupCategory;
 		this.spendings = new HashSet<>();
 		this.payments = new HashSet<>();
+	}
+
+	public Group(String name, Double totalBalance, User owner, Set<User> users, GroupCategory groupCategory) {
+		super();
+		this.name = name;
+		this.totalBalance = totalBalance;
+		this.owner = owner;
+		this.users = users;
+		this.groupCategory = groupCategory;
 	}
 
 	public Integer getId() {

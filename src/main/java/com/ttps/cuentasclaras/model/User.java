@@ -56,8 +56,7 @@ public class User {
 	@JoinTable(name = "user_contact", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "contact_id"))
 	private Set<UserContact> contacts;
 
-	@ManyToMany
-	@JoinTable(name = "user_group", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
+	@ManyToMany(mappedBy = "users")
 	private Set<Group> groups;
 
 	@ManyToMany
