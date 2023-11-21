@@ -1,18 +1,20 @@
 package com.ttps.cuentasclaras.dto;
 
+import com.ttps.cuentasclaras.model.GroupCategory;
+
 public class GroupDTO {
 	private Integer groupId;
 	private String name;
 	private Double totalBalance;
-	private Integer groupCategoryId;
+	private GroupCategory groupCategory;
 	private Integer ownerId;
 
-	public GroupDTO(Integer groupId, String name, Double totalBalance, Integer groupCategoryId, Integer ownerId) {
+	public GroupDTO(Integer groupId, String name, Double totalBalance, GroupCategory groupCategory, Integer ownerId) {
 		super();
 		this.groupId = groupId;
 		this.name = name;
 		this.totalBalance = totalBalance;
-		this.groupCategoryId = groupCategoryId;
+		this.groupCategory = groupCategory;
 		this.ownerId = ownerId;
 	}
 
@@ -40,12 +42,12 @@ public class GroupDTO {
 		this.totalBalance = totalBalance;
 	}
 
-	public Integer getGroupCategoryId() {
-		return groupCategoryId;
+	public GroupCategory getGroupCategory() {
+		return groupCategory;
 	}
 
-	public void setGroupCategoryId(Integer groupCategoryId) {
-		this.groupCategoryId = groupCategoryId;
+	public void setGroupCategory(GroupCategory groupCategory) {
+		this.groupCategory = groupCategory;
 	}
 
 	public Integer getOwnerId() {
