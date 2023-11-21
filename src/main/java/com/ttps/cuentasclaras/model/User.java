@@ -3,8 +3,10 @@ package com.ttps.cuentasclaras.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -59,9 +61,8 @@ public class User {
 	@ManyToMany(mappedBy = "users")
 	private Set<Group> groups;
 
-	@ManyToMany
-	@JoinTable(name = "user_spending", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "spending_id"))
-	private Set<Spending> spendings;
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<SpendingUser> spendings;
 
 	public User() {
 		super();
@@ -136,7 +137,7 @@ public class User {
 		return groups;
 	}
 
-	public Set<Spending> getSpendings() {
+	public Set<SpendingUser> getSpendings() {
 		return spendings;
 	}
 
