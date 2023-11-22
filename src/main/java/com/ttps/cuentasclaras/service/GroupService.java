@@ -140,4 +140,12 @@ public class GroupService {
 		return null;
 	}
 
+	public GroupDTO mapGroupDTO(Group group) {
+		if (group != null) {
+			return new GroupDTO(group.getId(), group.getName(), group.getTotalBalance(), group.getGroupCategory(),
+					group.getOwner().getId());
+		}
+		return null;
+	}
+
 }
