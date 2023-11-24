@@ -126,6 +126,7 @@ public class GroupService {
 			return new GroupEditDTO(group.getId(), group.getName(), group.getTotalBalance(),
 					group.getGroupCategory().getId());
 		} catch (ResourceNotFoundException e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -148,4 +149,7 @@ public class GroupService {
 		return null;
 	}
 
+	public Group findById(Integer id) {
+		return groupRepository.findById(id).orElse(null);
+	}
 }

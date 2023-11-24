@@ -1,6 +1,7 @@
 package com.ttps.cuentasclaras.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import com.ttps.cuentasclaras.model.DivisionEnum;
 import com.ttps.cuentasclaras.model.RecurrentEnum;
@@ -17,13 +18,17 @@ public class SpendingCreateDTO {
 	private Integer ownerId;
 	private Integer spendingCategoryId;
 
+	// Si users = 1 --> Gasto individual (directo) // users >= 1 --> Gasto grupal
+	private List<UserAmountDTO> usersWithAmount;
+
 	public SpendingCreateDTO() {
 
 	}
 
+	// Constructor Gasto particular (SIN GRUPO)
 	public SpendingCreateDTO(String name, String description, Double totalAmount, LocalDate endingDate,
 			String proofOfPayment, RecurrentEnum recurrence, DivisionEnum division, Integer ownerId,
-			Integer spendingCategoryId) {
+			Integer spendingCategoryId, List<UserAmountDTO> usersWithAmount) {
 		super();
 		this.name = name;
 		this.description = description;
@@ -34,11 +39,13 @@ public class SpendingCreateDTO {
 		this.division = division;
 		this.ownerId = ownerId;
 		this.spendingCategoryId = spendingCategoryId;
+		this.usersWithAmount = usersWithAmount;
 	}
 
+	// Constructor Gasto Grupal (CON GRUPO)
 	public SpendingCreateDTO(String name, String description, Double totalAmount, LocalDate endingDate,
 			String proofOfPayment, RecurrentEnum recurrence, DivisionEnum division, Integer groupId, Integer ownerId,
-			Integer spendingCategoryId) {
+			Integer spendingCategoryId, List<UserAmountDTO> usersWithAmount) {
 		super();
 		this.name = name;
 		this.description = description;
@@ -50,6 +57,7 @@ public class SpendingCreateDTO {
 		this.groupId = groupId;
 		this.ownerId = ownerId;
 		this.spendingCategoryId = spendingCategoryId;
+		this.usersWithAmount = usersWithAmount;
 	}
 
 	public String getName() {
@@ -130,6 +138,14 @@ public class SpendingCreateDTO {
 
 	public void setSpendingCategoryId(Integer spendingCategoryId) {
 		this.spendingCategoryId = spendingCategoryId;
+	}
+
+	public List<UserAmountDTO> getUsersWithAmount() {
+		return usersWithAmount;
+	}
+
+	public void setUsersWithAmount(List<UserAmountDTO> usersWithAmount) {
+		this.usersWithAmount = usersWithAmount;
 	}
 
 }

@@ -69,6 +69,10 @@ public class Spending {
 	// No alcanza solo con una lista de usuarios (integrantes del gasto) por si solo
 	@OneToMany(mappedBy = "spending", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<SpendingUser> users;
+	
+	public Spending() {
+		super();
+	}
 
 	// Constructor para un gasto grupal
 	public Spending(String name, String description, Double totalAmount, LocalDate createdAt, LocalDate endingDate,
@@ -106,6 +110,41 @@ public class Spending {
 		this.division = division;
 		this.owner = owner;
 		this.spendingCategory = spendingCategory;
+	}
+
+	public Spending(String name, String description, Double totalAmount, LocalDate createdAt, LocalDate endingDate,
+			String proofOfPayment, RecurrentEnum recurrence, DivisionEnum division, User owner,
+			SpendingCategory spendingCategory, Group group, Set<SpendingUser> users) {
+		super();
+		this.name = name;
+		this.description = description;
+		this.totalAmount = totalAmount;
+		this.createdAt = createdAt;
+		this.endingDate = endingDate;
+		this.proofOfPayment = proofOfPayment;
+		this.recurrence = recurrence;
+		this.division = division;
+		this.owner = owner;
+		this.spendingCategory = spendingCategory;
+		this.group = group;
+		this.users = users;
+	}
+
+	public Spending(String name, String description, Double totalAmount, LocalDate createdAt, LocalDate endingDate,
+			String proofOfPayment, RecurrentEnum recurrence, DivisionEnum division, User owner,
+			SpendingCategory spendingCategory, Set<SpendingUser> users) {
+		super();
+		this.name = name;
+		this.description = description;
+		this.totalAmount = totalAmount;
+		this.createdAt = createdAt;
+		this.endingDate = endingDate;
+		this.proofOfPayment = proofOfPayment;
+		this.recurrence = recurrence;
+		this.division = division;
+		this.owner = owner;
+		this.spendingCategory = spendingCategory;
+		this.users = users;
 	}
 
 	public Integer getId() {

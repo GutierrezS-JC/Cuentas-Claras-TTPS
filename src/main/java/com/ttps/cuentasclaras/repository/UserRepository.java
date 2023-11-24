@@ -6,4 +6,6 @@ import com.ttps.cuentasclaras.model.User;
 
 public interface UserRepository extends JpaRepository<User, Integer>{
 	boolean existsByUsernameOrEmail(String username, String email);
+	
+	User findByUsernameAndPassword(String username, String password);
 }

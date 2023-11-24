@@ -39,6 +39,8 @@ public class SpendingDTO {
 		this.group = group;
 		this.spendingMembers = spendingMembers;
 	}
+	
+	
 
 	public Integer getId() {
 		return id;

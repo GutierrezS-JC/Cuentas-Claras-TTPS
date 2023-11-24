@@ -48,6 +48,16 @@ public class SpendingUser {
 		this.updated_at = null;
 	}
 
+	
+	public SpendingUser(User user, Spending spending, Double amount) {
+		super();
+		this.user = user;
+		this.spending = spending;
+		this.amount = amount;
+		this.created_at = LocalDateTime.now();;
+		this.updated_at = null;
+	}
+
 	public Integer getId() {
 		return id;
 	}
