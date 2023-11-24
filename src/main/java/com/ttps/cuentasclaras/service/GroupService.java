@@ -81,7 +81,6 @@ public class GroupService {
 			Set<User> usersList = new HashSet<>();
 			for (IdDTO idObject : groupRequest.getUsersIds()) {
 				User userResult = userService.findUserById(idObject.getId());
-				System.out.println("Usuario buscado antes de crear: " + userResult.getUsername());
 				if (userResult != null) {
 					usersList.add(userResult);
 				}

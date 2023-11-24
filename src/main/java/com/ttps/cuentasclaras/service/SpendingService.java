@@ -150,20 +150,18 @@ public class SpendingService {
 	}
 
 	public boolean spendingExists(SpendingCreateDTO spendingRequest) {
+		// TODO: Modificar la verificacion
 		boolean result = false;
 		if (spendingRequest.getGroupId() != null) {
-			System.out.println("Primer if");
 			if (spendingRepository.searchWithOwnerAndGroupAndCategory(spendingRequest.getOwnerId(),
 					spendingRequest.getGroupId(), spendingRequest.getSpendingCategoryId()) != null) {
 				result = true;
-				System.out.println("Segundo if");
 
 			}
 		} else {
 			if (spendingRepository.searchWithOwnerAndCategory(spendingRequest.getOwnerId(),
 					spendingRequest.getSpendingCategoryId()) != null) {
 				result = true;
-				System.out.println("Tercer if");
 			}
 		}
 		return result;
