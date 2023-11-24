@@ -13,10 +13,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ttps.cuentasclaras.dto.SpendingUserDTO;
+import com.ttps.cuentasclaras.dto.UserAltDTO;
 import com.ttps.cuentasclaras.dto.UserDTO;
+import com.ttps.cuentasclaras.dto.UserLoginDTO;
 import com.ttps.cuentasclaras.dto.UserWithGroupsDTO;
+import com.ttps.cuentasclaras.model.User;
 import com.ttps.cuentasclaras.service.UserService;
 
 @RestController
@@ -71,4 +76,24 @@ public class UserController {
 		}
 		return ResponseEntity.noContent().build();
 	}
+	
+	@PostMapping("/login")
+	public ResponseEntity<UserAltDTO> loginUser(@RequestBody UserLoginDTO userRequest) {
+		UserAltDTO user= userService.loginUser(userRequest);
+		if (user != null) {
+			return ResponseEntity.accepted().body(user);
+		}
+		return new ResponseEntity<UserAltDTO>(HttpStatus.UNAUTHORIZED);
+	}
+	
+	@GetMapping("/getMySpendings")
+	public ResponseEntity<List<SpendingUserDTO>> getMySpendings(@RequestParam Integer id) {
+		User searchedUser = userService.findUserById(id);
+		List<SpendingUserDTO> listResponse = userService.mapSpendingUserDTO(searchedUser);
+		if (searchedUser == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(listResponse);
+	}
+
 }

@@ -85,4 +85,12 @@ public class SpendingCategoryService {
 		spendingCategoryRepository.deleteById(id);
 	}
 
+	public SpendingCategoryDTO mapSpendingCategory(SpendingCategory spendingCategory) {
+		if (spendingCategory != null) {
+			return new SpendingCategoryDTO(spendingCategory.getId(), spendingCategory.getName(),
+					spendingCategory.getBase64Image());
+		}
+		return null;
+	}
+
 }

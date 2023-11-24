@@ -3,15 +3,20 @@ package com.ttps.cuentasclaras.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ttps.cuentasclaras.dto.GroupDTO;
+import com.ttps.cuentasclaras.dto.SpendingUserDTO;
+import com.ttps.cuentasclaras.dto.UserAltDTO;
 import com.ttps.cuentasclaras.dto.UserDTO;
+import com.ttps.cuentasclaras.dto.UserLoginDTO;
 import com.ttps.cuentasclaras.dto.UserWithGroupsDTO;
 import com.ttps.cuentasclaras.exception.ResourceNotFoundException;
 import com.ttps.cuentasclaras.model.Group;
+import com.ttps.cuentasclaras.model.SpendingUser;
 import com.ttps.cuentasclaras.model.User;
 import com.ttps.cuentasclaras.repository.UserRepository;
 
@@ -137,6 +142,29 @@ public class UserService {
 			return mapUserDto(searchedUser);
 		}
 		return null;
+	}
+
+	public UserAltDTO loginUser(UserLoginDTO userRequest) {
+		User searchedUser = userRepository.findByUsernameAndPassword(userRequest.getUsername(),
+				userRequest.getPassword());
+		if (searchedUser != null) {
+			UserAltDTO userResponse = new UserAltDTO(searchedUser.getId(), searchedUser.getEmail(),
+					searchedUser.getUsername(), searchedUser.getName(), searchedUser.getLastName(),
+					searchedUser.getProfilepicBase64());
+
+			return userResponse;
+		}
+		return null;
+	}
+
+	public List<SpendingUserDTO> mapSpendingUserDTO(User searchedUser) {
+		Set<SpendingUser> spendings = searchedUser.getSpendings();
+		List<SpendingUserDTO> spendingResponse = new ArrayList<>();
+		for (SpendingUser spendingUser : spendings) {
+			spendingResponse.add(new SpendingUserDTO(spendingUser.getId(), this.mapUserDto(searchedUser),
+					spendingUser.getAmount(), spendingUser.getCreated_at(), spendingUser.getUpdated_at()));
+		}
+		return spendingResponse;
 	}
 
 }

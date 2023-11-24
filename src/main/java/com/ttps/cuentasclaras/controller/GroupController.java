@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ttps.cuentasclaras.dto.GroupCreateDTO;
 import com.ttps.cuentasclaras.dto.GroupDTO;
 import com.ttps.cuentasclaras.dto.GroupEditDTO;
+import com.ttps.cuentasclaras.dto.SpendingDTO;
 import com.ttps.cuentasclaras.model.Group;
 import com.ttps.cuentasclaras.service.GroupService;
 
@@ -46,8 +48,7 @@ public class GroupController {
 			return ResponseEntity.notFound().build();
 		}
 		GroupDTO groupResponse = new GroupDTO(searchedGroup.getId(), searchedGroup.getName(),
-				searchedGroup.getTotalBalance(), searchedGroup.getGroupCategory(),
-				searchedGroup.getOwner().getId());
+				searchedGroup.getTotalBalance(), searchedGroup.getGroupCategory(), searchedGroup.getOwner().getId());
 		return ResponseEntity.ok(groupResponse);
 	}
 
@@ -80,4 +81,5 @@ public class GroupController {
 		}
 		return ResponseEntity.noContent().build();
 	}
+
 }
