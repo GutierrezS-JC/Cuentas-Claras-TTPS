@@ -57,7 +57,7 @@ public class GroupService {
 			for (Invitation invitation : invitations) {
 				UserAltDTO sender = userService.mapUserAlt(invitation.getSenderUser());
 				UserAltDTO receiver = userService.mapUserAlt(invitation.getReceiverUser());
-				invitationsDTO.add(new InvitationDTO(sender, receiver, invitation.getStatus()));
+				invitationsDTO.add(new InvitationDTO(invitation.getId(), sender, receiver, invitation.getStatus()));
 			}
 
 			UserAltDTO owner = userService.mapUserAlt(group.getOwner());
