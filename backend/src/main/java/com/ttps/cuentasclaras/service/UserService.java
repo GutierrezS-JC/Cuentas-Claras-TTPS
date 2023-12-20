@@ -167,4 +167,9 @@ public class UserService {
 		return spendingResponse;
 	}
 
+	public UserAltDTO mapUserAlt(User user) {
+		return new UserAltDTO(user.getId(), user.getEmail(), user.getUsername(), user.getName(), user.getLastName(),
+				user.getProfilepicBase64());
+	}
+
 }

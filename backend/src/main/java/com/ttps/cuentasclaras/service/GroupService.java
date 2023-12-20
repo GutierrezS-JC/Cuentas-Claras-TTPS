@@ -11,13 +11,19 @@ import org.springframework.stereotype.Service;
 
 import com.ttps.cuentasclaras.dto.GroupCreateDTO;
 import com.ttps.cuentasclaras.dto.GroupDTO;
+import com.ttps.cuentasclaras.dto.GroupDetailsDTO;
 import com.ttps.cuentasclaras.dto.GroupEditDTO;
 import com.ttps.cuentasclaras.dto.IdDTO;
+import com.ttps.cuentasclaras.dto.InvitationDTO;
+import com.ttps.cuentasclaras.dto.UserAltDTO;
 import com.ttps.cuentasclaras.exception.ResourceNotFoundException;
 import com.ttps.cuentasclaras.model.Group;
 import com.ttps.cuentasclaras.model.GroupCategory;
+import com.ttps.cuentasclaras.model.Invitation;
+import com.ttps.cuentasclaras.model.InvitationStatus;
 import com.ttps.cuentasclaras.model.User;
 import com.ttps.cuentasclaras.repository.GroupRepository;
+import com.ttps.cuentasclaras.repository.InvitationRepository;
 
 @Service
 public class GroupService {
@@ -31,13 +37,33 @@ public class GroupService {
 	@Autowired
 	GroupRepository groupRepository;
 
-	public List<GroupDTO> getAllGroups() {
+	@Autowired
+	InvitationRepository invitationRepository;
+
+	public List<GroupDetailsDTO> getAllGroups() {
 		List<Group> groups = groupRepository.findAll();
-		List<GroupDTO> groupsResponse = new ArrayList<>();
+		List<GroupDetailsDTO> groupsResponse = new ArrayList<>();
 
 		for (Group group : groups) {
-			groupsResponse.add(new GroupDTO(group.getId(), group.getName(), group.getTotalBalance(),
-					group.getGroupCategory(), group.getOwner().getId()));
+			Set<User> members = group.getUsers();
+			Set<Invitation> invitations = group.getInvitations();
+
+			List<UserAltDTO> membersDTO = new ArrayList<>();
+			for (User member : members) {
+				membersDTO.add(userService.mapUserAlt(member));
+			}
+
+			List<InvitationDTO> invitationsDTO = new ArrayList<>();
+			for (Invitation invitation : invitations) {
+				UserAltDTO sender = userService.mapUserAlt(invitation.getSenderUser());
+				UserAltDTO receiver = userService.mapUserAlt(invitation.getReceiverUser());
+				invitationsDTO.add(new InvitationDTO(sender, receiver, invitation.getStatus()));
+			}
+
+			UserAltDTO owner = userService.mapUserAlt(group.getOwner());
+			
+			groupsResponse.add(new GroupDetailsDTO(group.getId(), group.getName(), group.getTotalBalance(),
+					group.getGroupCategory(), owner, membersDTO, invitationsDTO));
 		}
 		return groupsResponse;
 	}
@@ -76,28 +102,34 @@ public class GroupService {
 				return false;
 			}
 
-			// If there's an ID in the list that returns NULL on search from DB (Doesn't
-			// exist) then block below should not add it to the list.
-			Set<User> usersList = new HashSet<>();
+			// Grupo creado y forzado a guardar para poder usar el objeto en las
+			// invitaciones
+			Group newGroup = new Group(groupRequest.getName(), groupRequest.getTotalBalance(), owner, groupCategory);
+			Group groupCreated = groupRepository.saveAndFlush(newGroup);
+
+			Set<Invitation> invitations = new HashSet<>();
 			for (IdDTO idObject : groupRequest.getUsersIds()) {
 				User userResult = userService.findUserById(idObject.getId());
+
+				// If there's an ID in the list that returns NULL on search from DB (Doesn't
+				// exist) then block below should not add it to the list.
 				if (userResult != null) {
-					usersList.add(userResult);
+					Invitation invitation = new Invitation();
+					invitation.setSenderUser(owner);
+					invitation.setReceiverUser(userResult);
+					invitation.setGroup(groupCreated);
+					invitation.setStatus(InvitationStatus.PENDING);
+
+					invitations.add(invitation);
 				}
 			}
 
-			// If there's at least one element (User) on the list then we should save it and
-			// return TRUE
-			if (!usersList.isEmpty()) {
-				Group newGroup = new Group(groupRequest.getName(), groupRequest.getTotalBalance(), owner,
-						groupCategory);
-				newGroup.getUsers().addAll(usersList);
-				groupRepository.save(newGroup);
-				return true;
-			} else
-				return false;
-		}
-		return false;
+			// Save the invitations
+			invitationRepository.saveAll(invitations);
+
+			return true;
+		} else
+			return false;
 	}
 
 	public GroupEditDTO updateGroup(Integer id, GroupEditDTO groupRequest) {

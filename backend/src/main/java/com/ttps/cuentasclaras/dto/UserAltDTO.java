@@ -8,7 +8,12 @@ public class UserAltDTO {
 	private String lastName;
 	private String profilepicBase64;
 
-	public UserAltDTO(Integer id, String email, String username, String name, String lastName, String profilepicBase64) {
+	public UserAltDTO() {
+		super();
+	}
+
+	public UserAltDTO(Integer id, String email, String username, String name, String lastName,
+			String profilepicBase64) {
 		super();
 		this.id = id;
 		this.email = email;
