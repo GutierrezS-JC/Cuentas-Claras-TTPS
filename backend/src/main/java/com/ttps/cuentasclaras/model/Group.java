@@ -47,6 +47,10 @@ public class Group {
 	@OneToMany(mappedBy = "group")
 	private Set<Payment> payments;
 
+	// Invitations
+	@OneToMany(mappedBy = "group")
+	private Set<Invitation> invitations;
+
 	public Group() {
 
 	}
@@ -133,6 +137,14 @@ public class Group {
 
 	public void setPayments(Set<Payment> payments) {
 		this.payments = payments;
+	}
+
+	public Set<Invitation> getInvitations() {
+		return invitations;
+	}
+
+	public void setInvitations(Set<Invitation> invitations) {
+		this.invitations = invitations;
 	}
 
 }

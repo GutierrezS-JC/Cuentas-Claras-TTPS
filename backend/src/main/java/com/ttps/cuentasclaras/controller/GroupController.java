@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ttps.cuentasclaras.dto.GroupCreateDTO;
 import com.ttps.cuentasclaras.dto.GroupDTO;
+import com.ttps.cuentasclaras.dto.GroupDetailsDTO;
 import com.ttps.cuentasclaras.dto.GroupEditDTO;
 import com.ttps.cuentasclaras.dto.SpendingDTO;
 import com.ttps.cuentasclaras.model.Group;
@@ -32,8 +33,8 @@ public class GroupController {
 	GroupService groupService;
 
 	@GetMapping
-	public ResponseEntity<List<GroupDTO>> getAllGroups() {
-		List<GroupDTO> groups = groupService.getAllGroups();
+	public ResponseEntity<List<GroupDetailsDTO>> getAllGroups() {
+		List<GroupDetailsDTO> groups = groupService.getAllGroups();
 
 		if (groups.isEmpty()) {
 			return ResponseEntity.noContent().build();
@@ -42,13 +43,12 @@ public class GroupController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<GroupDTO> getGroup(@PathVariable(name = "id") Integer id) {
+	public ResponseEntity<GroupDetailsDTO> getGroup(@PathVariable(name = "id") Integer id) {
 		Group searchedGroup = groupService.getGroup(id);
 		if (searchedGroup == null) {
 			return ResponseEntity.notFound().build();
 		}
-		GroupDTO groupResponse = new GroupDTO(searchedGroup.getId(), searchedGroup.getName(),
-				searchedGroup.getTotalBalance(), searchedGroup.getGroupCategory(), searchedGroup.getOwner().getId());
+		GroupDetailsDTO groupResponse = groupService.mapGroupDetailsDTO(searchedGroup);
 		return ResponseEntity.ok(groupResponse);
 	}
 

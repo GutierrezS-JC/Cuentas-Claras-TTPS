@@ -64,6 +64,13 @@ public class User {
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<SpendingUser> spendings;
 
+	// Invitations (Groups)
+	@OneToMany(mappedBy = "receiverUser")
+    private Set<Invitation> receivedInvitations;
+	
+	@OneToMany(mappedBy = "senderUser")
+	private Set<Invitation> sentInvitations;
+	
 	public User() {
 		super();
 	}
