@@ -45,27 +45,48 @@ public class GroupService {
 		List<GroupDetailsDTO> groupsResponse = new ArrayList<>();
 
 		for (Group group : groups) {
-			Set<User> members = group.getUsers();
-			Set<Invitation> invitations = group.getInvitations();
+//			Set<User> members = group.getUsers();
+//			Set<Invitation> invitations = group.getInvitations();
+//
+//			List<UserAltDTO> membersDTO = new ArrayList<>();
+//			for (User member : members) {
+//				membersDTO.add(userService.mapUserAlt(member));
+//			}
+//
+//			List<InvitationDTO> invitationsDTO = new ArrayList<>();
+//			for (Invitation invitation : invitations) {
+//				UserAltDTO sender = userService.mapUserAlt(invitation.getSenderUser());
+//				UserAltDTO receiver = userService.mapUserAlt(invitation.getReceiverUser());
+//				invitationsDTO.add(new InvitationDTO(invitation.getId(), sender, receiver, invitation.getStatus()));
+//			}
+//
+//			UserAltDTO owner = userService.mapUserAlt(group.getOwner());
 
-			List<UserAltDTO> membersDTO = new ArrayList<>();
-			for (User member : members) {
-				membersDTO.add(userService.mapUserAlt(member));
-			}
-
-			List<InvitationDTO> invitationsDTO = new ArrayList<>();
-			for (Invitation invitation : invitations) {
-				UserAltDTO sender = userService.mapUserAlt(invitation.getSenderUser());
-				UserAltDTO receiver = userService.mapUserAlt(invitation.getReceiverUser());
-				invitationsDTO.add(new InvitationDTO(invitation.getId(), sender, receiver, invitation.getStatus()));
-			}
-
-			UserAltDTO owner = userService.mapUserAlt(group.getOwner());
-
-			groupsResponse.add(new GroupDetailsDTO(group.getId(), group.getName(), group.getTotalBalance(),
-					group.getGroupCategory(), owner, membersDTO, invitationsDTO));
+			GroupDetailsDTO groupRes = this.mapGroupDetailsDTO(group);
+			groupsResponse.add(groupRes);
 		}
 		return groupsResponse;
+	}
+
+	public GroupDetailsDTO mapGroupDetailsDTO(Group group) {
+		Set<User> members = group.getUsers();
+		Set<Invitation> invitations = group.getInvitations();
+
+		List<UserAltDTO> membersDTO = new ArrayList<>();
+		for (User member : members) {
+			membersDTO.add(userService.mapUserAlt(member));
+		}
+
+		List<InvitationDTO> invitationsDTO = new ArrayList<>();
+		for (Invitation invitation : invitations) {
+			UserAltDTO sender = userService.mapUserAlt(invitation.getSenderUser());
+			UserAltDTO receiver = userService.mapUserAlt(invitation.getReceiverUser());
+			invitationsDTO.add(new InvitationDTO(invitation.getId(), sender, receiver, invitation.getStatus()));
+		}
+
+		UserAltDTO owner = userService.mapUserAlt(group.getOwner());
+		return new GroupDetailsDTO(group.getId(), group.getName(), group.getTotalBalance(), group.getGroupCategory(),
+				owner, membersDTO, invitationsDTO);
 	}
 
 	public Group getGroup(Integer id) {

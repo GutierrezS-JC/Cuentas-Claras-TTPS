@@ -43,13 +43,12 @@ public class GroupController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<GroupDTO> getGroup(@PathVariable(name = "id") Integer id) {
+	public ResponseEntity<GroupDetailsDTO> getGroup(@PathVariable(name = "id") Integer id) {
 		Group searchedGroup = groupService.getGroup(id);
 		if (searchedGroup == null) {
 			return ResponseEntity.notFound().build();
 		}
-		GroupDTO groupResponse = new GroupDTO(searchedGroup.getId(), searchedGroup.getName(),
-				searchedGroup.getTotalBalance(), searchedGroup.getGroupCategory(), searchedGroup.getOwner().getId());
+		GroupDetailsDTO groupResponse = groupService.mapGroupDetailsDTO(searchedGroup);
 		return ResponseEntity.ok(groupResponse);
 	}
 
