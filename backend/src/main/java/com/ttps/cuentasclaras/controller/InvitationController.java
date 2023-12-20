@@ -30,16 +30,16 @@ public class InvitationController {
 		return new ResponseEntity<>(HttpStatus.CONFLICT);
 	}
 
-	@PostMapping("/accept/{invitationId}")
-	public ResponseEntity<Void> acceptInvitation(@PathVariable Integer invitationId) {
-		if (invitationService.acceptInvitation()) {
+	@PostMapping("/accept/{invitationId}/{userId}")
+	public ResponseEntity<Void> acceptInvitation(@PathVariable Integer invitationId, @PathVariable Integer userId) {
+		if (invitationService.acceptInvitation(invitationId, userId)) {
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.CONFLICT);
 	}
 
-	@PostMapping("/reject/{invitacionId}")
-	public ResponseEntity<Void> rejectInvitation(@PathVariable Integer invitationId){
+	@PostMapping("/reject/{invitacionId}/{userId}")
+	public ResponseEntity<Void> rejectInvitation(@PathVariable Integer invitationId, @PathVariable Integer userId){
 		if (invitationService.rejectInvitation()) {
 			return new ResponseEntity<>(HttpStatus.OK);
 		}

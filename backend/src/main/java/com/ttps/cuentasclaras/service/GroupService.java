@@ -61,7 +61,7 @@ public class GroupService {
 			}
 
 			UserAltDTO owner = userService.mapUserAlt(group.getOwner());
-			
+
 			groupsResponse.add(new GroupDetailsDTO(group.getId(), group.getName(), group.getTotalBalance(),
 					group.getGroupCategory(), owner, membersDTO, invitationsDTO));
 		}
@@ -182,5 +182,15 @@ public class GroupService {
 
 	public Group findById(Integer id) {
 		return groupRepository.findById(id).orElse(null);
+	}
+
+	public Boolean addMember(Integer userId, Group group) {
+		User user = userService.findUserById(userId);
+		if (user != null) {
+			group.getUsers().add(user);
+			groupRepository.save(group);
+			return true;
+		}
+		return false;
 	}
 }
