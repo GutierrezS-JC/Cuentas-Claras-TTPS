@@ -1,0 +1,235 @@
+<app-navbar />
+<div class="container">
+  <h1>Mis Gastos</h1>
+
+  <!-- esto todavía no está funcional y no se pide ahora 
+    <form class="d-flex my-2" role="search">
+        <input class="form-control me-2" type="search" placeholder="Búsqueda" aria-label="Search">
+        <div class="dropdown mx-2">
+            <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Dropdown button
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Categoría 1</a></li>
+                <li><a class="dropdown-item" href="#">Categoría 2</a></li>
+                <li><a class="dropdown-item" href="#">Categoría 3</a></li>
+            </ul>
+        </div>
+        <button class="btn mx-2" type="submit">Buscar</button>
+    </form>
+    -->
+
+  <h2>Listado de Gastos</h2>
+  <div>
+    <button class="btn btn-colour mx-1" (click)="showTableFunc()">Grupales</button>
+    <button class="btn btn-colour mx-1" (click)="showTableIndividualFunc()">Individual</button>
+  </div>
+
+  @if (showTable) {
+  <div class="spendingGroupModal my-1 mx-1">
+    <button type="button" class="btn btn-colour" data-bs-toggle="modal" data-bs-target="#newSpending">Cargar nuevo gasto
+      grupal</button>
+
+    <div class="modal fade" id="newSpending" tabindex="-1" aria-labelledby="newSpendingLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="newSpendingLabel">Nuevo gasto grupal</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form (ngSubmit)="onSubmitGroup()">
+              <label for="group">Seleccione el grupo</label>
+              <select class="form-select" aria-label="Group select" [(ngModel)]="newSpendingGroup.group" name="group">
+                <option *ngFor="let group of groups" [ngValue]="group">{{ group.name }}</option>
+              </select>
+
+              <label for="members">Integrantes que realizaron el gasto</label>
+              <!-- NOTA: Acá cómo seleccionamos varios?? -->
+              <select class="form-select" aria-label="Members select" [(ngModel)]="newSpendingGroup.users"
+                name="members">
+                <option *ngFor="let member of members" [ngValue]="member">{{ member.name }}</option>
+              </select>
+
+              <label for="totalAmount">Monto</label>
+              <input type="text" class="form-control" id="totalAmount" [(ngModel)]="newSpendingGroup.totalAmount"
+                name="totalAmount">
+
+              <label for="createdAt">Fecha del gasto</label>
+              <input type="date" class="form-control" id="createdAt" [(ngModel)]="newSpendingGroup.createdAt"
+                name="createdAt">
+
+              <label for="description">Description</label>
+              <input type="text" class="form-control" id="description" [(ngModel)]="newSpendingGroup.description"
+                name="description">
+
+              <label for="division">División del gasto </label>
+              <select class="form-select" aria-label="Division select" [(ngModel)]="newSpendingGroup.division"
+                name="division" aria-describedby="divisionHelp">
+                <option value="EVEN">Mismo monto para todos</option>
+                <option value="FIXAMOUNT">Monto fijo por integrante</option>
+                <option value="SAMEPERCENTAGE">Mismo porcentaje para todos</option>
+                <option value="FIXPERCENTAGE">Porcentaje fijo para cada integrante</option>
+              </select>
+              <div id="divisionHelp">La división del gasto deberá sumar el monto correspondiente indicado anteriormente
+              </div>
+
+              <label for="category">Categoría</label>
+              <select class="form-select" aria-label="Category select" [(ngModel)]="newSpendingGroup.spendingCategory"
+                name="category">
+                <option *ngFor="let cat of categories" [ngValue]="cat">{{ cat.name }}</option>
+              </select>
+
+              <label for="recipe">Cargar comprobante</label>
+              <input type="file" class="form-control" id="inputFile">
+
+              <label for="recurrence">Frecuencia del gasto</label>
+              <select class="form-select" aria-label="Recurrence select" [(ngModel)]="newSpendingGroup.recurrence"
+                name="recurrence">
+                <option value="NON" default>Único</option>
+                <option value="DIARY">Diario</option>
+                <option value="WEEKLY">Semanal</option>
+                <option value="MONTHLY">Mensual</option>
+                <option value="ANNUALLY">Anual</option>
+              </select>
+
+              <!-- esto debería aparecer sólo si recurrencia es distinto de NON -->
+              <label for="endingDate">Fecha de finalización</label>
+              <input type="date" class="form-control" id="endingDate" [(ngModel)]="newSpendingGroup.endingDate"
+                name="endingDate">
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn">Guardar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Monto</th>
+          <th scope="col">Fecha</th>
+          <th scope="col">Detalles</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let spending of spendingsWithGroup">
+          <td>{{ spending.name }}</td>
+          <td>{{ spending.description }}</td>
+          <td>{{ spending.totalAmount }}</td>
+          <td>{{ spending.createdAt }}</td>
+          <!-- esto es del botón (click)="showDetails(spending)"-->
+          <td><button class="btn">Ver detalles</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  } @else {
+  <div class="spendingIndividualModal my-1 mx-1">
+    <button type="button" class="btn btn btn-colour" data-bs-toggle="modal" data-bs-target="#newSpendingInd">
+      Cargar nuevo gasto individual
+    </button>
+    <div class="modal fade" id="newSpendingInd" tabindex="-1" aria-labelledby="newSpendingLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="newSpendingLabel">Nuevo gasto individual</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form (ngSubmit)="onSubmitIndividual()">
+              <label for="contact">Integrante que realizó el gasto</label>
+              <select class="form-select" aria-label="Contact select" [(ngModel)]="newSpendingGroup.users"
+                name="contact">
+                <option *ngFor="let contact of contacts" [ngValue]="contact">{{ contact.contact.name }}</option>
+              </select>
+
+              <label for="totalAmount">Monto</label>
+              <input type="text" class="form-control" id="totalAmount" [(ngModel)]="newSpendingGroup.totalAmount"
+                name="totalAmount">
+
+              <label for="createdAt">Fecha del gasto</label>
+              <input type="date" class="form-control" id="createdAt" [(ngModel)]="newSpendingGroup.createdAt"
+                name="createdAt">
+
+              <label for="division">División del gasto </label>
+              <select class="form-select" aria-label="Division select" [(ngModel)]="newSpendingGroup.division"
+                name="division" aria-describedby="divisionHelp">
+                <option value="EVEN">Mismo monto para todos</option>
+                <option value="FIXAMOUNT">Monto fijo por integrante</option>
+                <option value="SAMEPERCENTAGE">Mismo porcentaje para todos</option>
+                <option value="FIXPERCENTAGE">Porcentaje fijo para cada integrante</option>
+              </select>
+              <div id="divisionHelp">La división del gasto deberá sumar el monto correspondiente indicado anteriormente
+              </div>
+
+              <label for="category">Categoría</label>
+              <select class="form-select" aria-label="Category select" [(ngModel)]="newSpendingGroup.spendingCategory"
+                name="category">
+                <option *ngFor="let cat of categories" [ngValue]="cat">{{ cat.name }}</option>
+              </select>
+
+              <label for="recipe">Cargar comprobante</label>
+              <input type="file" class="form-control" id="inputFile">
+
+              <label for="recurrence">Frecuencia del gasto</label>
+              <select class="form-select" aria-label="Recurrence select" [(ngModel)]="newSpendingGroup.recurrence"
+                name="recurrence">
+                <option value="NON" default>Único</option>
+                <option value="DIARY">Diario</option>
+                <option value="WEEKLY">Semanal</option>
+                <option value="MONTHLY">Mensual</option>
+                <option value="ANNUALLY">Anual</option>
+              </select>
+
+              <!-- esto debería aparecer sólo si recurrencia es distinto de NON -->
+              <label for="endingDate">Fecha de finalización</label>
+              <input type="date" class="form-control" id="endingDate" [(ngModel)]="newSpendingGroup.endingDate"
+                name="endingDate">
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn">Guardar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">Correo</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Monto</th>
+          <th scope="col">Fecha</th>
+          <th scope="col">Detalles</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let spending of spendingsWithoutGroup">
+          <td>{{ spending.name }}</td>
+          <!-- en este hay que ver que el mail es del único usuario del grupo de dos
+                            <td>{{ spending.email }}</td>-->
+          <td>{{ spending.description }}</td>
+          <td>{{ spending.totalAmount }}</td>
+          <td>{{ spending.createdAt }}</td>
+          <!-- esto es del botón (click)="showDetails(spending)"-->
+          <td><button class="btn">Ver detalles</button></td>
+        </tr>
+    </table>
+  </div>
+  }
+
+</div>
+<app-footer />
