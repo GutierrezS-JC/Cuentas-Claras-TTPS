@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/payment")
+@RequestMapping("/payments")
 public class PaymentController {
 	
 }

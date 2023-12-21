@@ -23,7 +23,7 @@ import com.ttps.cuentasclaras.model.Spending;
 import com.ttps.cuentasclaras.service.SpendingService;
 
 @RestController
-@RequestMapping("/spending")
+@RequestMapping("/spendings")
 @CrossOrigin
 public class SpendingController {
 
