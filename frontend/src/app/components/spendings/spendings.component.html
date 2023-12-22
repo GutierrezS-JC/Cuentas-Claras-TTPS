@@ -143,24 +143,24 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let spending of spendings">
-                        <td>{{ spending.name }}</td>
+                        <td>{{ spending.nameSpendingId }}</td>
                         <td>{{ spending.description }}</td>
-                        <td>{{ spending.totalAmount }}</td>
+                        <td>{{ spending.amount }}</td>
                         <td>{{ spending.createdAt }}</td>
                         <!-- esto es del botón (click)="showDetails(spending)"-->
                         <td>
                             <button class="btn">Ver detalles</button>
-                            <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#editSpending" (click)="getSpendingToEdit(spending)">Editar</button>
+                            <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#editSpending" (click)="getSpendingToEdit(spending.idSpending)">Editar</button>
 
                             <div class="modal fade" id="editSpending" tabindex="-1" aria-labelledby="editSpendingLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="editSpendingLabel">Editar gasto</h1>
+                                            <h1 class="modal-title fs-5" id="editSpendingLabel">Editar gasto {{spending.nameSpendingId}}</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form (ngSubmit)="editSpending()">
+                                            <form (ngSubmit)="editSpending($event)">
                                                 <label for="description">Descripción</label>
                                                 <input type="text" class="form-control mb-2" id="description" [(ngModel)]="editableSpending.description" name="description">
                                                 
@@ -197,8 +197,13 @@
                                                 
                                             </form>
                                         </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn" data-bs-dismiss="modal">Cancelar</button>
+                                            <button type="submit" class="btn">Guardar</button>
+                                        </div>
                                     </div>
                                 </div>
+                                
                             </div>
                         </td>
                     </tr>

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Spending } from '../models/spending.model';
+import { UserService } from './user/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,17 +11,19 @@ import { Spending } from '../models/spending.model';
 export class SpendingService {
   private apiUrl = 'http://localhost:9090'; // qué url va a acá??
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private userService: UserService) { }
 
   // lista todos los gastos grupales e individuales
   // hay que discriminarlos de alguna forma
-  getAllSpendings(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/spendings`);
+  getMySpendingsExtended(): Observable<any[]> {
+    const userId = this.userService.getUserId();
+  return this.http.get<any[]>(`${this.apiUrl}/users/getMySpendingsExtended?id=${userId}`);
   };
 
   // crea un nuevo gasto
   createSpending(spending: Spending): Observable<any> {
     const url = `${this.apiUrl}/spendings`;
+    const userId = this.userService.getUserId();
     console.log(spending);
     const spendingObject = {
       name: spending.group.name,
@@ -30,7 +33,7 @@ export class SpendingService {
       proofOfPayment: spending.proofOfPayment,
       recurrence: spending.recurrence,
       division: spending.division,
-      ownerId: 1, // esto tiene que ser el id del usuario logueado
+      ownerId: userId,
       spendingCategoryId: spending.spendingCategory,
       groupId: spending.group.groupId,
       usersWithAmount: spending.users
@@ -56,7 +59,7 @@ export class SpendingService {
 
   // editar el gasto que se le manda
   editSpending(spending: Spending): Observable<any> {
-    const url = `${this.apiUrl}/spendings`;
+    const url = `${this.apiUrl}/spendings/${spending.id}`;
     return this.http.put<any>(url, spending);
   }
 }

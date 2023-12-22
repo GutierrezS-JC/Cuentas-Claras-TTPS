@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ttps.cuentasclaras.dto.SpendingUserDTO;
+import com.ttps.cuentasclaras.dto.SpendingUserExtendDTO;
 import com.ttps.cuentasclaras.dto.UserAltDTO;
 import com.ttps.cuentasclaras.dto.UserDTO;
 import com.ttps.cuentasclaras.dto.UserLoginDTO;
@@ -95,5 +96,15 @@ public class UserController {
 		}
 		return ResponseEntity.ok(listResponse);
 	}
+	
+    @GetMapping("/getMySpendingsExtended")
+    public ResponseEntity<List<SpendingUserExtendDTO>> getMySpendingsExtended(@RequestParam Integer id) {
+        User searchedUser = userService.findUserById(id);
+        List<SpendingUserExtendDTO> listResponse = userService.mapSpendingUserExtendDTO(searchedUser);
+        if (searchedUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(listResponse);
+    }
 
 }

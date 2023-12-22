@@ -2,6 +2,7 @@ import { Group } from './group.model'
 import { SpendingUser } from './spendingUser.model';
 
 export class Spending {
+    public id?: number;
     public name: string;
     public description: string;
     public totalAmount: number;

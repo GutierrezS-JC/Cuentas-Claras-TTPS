@@ -11,6 +11,11 @@ import { SpendingService } from '../../services/spending.service';
 import { UserContact } from '../../models/userContact.model';
 import { SpendingUser } from '../../models/spendingUser.model';
 
+import * as jQuery from 'jquery';
+import { MySpending } from '../../models/mySpending.model';
+declare var $: any;
+
+
 
 @Component({
   selector: 'app-spendings',
@@ -32,15 +37,18 @@ export class SpendingsComponent {
   categories: SpendingCategory[] = [];
   contacts: UserContact[] = []; // todos los contactos de un usuario, necesario para crear un gasto individual
 
-  spendings: Spending[] = [];
-  spendingsWithGroup: Spending[] = this.spendings.filter(s => s.users.length>2); // filtra gastos de grupo
-  spendingsWithoutGroup: Spending[] = this.spendings.filter(s => s.users.length<2); // filtra gastos individuales
+  spendings: MySpending[] = [];
+  
 
   // objeto Spending que se crea con el formulario
   newSpending: Spending = new Spending("", "", 0, new Date(), new Date(), "imgComprobante", "NON", "", 0, 0, new Group(0,"",0, new User(0,"", 0, ""), this.members, 1, new Array<Spending>), this.spendingMembers);
 
   // objeto Spending que se edita con el formulario
   editableSpending: Spending = new Spending("", "", 0, new Date(), new Date(), "", "NON", "", 0, 0, new Group(0,"",0, new User(0,"", 0, ""), this.members, 1, new Array<Spending>), this.spendingMembers);
+  
+  // objeto Spending seleccionado para editar
+  selectedSpendingToEdit: number = 0;
+
 
   // estas dos funciones se ocupan de mostrar una u otra tabla según se seleccione el botón
   showTableFunc() {
@@ -121,11 +129,11 @@ export class SpendingsComponent {
       groups: this.spendingService.getGroups(),
       categories: this.spendingService.getSpendingCategories(),
      // contacts: this.spendingService.getContacts(),
-      spendings: this.spendingService.getAllSpendings()
+      spendings: this.spendingService.getMySpendingsExtended()
     }).subscribe({
         next: (result: any) => {
           this.categories = result.categories;
-          this.contacts = result.contacts;
+          //this.contacts = result.contacts;
           this.groups = result.groups;
           this.spendings = result.spendings;
         },
@@ -136,8 +144,11 @@ export class SpendingsComponent {
   }
 
   // funciones para la edición del gasto TODO
-  getSpendingToEdit(spending: Spending){}
-  editSpending(): void {
-
+  getSpendingToEdit(spendingId: number): void {
+    this.selectedSpendingToEdit = spendingId;
+    $('#editSpending').modal('show');
+  }
+  editSpending(event: Event): void {
+    event.preventDefault();
   }
 }
