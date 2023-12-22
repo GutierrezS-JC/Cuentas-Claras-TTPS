@@ -1,18 +1,20 @@
 <app-navbar />
 <div class="container">
   <div>
-    <h1 class="display-3 mt-2">Mis grupos</h1>
-    <button type="button" class="btn btn-sm btn-success px-4">Crear grupo</button>
+    <h1 class="display-3 mt-2">Grupos</h1>
+    <button type="button" class="btn btn-sm btn-dark px-4">Crear grupo</button>
   </div>
+  <app-group-create />
+  <app-group-details />
   <div class="btn-group mt-4" role="group" aria-label="Basic radio toggle button group">
-    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-    <label class="btn btn-sm btn-outline-dark" for="btnradio1">Todos</label>
+    <!-- <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+    <label class="btn btn-sm btn-outline-dark" for="btnradio1">Todos</label> -->
 
-    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-    <label class="btn btn-sm btn-outline-dark" for="btnradio2">Actuales</label>
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" checked>
+    <label class="btn btn-sm btn-outline-dark" for="btnradio2">Mis grupos</label>
 
     <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-    <label class="btn btn-sm btn-outline-dark" for="btnradio3">Finalizados</label>
+    <label class="btn btn-sm btn-outline-dark" for="btnradio3">Grupos en los que formo parte</label>
   </div>
 
   <div class="mt-4 mb-5">
@@ -20,60 +22,14 @@
       <!-- Barra lateral a la izquierda -->
       <div class="col-md-4 sidebar">
         <ul class="list-group">
-          <li class="list-group-item p-4">
+          @for (group of groups.listOwnedGroups; track $index) {
+          <li class="list-group-item p-4" id={{group.groupId}} (click)="getGroup(group.groupId)">
             <span style="align-items: center; display: flex; justify-content:center;">
               <ng-icon name="faSolidCakeCandles" size="28px" style="margin-right: 8px;" />
-              Cumple Mati
+              {{ group.name }}
             </span>
           </li>
-          <li class="list-group-item p-4">
-            <span style="align-items: center; display: flex; justify-content:center;">
-              <ng-icon name="faSolidPlaneDeparture" size="28px" style="margin-right: 8px;" />
-              Viaje a pinamar
-            </span>
-          </li>
-          <li class="list-group-item p-4">
-            <span style="align-items: center; display: flex; justify-content:center;">
-              <ng-icon name="faSolidPlaneDeparture" size="28px" style="margin-right: 8px;" />
-              Viaje a Mendonza
-            </span>
-          </li>
-          <li class="list-group-item p-4">
-            <span style="align-items: center; display: flex; justify-content:center;">
-              <ng-icon name="faSolidBagShopping" size="28px" style="margin-right: 8px;" />
-              Shopping :)
-            </span>
-          </li>
-          <li class="list-group-item p-4">
-            <span style="align-items: center; display: flex; justify-content:center;">
-              <ng-icon name="faSolidCakeCandles" size="28px" style="margin-right: 8px;" />
-              Cumple Manaos
-            </span>
-          </li>
-          <li class="list-group-item p-4">
-            <span style="align-items: center; display: flex; justify-content:center;">
-              <ng-icon name="faSolidPeopleGroup" size="28px" style="margin-right: 8px;" />
-              Futbol de los viernes
-            </span>
-          </li>
-          <li class="list-group-item p-4">
-            <span style="align-items: center; display: flex; justify-content:center;">
-              <ng-icon name="faSolidBagShopping" size="28px" style="margin-right: 8px;" />
-              Compras
-            </span>
-          </li>
-          <li class="list-group-item p-4">
-            <span style="align-items: center; display: flex; justify-content:center;">
-              <ng-icon name="faSolidPeopleGroup" size="28px" style="margin-right: 8px;" />
-              Salida
-            </span>
-          </li>
-          <li class="list-group-item p-4">
-            <span style="align-items: center; display: flex; justify-content:center;">
-              <ng-icon name="faSolidTaxi" size="28px" style="margin-right: 8px;" />
-              Uber
-            </span>
-          </li>
+          }
         </ul>
       </div>
 
@@ -83,48 +39,82 @@
         <!-- Titulo y descripcion -->
         <div class="px-5 py-4">
           <span style="display: flex; flex-wrap: wrap; align-items: center;">
-            <h1 class="display-5">Cumple Mati</h1>
+            <!-- <h1 class="display-5">Cumple Mati</h1> -->
+            <h1 class="display-5">{{ actualGroup.name }}</h1>
             <ng-icon name="faSolidCakeCandles" size="35px" style="margin-left: 1.2em; margin-top: -5px;" />
           </span>
           <hr />
-          <h4 style="font-size: large; font-weight: bold;">Total gastos: $20000</h4>
-          <div><b>Categoria:</b> Cumpleaños</div>
-          <p><b>Descripcion:</b> Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
+          <h4 style="font-size: large; font-weight: bold;">Total gastos: ${{ actualGroup.totalBalance }}</h4>
+          <div>
+            <b>Categoria:</b> {{ actualGroup.groupCategory.name }}
+          </div>
+          <p>
+            <b>Descripcion:</b> {{ actualGroup.description }}
           </p>
 
-          <button class="btn btn-sm btn-dark">Agregar</button>
+          <button class="btn btn-sm btn-dark" data-bs-target="#modal-group-add-form" data-bs-toggle="modal">
+            Agregar integrante
+          </button>
           <hr />
 
           <!-- Adminstracion de integrantes y tablas (listas) -->
           <div>
-            <h4>Miembros</h4>
-            <div>Manaos x - Matias x - Juli x </div>
+            <h2>Miembros</h2>
+            <div class="mt-2">
+              @for (member of actualGroup.members; track $index) {
+              <span class="badge rounded-pill text-bg-dark py-2 px-3" id={{member.id}}>{{ member.name }}</span>
+              }
+            </div>
+            <hr />
 
-            <table class="table table-striped table-hover table-bordered">
-              <thead class="table-secondary">
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Nombre</th>
-                  <th scope="col">Debe</th>
-                  <th scope="col">Usuario</th>
-                </tr>
-              </thead>
-              <tbody class="table-group-divider">
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>mdo</td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>Jacob</td>
-                  <td>Thornton</td>
-                  <td>fat</td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="mt-4">
+              <!-- Lista deudas -->
+              <span class="mb-1" style="display: flex;">
+                <h3>Deudas pendientes</h3>
+              </span>
+
+              <!-- Lista que debera ser componente eventualmente -->
+              <table class="table table-striped table-hover table-bordered">
+                <thead class="table-secondary">
+                  <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Monto</th>
+                    <th scope="col">Acreedor</th>
+                  </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                  <tr>
+                    <td>Juliana</td>
+                    <td>400</td>
+                    <td>Matias</td>
+                  </tr>
+                  <tr>
+                    <td>Juliana</td>
+                    <td>300</td>
+                    <td>Manaos</td>
+                  </tr>
+                  <tr>
+                    <td>Matias</td>
+                    <td>500</td>
+                    <td>Manaos</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <!-- Lista Gastos -->
+              <span class="mt-5 mb-1" style="display: flex;">
+                <h3>Gastos</h3>
+                <button class="btn btn-sm btn-dark ms-2" style="height: fit-content;">Agregar</button>
+              </span>
+              <div class="col-12 overflow-x-hidden overflow-y-scroll" style="max-height:350px;">
+                <app-groups-list />
+              </div>
+            </div>
+
+            <div class="row justify-content-end">
+              <button class="btn px-3 btn-dark mt-4" style="width: inherit;">Marcar como finalizado</button>
+            </div>
+
           </div>
         </div>
       </div>

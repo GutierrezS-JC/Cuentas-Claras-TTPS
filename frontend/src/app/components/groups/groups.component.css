@@ -1,12 +1,12 @@
 .sidebar {
     overflow-y: auto;
-    max-height: 600px;
-    border-right: 1px solid #ccc;
+    max-height: 800px;
+    /* border-right: 1px solid #ccc; */
 }
 
 .content {
     overflow-y: auto;
-    max-height: 100%;
+    max-height: 800px;
 }
 
 li {
