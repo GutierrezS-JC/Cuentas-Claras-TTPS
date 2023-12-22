@@ -36,10 +36,10 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form (ngSubmit)="onSubmit()">
+                        <form>
                             <label for="group">Seleccione el grupo</label>
                             <select class="form-select" aria-label="Group select" [(ngModel)]="newSpending.group" name="group" (change)="getGroupSelect()">
-                                @for (group of groups; track group.id){
+                                @for (group of groups; track group.groupId){
                                     <option [ngValue]="group"  >{{ group.name }}</option>
                                 }
                             </select>
@@ -59,7 +59,7 @@
                             </div>
 
                             <label for="totalAmount">Monto</label>
-                            <input type="text" class="form-control" id="totalAmount" [(ngModel)]="newSpending.totalAmount" name="totalAmount">
+                            <input type="number" class="form-control" id="totalAmount" [(ngModel)]="newSpending.totalAmount" name="totalAmount">
 
                             <label for="createdAt">Fecha del gasto</label>
                             <input type="date" class="form-control" id="createdAt" [(ngModel)]="newSpending.createdAt" name="createdAt">
@@ -69,6 +69,7 @@
 
                             <label for="division">División del gasto </label>
                             <select class="form-select" aria-label="Division select" [(ngModel)]="newSpending.division" name="division" aria-describedby="divisionHelp" (change)="calculateAmount(newSpending.totalAmount)">
+                                <option value="" selected>Elegir división</option>
                                 <option value="EVEN">Mismo monto para todos</option>
                                 <option value="FIXAMOUNT">Monto fijo por integrante</option>
                                 <option value="SAMEPERCENTAGE">Mismo porcentaje para todos</option>
@@ -84,6 +85,14 @@
                                     }
                                     </ul>
                                 </div>
+                            } @else if (newSpending.division == "FIXAMOUNT") {
+                                <form (ngSubmit)="calculateFixAmount($event)">
+                                    @for ( member of spendingUsers; track member.id ){
+                                        <label for="member.id">{{ member.name }}</label>
+                                        <input type="number" class="form-control" id="member.id" [(ngModel)]="member.amount" name="member.id">
+                                    }
+                                    <button type="submit" class="btn">Aceptar</button>
+                                </form>
                             }
                            
 
@@ -106,7 +115,6 @@
                                 <option value="ANNUALLY" >Anual</option>
                             </select>
 
-                            <!-- esto debería aparecer sólo si recurrencia es distinto de NON -->
                             @if ( newSpending.recurrence != "NON" ) {
                                 <label for="endingDate">Fecha de finalización</label>
                                 <input type="date" class="form-control" id="endingDate" [(ngModel)]="newSpending.endingDate" name="endingDate">
@@ -115,7 +123,7 @@
                     </div>
                     <div class="modal-footer">
                     <button type="button" class="btn" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="sumbit" class="btn">Guardar</button>
+                    <button type="submit" class="btn" (click)="onSubmit()">Guardar</button>
                     </div>
                 </div>
                 </div>
@@ -134,7 +142,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let spending of spendingsWithGroup">
+                    <tr *ngFor="let spending of spendings">
                         <td>{{ spending.name }}</td>
                         <td>{{ spending.description }}</td>
                         <td>{{ spending.totalAmount }}</td>
@@ -142,9 +150,9 @@
                         <!-- esto es del botón (click)="showDetails(spending)"-->
                         <td>
                             <button class="btn">Ver detalles</button>
-                            <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#editSpending"+{{spending.id}} (click)="getSpendingToEdit(spending)">Editar</button>
+                            <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#editSpending" (click)="getSpendingToEdit(spending)">Editar</button>
 
-                            <div class="modal fade" id="editSpending"+{{spending.id}} tabindex="-1" aria-labelledby="editSpendingLabel" aria-hidden="true">
+                            <div class="modal fade" id="editSpending" tabindex="-1" aria-labelledby="editSpendingLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">

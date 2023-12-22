@@ -4,6 +4,7 @@ import { Spending } from './spending.model';
 export class User {
     public id: number;
     public email: string;
+    public amount: number;
     //public username: string;
     //public password: string; //hasheado?
     public name: string;
@@ -20,6 +21,7 @@ export class User {
     constructor (
         id: number,
         email: string,
+        amount: number,
         //username: string,
         //password: string,
         name: string,
@@ -35,6 +37,7 @@ export class User {
     ) {
         this.id = id;
         this.email = email;
+        this.amount = amount;
         //this.username = username;
         //this.password = password;
         this.name = name;

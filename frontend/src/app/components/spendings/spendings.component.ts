@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { forkJoin } from 'rxjs';
 
@@ -16,6 +16,7 @@ import { SpendingUser } from '../../models/spendingUser.model';
   selector: 'app-spendings',
   standalone: true,
   imports: [ FormsModule, CommonModule ],
+  providers: [ DatePipe ],
   templateUrl: './spendings.component.html',
   styleUrl: './spendings.component.css'
 })
@@ -23,7 +24,7 @@ import { SpendingUser } from '../../models/spendingUser.model';
 export class SpendingsComponent {
   showTable = false;
 
-  user: User = new User(0,"", "");
+  user: User = new User(0,"",0, "");
   groups: Group[] = [];
   members: User[] = []; //estos son los usuarios del grupo que selecciono
   spendingUsers: User[] = []; //estos son los usuarios que participan en el gasto
@@ -32,14 +33,14 @@ export class SpendingsComponent {
   contacts: UserContact[] = []; // todos los contactos de un usuario, necesario para crear un gasto individual
 
   spendings: Spending[] = [];
-  spendingsWithGroup: Spending[] = this.spendings.filter(s => s.group); // filtra gastos de grupo
-  spendingsWithoutGroup: Spending[] = this.spendings.filter(s => !s.group); // filtra gastos individuales
+  spendingsWithGroup: Spending[] = this.spendings.filter(s => s.users.length>2); // filtra gastos de grupo
+  spendingsWithoutGroup: Spending[] = this.spendings.filter(s => s.users.length<2); // filtra gastos individuales
 
   // objeto Spending que se crea con el formulario
-  newSpending: Spending = new Spending("", "", 0, new Date(), new Date(), "imgComprobante", "NON", "EVEN", 0, 0, new Group(0,"",0, new User(0,"",""), this.members, 1, new Array<Spending>), this.spendingMembers);
+  newSpending: Spending = new Spending("", "", 0, new Date(), new Date(), "imgComprobante", "NON", "", 0, 0, new Group(0,"",0, new User(0,"", 0, ""), this.members, 1, new Array<Spending>), this.spendingMembers);
 
   // objeto Spending que se edita con el formulario
-  editableSpending: Spending = new Spending("", "", 0, new Date(), new Date(), "", "NON", "EVEN", 0, 0, new Group(0,"",0, new User(0,"",""), this.members, 1, new Array<Spending>), this.spendingMembers);
+  editableSpending: Spending = new Spending("", "", 0, new Date(), new Date(), "", "NON", "", 0, 0, new Group(0,"",0, new User(0,"", 0, ""), this.members, 1, new Array<Spending>), this.spendingMembers);
 
   // estas dos funciones se ocupan de mostrar una u otra tabla según se seleccione el botón
   showTableFunc() {
@@ -63,7 +64,6 @@ export class SpendingsComponent {
       if (!userAlreadyAdded) {
         this.spendingUsers.push( event );
       };
-      console.log(this.spendingUsers);
     }
   }
 
@@ -73,10 +73,11 @@ export class SpendingsComponent {
   }
 
   // inicia el servicio de los gastos
-  constructor(private spendingService: SpendingService){}
+  constructor(private spendingService: SpendingService, private datePipe: DatePipe){}
   // función del formulario para la creación del gasto
   onSubmit(): void {
-    console.log(this.newSpending);
+    this.newSpending.createdAt = this.datePipe.transform( this.newSpending.createdAt, 'yyyy-MM-dd' ) as unknown as Date;
+    this.newSpending.endingDate = this.datePipe.transform( this.newSpending.endingDate, 'yyyy-MM-dd' ) as unknown as Date;
     this.spendingService.createSpending(this.newSpending).subscribe(
       (response => {
         console.log('Gasto creado correctamente', response);
@@ -93,12 +94,25 @@ export class SpendingsComponent {
     let division = this.newSpending.division;
     switch (division) {
       case "EVEN":
-        this.spendingMembers = this.spendingUsers.map(user => {return { id: user.id, amount: amount/this.spendingUsers.length };});
+        this.newSpending.users = this.spendingUsers.map(user => {
+          const mappedUser = { userId: user.id, amount: amount / this.spendingUsers.length };
+          return mappedUser;
+        });
         break;
       // TODO: los restantes casos, voy a usar EVEN para probar la creación
       default:
         break;
     }
+  }
+
+  // mapea al objeto las cantidades ingresadas por el usuario
+  calculateFixAmount(event: Event): void {
+    event.preventDefault();
+    console.log(this.spendingUsers);
+    this.newSpending.users = this.spendingUsers.map(user => {
+      const mappedUser = { userId: user.id, amount: user.amount };
+      return mappedUser;
+    });
   }
 
   // función que se ejecuta al inicio para obtener los datos iniciales

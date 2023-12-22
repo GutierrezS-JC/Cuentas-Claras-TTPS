@@ -2,7 +2,7 @@ import { User } from './user.model';
 import { Spending } from './spending.model';
 
 export class Group {
-    public id: number;
+    public groupId: number;
     public name: string;
     public totalBalance: number;
     public owner: User;
@@ -12,7 +12,7 @@ export class Group {
     //public payments: Array<any>;
 
     constructor(
-        id: number,
+        groupId: number,
         name: string,
         totalBalance: number,
         owner: User,
@@ -21,7 +21,7 @@ export class Group {
         spendings: Spending[],
       //  payments: any[],
     ) {
-        this.id = id;
+        this.groupId = groupId;
         this.name = name;
         this.totalBalance = totalBalance;
         this.owner = owner;

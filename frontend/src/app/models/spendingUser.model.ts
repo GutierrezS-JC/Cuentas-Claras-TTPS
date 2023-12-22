@@ -1,12 +1,12 @@
 export class SpendingUser {
-    public id: number;
+    public userId: number;
     public amount: number;
 
     constructor(
-        id: number,
+        userId: number,
         amount: number, 
     ) {
-        this.id = id;
+        this.userId = userId;
         this.amount = amount;
     }
 }

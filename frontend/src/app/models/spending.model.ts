@@ -1,6 +1,4 @@
 import { Group } from './group.model'
-import { User } from './user.model'
-import { SpendingCategory } from './spendingCategory.model';
 import { SpendingUser } from './spendingUser.model';
 
 export class Spending {
@@ -14,7 +12,7 @@ export class Spending {
     public division: string;
     public owner: number;
     public spendingCategory: number;
-    public group?: Group;
+    public group: Group;
     public users: Array<SpendingUser>;
     
     constructor(

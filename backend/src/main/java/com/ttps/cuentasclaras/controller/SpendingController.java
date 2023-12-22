@@ -51,9 +51,9 @@ public class SpendingController {
 
 	@PostMapping
 	public ResponseEntity<SpendingDTO> createSpending(@RequestBody SpendingCreateDTO spendingRequest) {
-		if (spendingService.spendingExists(spendingRequest)) {
-			return new ResponseEntity<SpendingDTO>(HttpStatus.CONFLICT);
-		}
+//		if (spendingService.spendingExists(spendingRequest)) {
+//			return new ResponseEntity<SpendingDTO>(HttpStatus.CONFLICT);
+//		}
 		spendingService.createSpending(spendingRequest);
 		return new ResponseEntity<SpendingDTO>(HttpStatus.CREATED);
 	}

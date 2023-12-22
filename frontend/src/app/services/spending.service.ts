@@ -23,18 +23,17 @@ export class SpendingService {
     const url = `${this.apiUrl}/spendings`;
     console.log(spending);
     const spendingObject = {
-      name: spending.name,
+      name: spending.group.name,
       description: spending.description,
       totalAmount: spending.totalAmount,
-      createdAt: spending.createdAt,
       endingDate: spending.endingDate,
       proofOfPayment: spending.proofOfPayment,
       recurrence: spending.recurrence,
       division: spending.division,
-      owner: 1,
-      spendingCategory: spending.spendingCategory,
-      group: spending.group?.id,
-      users: spending.users
+      ownerId: 1, // esto tiene que ser el id del usuario logueado
+      spendingCategoryId: spending.spendingCategory,
+      groupId: spending.group.groupId,
+      usersWithAmount: spending.users
     };
     console.log(spendingObject);
     return this.http.post<any>(url, spendingObject);
