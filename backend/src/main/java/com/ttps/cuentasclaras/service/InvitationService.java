@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ttps.cuentasclaras.dto.InvitationDTO;
+import com.ttps.cuentasclaras.model.Group;
 import com.ttps.cuentasclaras.model.Invitation;
 import com.ttps.cuentasclaras.model.InvitationStatus;
 import com.ttps.cuentasclaras.repository.InvitationRepository;
@@ -69,5 +70,17 @@ public class InvitationService {
 		}
 		return listResponse;
 	}
+
+//	public List<InvitationDTO> getGroupInvitations(Integer groupId) {
+//		Group searchedGroup = groupService.findById(groupId);
+//		List<Invitation> list = invitationRepository.findByGroupId(searchedGroup.getId());
+//		List<InvitationDTO> listResponse = new ArrayList<>();
+//
+//		for (Invitation invitation : list) {
+//			listResponse.add(new InvitationDTO(invitation.getId(), userService.mapUserAlt(invitation.getSenderUser()),
+//					userService.mapUserAlt(invitation.getReceiverUser()), invitation.getStatus()));
+//		}
+//		return listResponse;
+//	}
 
 }

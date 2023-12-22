@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -226,11 +227,16 @@ public class GroupService {
 	}
 
 	public UserGroupsDTO getGroupsByUser(User searchedUser) {
+		Set<Group> groupsUser = new TreeSet<>((e1, e2) -> Integer.compare(e1.getId(), e2.getId()));
+		Set<Group> groupsOwner = new TreeSet<>((e1, e2) -> Integer.compare(e1.getId(), e2.getId()));
+		groupsUser.addAll(searchedUser.getGroups());
+		groupsOwner.addAll(searchedUser.getOwnedGroups());
+		
 		// Grupos en los que el usuario es miembro
-		List<GroupDetailsDTO> listGroups = this.mapListGroupDetailsDTO(searchedUser.getGroups());
+		List<GroupDetailsDTO> listGroups = this.mapListGroupDetailsDTO(groupsUser);
 
 		// Grupos creados por el usuario
-		List<GroupDetailsDTO> listOwnedGroups = this.mapListGroupDetailsDTO(searchedUser.getOwnedGroups());
+		List<GroupDetailsDTO> listOwnedGroups = this.mapListGroupDetailsDTO(groupsOwner);
 
 		return new UserGroupsDTO(listGroups, listOwnedGroups);
 	}

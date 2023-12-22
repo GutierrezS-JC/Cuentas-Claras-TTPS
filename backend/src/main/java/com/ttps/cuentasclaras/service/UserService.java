@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.ttps.cuentasclaras.dto.GroupDTO;
 import com.ttps.cuentasclaras.dto.GroupDetailsDTO;
 import com.ttps.cuentasclaras.dto.SpendingUserDTO;
+import com.ttps.cuentasclaras.dto.SpendingUserExtendDTO;
 import com.ttps.cuentasclaras.dto.UserAltDTO;
 import com.ttps.cuentasclaras.dto.UserDTO;
 import com.ttps.cuentasclaras.dto.UserGroupsDTO;
@@ -172,6 +173,32 @@ public class UserService {
 	public UserAltDTO mapUserAlt(User user) {
 		return new UserAltDTO(user.getId(), user.getEmail(), user.getUsername(), user.getName(), user.getLastName(),
 				user.getProfilepicBase64());
-	}	
+	}
+
+	public List<UserAltDTO> searchUser(Integer userId, String username) {
+		List<UserAltDTO> response = new ArrayList<>();
+
+		if (!username.isBlank() && username != null) {
+			List<User> searched = userRepository.findTop3ByUsernameContainingAndIdNot(username, userId);
+			if (!searched.isEmpty()) {
+				for (User user : searched) {
+					response.add(this.mapUserAlt(user));
+				}
+			}
+		}
+		return response;
+	}
+
+	public List<SpendingUserExtendDTO> mapSpendingUserExtendDTO(User searchedUser) {
+		Set<SpendingUser> spendings = searchedUser.getSpendings();
+		List<SpendingUserExtendDTO> spendingResponse = new ArrayList<>();
+		for (SpendingUser spendingUser : spendings) {
+			spendingResponse.add(new SpendingUserExtendDTO(spendingUser.getId(), this.mapUserDto(searchedUser),
+					spendingUser.getAmount(), spendingUser.getCreated_at(), spendingUser.getUpdated_at(),
+					spendingUser.getSpending().getId(), spendingUser.getSpending().getName(),
+					spendingUser.getSpending().getDescription()));
+		}
+		return spendingResponse;
+	}
 
 }
