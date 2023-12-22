@@ -9,5 +9,17 @@ import { RouterModule } from '@angular/router';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
-  isLoggin = true; //TODO: función que compruebe el loggin
+  parsearVariable: string= 'hello';
+
+  isLogged(){
+    if(localStorage.getItem('user') != null){
+      this.parsearVariable= localStorage.getItem('user') || "";
+      return JSON.parse(this.parsearVariable);
+    }
+    return false;
+  }
+
+  logOut(){
+    localStorage.clear();
+  }
 }

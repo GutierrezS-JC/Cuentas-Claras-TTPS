@@ -8,16 +8,26 @@ import { HomeComponent } from './components/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component'
 import { IndexComponent } from './components/index/index.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { RegisterService } from './services/register.service';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet, HomeComponent, NavbarComponent, IndexComponent, FooterComponent, HttpClientModule],
-  providers: [ SpendingService ],
+  providers: [ SpendingService, AuthService, RegisterService ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'frontend';
-  isLoggin = true; //TODO: función que compruebe el loggin
+  parsearVariable= "";
+  
+  isLogged(){
+    if(localStorage.getItem('user') != null){
+      this.parsearVariable= localStorage.getItem('user') || "";
+      return JSON.parse(this.parsearVariable);
+    }
+    return false;
+  }
 }

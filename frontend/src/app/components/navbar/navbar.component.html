@@ -1,4 +1,4 @@
-@if (isLoggin){
+@if (isLogged()){
 	<nav class="navbar navbar-expand-lg">
 		<div class="container-fluid">
 			<a class="navbar-brand" routerLink="/home" routerLinkActive="active">CuentasClaras</a>
@@ -26,7 +26,7 @@
 						<ul class="dropdown-menu">
 							<li><a class="dropdown-item" routerLink="/">Mi perfil</a></li>
 							<li><hr class="dropdown-divider"></li>
-							<li><a class="dropdown-item" routerLink="/">Cerrar sesión</a></li>
+							<li><a class="dropdown-item" routerLink="/login" (click)="logOut()">Cerrar sesión</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -36,7 +36,7 @@
 	</nav>
 } @else {
 	<!--TODO: navbar usuario no logueado-->
-	<nav class="navbar navbar-expand-lg bg-body-tertiary">
+	<nav class="navbar navbar-expand-lg">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="#">CuentasClaras</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,8 +44,12 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<button class="btn">Iniciar sesión</button>
-					<button class="btn">Registrarse</button>
+					<li class="nav-item">
+						<a class="nav-link active" routerLink="/login">Iniciar sesión</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link active" routerLink="/register">Registrarse</a>
+					</li>
 				</ul>
 			</div>
 			
