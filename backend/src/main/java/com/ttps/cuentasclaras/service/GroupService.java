@@ -16,6 +16,7 @@ import com.ttps.cuentasclaras.dto.GroupEditDTO;
 import com.ttps.cuentasclaras.dto.IdDTO;
 import com.ttps.cuentasclaras.dto.InvitationDTO;
 import com.ttps.cuentasclaras.dto.UserAltDTO;
+import com.ttps.cuentasclaras.dto.UserGroupsDTO;
 import com.ttps.cuentasclaras.exception.ResourceNotFoundException;
 import com.ttps.cuentasclaras.model.Group;
 import com.ttps.cuentasclaras.model.GroupCategory;
@@ -86,7 +87,15 @@ public class GroupService {
 
 		UserAltDTO owner = userService.mapUserAlt(group.getOwner());
 		return new GroupDetailsDTO(group.getId(), group.getName(), group.getTotalBalance(), group.getGroupCategory(),
-				owner, membersDTO, invitationsDTO);
+				group.getDescription(), owner, membersDTO, invitationsDTO);
+	}
+
+	public List<GroupDetailsDTO> mapListGroupDetailsDTO(Set<Group> groups) {
+		List<GroupDetailsDTO> responseList = new ArrayList<>();
+		for (Group group : groups) {
+			responseList.add(this.mapGroupDetailsDTO(group));
+		}
+		return responseList;
 	}
 
 	public Group getGroup(Integer id) {
@@ -125,7 +134,8 @@ public class GroupService {
 
 			// Grupo creado y forzado a guardar para poder usar el objeto en las
 			// invitaciones
-			Group newGroup = new Group(groupRequest.getName(), groupRequest.getTotalBalance(), owner, groupCategory);
+			Group newGroup = new Group(groupRequest.getName(), groupRequest.getTotalBalance(),
+					groupRequest.getDescription(), owner, groupCategory);
 			Group groupCreated = groupRepository.saveAndFlush(newGroup);
 
 			Set<Invitation> invitations = new HashSet<>();
@@ -213,5 +223,15 @@ public class GroupService {
 			return true;
 		}
 		return false;
+	}
+
+	public UserGroupsDTO getGroupsByUser(User searchedUser) {
+		// Grupos en los que el usuario es miembro
+		List<GroupDetailsDTO> listGroups = this.mapListGroupDetailsDTO(searchedUser.getGroups());
+
+		// Grupos creados por el usuario
+		List<GroupDetailsDTO> listOwnedGroups = this.mapListGroupDetailsDTO(searchedUser.getOwnedGroups());
+
+		return new UserGroupsDTO(listGroups, listOwnedGroups);
 	}
 }

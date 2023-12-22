@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ttps.cuentasclaras.dto.GroupDTO;
+import com.ttps.cuentasclaras.dto.GroupDetailsDTO;
 import com.ttps.cuentasclaras.dto.SpendingUserDTO;
 import com.ttps.cuentasclaras.dto.UserAltDTO;
 import com.ttps.cuentasclaras.dto.UserDTO;
+import com.ttps.cuentasclaras.dto.UserGroupsDTO;
 import com.ttps.cuentasclaras.dto.UserLoginDTO;
 import com.ttps.cuentasclaras.dto.UserWithGroupsDTO;
 import com.ttps.cuentasclaras.exception.ResourceNotFoundException;
@@ -170,6 +172,6 @@ public class UserService {
 	public UserAltDTO mapUserAlt(User user) {
 		return new UserAltDTO(user.getId(), user.getEmail(), user.getUsername(), user.getName(), user.getLastName(),
 				user.getProfilepicBase64());
-	}
+	}	
 
 }

@@ -21,8 +21,11 @@ import com.ttps.cuentasclaras.dto.GroupDTO;
 import com.ttps.cuentasclaras.dto.GroupDetailsDTO;
 import com.ttps.cuentasclaras.dto.GroupEditDTO;
 import com.ttps.cuentasclaras.dto.SpendingDTO;
+import com.ttps.cuentasclaras.dto.UserGroupsDTO;
 import com.ttps.cuentasclaras.model.Group;
+import com.ttps.cuentasclaras.model.User;
 import com.ttps.cuentasclaras.service.GroupService;
+import com.ttps.cuentasclaras.service.UserService;
 
 @RestController
 @RequestMapping("/groups")
@@ -32,6 +35,9 @@ public class GroupController {
 	@Autowired
 	GroupService groupService;
 
+	@Autowired
+	UserService userService;
+	
 	@GetMapping
 	public ResponseEntity<List<GroupDetailsDTO>> getAllGroups() {
 		List<GroupDetailsDTO> groups = groupService.getAllGroups();
@@ -80,6 +86,16 @@ public class GroupController {
 			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.noContent().build();
+	}
+	
+	@GetMapping("/user/{id}")
+	public ResponseEntity<UserGroupsDTO> getGroupsFromUser(@PathVariable(name = "id") Integer id) {
+		User searchedUser = userService.findUserById(id);
+		UserGroupsDTO response = groupService.getGroupsByUser(searchedUser);
+		if (searchedUser == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(response);
 	}
 
 }

@@ -6,6 +6,7 @@ public class GroupCreateDTO {
 	private String name;
 	private Double totalBalance;
 	private Integer userOwnerId;
+	private String description;
 	private Integer groupCategoryId;
 	private List<IdDTO> usersIds;
 
@@ -13,8 +14,8 @@ public class GroupCreateDTO {
 
 	}
 
-	public GroupCreateDTO(String name, Double totalBalance, Integer userOwnerId, Integer groupCategoryId,
-			List<IdDTO> usersIds) {
+	public GroupCreateDTO(String name, Double totalBalance, Integer userOwnerId, String description,
+			Integer groupCategoryId, List<IdDTO> usersIds) {
 		super();
 		this.name = name;
 		this.totalBalance = totalBalance;
@@ -45,6 +46,14 @@ public class GroupCreateDTO {
 
 	public void setUserOwnerId(Integer userOwnerId) {
 		this.userOwnerId = userOwnerId;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Integer getGroupCategoryId() {

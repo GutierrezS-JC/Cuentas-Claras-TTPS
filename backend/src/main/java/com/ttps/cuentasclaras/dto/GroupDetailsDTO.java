@@ -9,12 +9,26 @@ public class GroupDetailsDTO {
 	private String name;
 	private Double totalBalance;
 	private GroupCategory groupCategory;
+	private String description;
 	private UserAltDTO owner;
 	private List<UserAltDTO> members;
 	private List<InvitationDTO> invitations;
 
 	public GroupDetailsDTO() {
 		super();
+	}
+
+	public GroupDetailsDTO(Integer groupId, String name, Double totalBalance, GroupCategory groupCategory,
+			String description, UserAltDTO owner, List<UserAltDTO> members, List<InvitationDTO> invitations) {
+		super();
+		this.groupId = groupId;
+		this.name = name;
+		this.totalBalance = totalBalance;
+		this.groupCategory = groupCategory;
+		this.description = description;
+		this.owner = owner;
+		this.members = members;
+		this.invitations = invitations;
 	}
 
 	public GroupDetailsDTO(Integer groupId, String name, Double totalBalance, GroupCategory groupCategory,
@@ -83,6 +97,14 @@ public class GroupDetailsDTO {
 
 	public void setInvitations(List<InvitationDTO> invitations) {
 		this.invitations = invitations;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

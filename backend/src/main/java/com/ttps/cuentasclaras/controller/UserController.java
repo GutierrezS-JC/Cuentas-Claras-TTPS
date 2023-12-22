@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ttps.cuentasclaras.dto.GroupDetailsDTO;
 import com.ttps.cuentasclaras.dto.SpendingUserDTO;
 import com.ttps.cuentasclaras.dto.UserAltDTO;
 import com.ttps.cuentasclaras.dto.UserDTO;
+import com.ttps.cuentasclaras.dto.UserGroupsDTO;
 import com.ttps.cuentasclaras.dto.UserLoginDTO;
 import com.ttps.cuentasclaras.dto.UserWithGroupsDTO;
 import com.ttps.cuentasclaras.model.User;
@@ -95,5 +97,5 @@ public class UserController {
 		}
 		return ResponseEntity.ok(listResponse);
 	}
-
+	
 }
