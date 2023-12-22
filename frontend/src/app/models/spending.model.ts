@@ -8,8 +8,8 @@ export class Spending {
     public description: string;
     public totalAmount: number;
     public createdAt: Date;
-    public endingDate: Date;
-    public proofOfPayment: string;
+    public endingDate?: Date;
+    public proofOfPayment?: string;
     public recurrence: string;
     public division: string;
     public owner: number;

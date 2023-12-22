@@ -27,17 +27,21 @@ export class SpendingsComponent {
   groups: Group[] = [];
   members: User[] = []; //estos son los usuarios del grupo que selecciono
   spendingUsers: User[] = []; //estos son los usuarios que participan en el gasto
-  spendingMembers: SpendingUser[] = []; //estos son los usuarios que participan en el gasto con el monto
+  spendingMembers: SpendingUser[] = []; //estos son los usuarios que participan en el gasto con el monto que le corresponde a cada uno
   categories: SpendingCategory[] = [];
-  contacts: UserContact[] = [];
+  contacts: UserContact[] = []; // todos los contactos de un usuario, necesario para crear un gasto individual
+
   spendings: Spending[] = [];
-  spendingsWithGroup: Spending[] = [];
-  spendingsWithoutGroup: Spending[] = [];
+  spendingsWithGroup: Spending[] = this.spendings.filter(s => s.group); // filtra gastos de grupo
+  spendingsWithoutGroup: Spending[] = this.spendings.filter(s => !s.group); // filtra gastos individuales
 
-  newSpending: Spending = new Spending("", "", 0, new Date(), new Date(), "", "NON", "EVEN", 0, 0, new Group(0,"",0, new User(0,"",""), this.members, 1, new Array<Spending>), this.spendingMembers);
+  // objeto Spending que se crea con el formulario
+  newSpending: Spending = new Spending("", "", 0, new Date(), new Date(), "imgComprobante", "NON", "EVEN", 0, 0, new Group(0,"",0, new User(0,"",""), this.members, 1, new Array<Spending>), this.spendingMembers);
 
+  // objeto Spending que se edita con el formulario
   editableSpending: Spending = new Spending("", "", 0, new Date(), new Date(), "", "NON", "EVEN", 0, 0, new Group(0,"",0, new User(0,"",""), this.members, 1, new Array<Spending>), this.spendingMembers);
 
+  // estas dos funciones se ocupan de mostrar una u otra tabla según se seleccione el botón
   showTableFunc() {
     this.showTable = true;
   }
@@ -45,6 +49,14 @@ export class SpendingsComponent {
     this.showTable = false;
   }
 
+  // toma el grupo seleccionado en el desplegable y guarda los usuarios del mismo en la lista members
+  getGroupSelect() {
+    if (this.newSpending.group) {
+      this.members = this.newSpending.group.members;
+    }
+  }
+
+  // agrega un elemento User de la lista de miembros del grupo seleccionado a la lista de usuarios que participan en el gasto
   addMember( event: any ){
     if (this.newSpending.group) {
       const userAlreadyAdded = this.spendingUsers.some(u => u.id === event.id);
@@ -55,23 +67,19 @@ export class SpendingsComponent {
     }
   }
 
+  // quita un elemento User de la lista de usuarios que participan en el gasto
   deleteMember( member: User ){
     this.spendingUsers = this.spendingUsers.filter( m => m.id !== member.id );
   }
 
-  getGroupSelect() {
-    if (this.newSpending.group) {
-      this.members = this.newSpending.group.members;
-    }
-  }
-
+  // inicia el servicio de los gastos
   constructor(private spendingService: SpendingService){}
-
+  // función del formulario para la creación del gasto
   onSubmit(): void {
+    console.log(this.newSpending);
     this.spendingService.createSpending(this.newSpending).subscribe(
       (response => {
         console.log('Gasto creado correctamente', response);
-        
       }),
       (error) => {
         console.log('Error al crear el gasto', error);
@@ -79,15 +87,22 @@ export class SpendingsComponent {
     )
   }
 
-  getSpendingToEdit(spending: Spending){}
-  editSpending(): void {
-
+  
+  // esta función define el monto que le corresponde a cada participante del gasto según la opción de división que se tomó
+  calculateAmount(amount: number): void {
+    let division = this.newSpending.division;
+    switch (division) {
+      case "EVEN":
+        this.spendingMembers = this.spendingUsers.map(user => {return { id: user.id, amount: amount/this.spendingUsers.length };});
+        break;
+      // TODO: los restantes casos, voy a usar EVEN para probar la creación
+      default:
+        break;
+    }
   }
 
-
+  // función que se ejecuta al inicio para obtener los datos iniciales
   ngOnInit(){
-    this.spendingsWithGroup = this.spendings.filter(s => s.group);
-    this.spendingsWithoutGroup = this.spendings.filter(s => !s.group);
     forkJoin({
       groups: this.spendingService.getGroups(),
       categories: this.spendingService.getSpendingCategories(),
@@ -106,4 +121,9 @@ export class SpendingsComponent {
       })
   }
 
+  // funciones para la edición del gasto TODO
+  getSpendingToEdit(spending: Spending){}
+  editSpending(): void {
+
+  }
 }

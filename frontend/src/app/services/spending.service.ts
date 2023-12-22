@@ -20,8 +20,24 @@ export class SpendingService {
 
   // crea un nuevo gasto
   createSpending(spending: Spending): Observable<any> {
-    const url = `${this.apiUrl}/spendings`; // qué url va a acá??
-    return this.http.post<any>(url, spending);
+    const url = `${this.apiUrl}/spendings`;
+    console.log(spending);
+    const spendingObject = {
+      name: spending.name,
+      description: spending.description,
+      totalAmount: spending.totalAmount,
+      createdAt: spending.createdAt,
+      endingDate: spending.endingDate,
+      proofOfPayment: spending.proofOfPayment,
+      recurrence: spending.recurrence,
+      division: spending.division,
+      owner: 1,
+      spendingCategory: spending.spendingCategory,
+      group: spending.group?.id,
+      users: spending.users
+    };
+    console.log(spendingObject);
+    return this.http.post<any>(url, spendingObject);
   }
 
   // lista los grupos de un usuario

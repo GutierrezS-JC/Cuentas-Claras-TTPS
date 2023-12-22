@@ -54,7 +54,7 @@
                             }
                             <div>
                                 @for ( member of spendingUsers; track member.id ){
-                                    <p (click)="deleteMember(member)" class="btn">{{ member.name }}</p>
+                                    <p (click)="deleteMember(member)" class="btn">{{ member.name }} x</p>
                                 }
                             </div>
 
@@ -68,7 +68,7 @@
                             <input type="text" class="form-control" id="description" [(ngModel)]="newSpending.description" name="description">
 
                             <label for="division">División del gasto </label>
-                            <select class="form-select" aria-label="Division select" [(ngModel)]="newSpending.division" name="division" aria-describedby="divisionHelp">
+                            <select class="form-select" aria-label="Division select" [(ngModel)]="newSpending.division" name="division" aria-describedby="divisionHelp" (change)="calculateAmount(newSpending.totalAmount)">
                                 <option value="EVEN">Mismo monto para todos</option>
                                 <option value="FIXAMOUNT">Monto fijo por integrante</option>
                                 <option value="SAMEPERCENTAGE">Mismo porcentaje para todos</option>
@@ -84,20 +84,14 @@
                                     }
                                     </ul>
                                 </div>
-                            } @else if (newSpending.division == "SAMEPERCENTAGE") {
-                                <div>
-                                    <ul>
-                                    @for ( member of spendingUsers; track member.id ){
-                                        <li>{{ member.name }}: {{ (newSpending.totalAmount / spendingUsers.length) / 100 }}</li>
-                                    }
-                                    </ul>
-                                </div>
                             }
                            
 
                             <label for="category">Categoría</label>
                             <select class="form-select" aria-label="Category select" [(ngModel)]="newSpending.spendingCategory" name="category">
-                                <option *ngFor="let cat of categories" [ngValue]="cat">{{ cat.name }}</option>
+                                @for (category of categories; track category.id ){
+                                    <option [ngValue]="category.id" >{{ category.name }}</option>
+                                }
                             </select>
 
                             <label for="recipe">Cargar comprobante</label>
@@ -121,7 +115,7 @@
                     </div>
                     <div class="modal-footer">
                     <button type="button" class="btn" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn">Guardar</button>
+                    <button type="sumbit" class="btn">Guardar</button>
                     </div>
                 </div>
                 </div>
@@ -186,7 +180,7 @@
                                                     <option value="MONTHLY" >Mensual</option>
                                                     <option value="ANNUALLY" >Anual</option>
                                                 </select>
-                                                <!-- esto debería aparecer sólo si recurrencia es distinto de NON -->
+
                                                 @if ( editableSpending.recurrence != "NON" ) {
                                                     <label for="endingDate">Fecha de finalización</label>
                                                     <input type="date" class="form-control" id="endingDate" [(ngModel)]="editableSpending.endingDate" name="endingDate">
@@ -206,7 +200,7 @@
             
 
         </div>
-    } @else {
+    } <!-- @else {
         <div class="spendingIndividualModal my-1 mx-1">
             <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#newSpendingInd">Cargar nuevo gasto individual</button>
 
@@ -255,8 +249,6 @@
                                 <option value="MONTHLY">Mensual</option>
                                 <option value="ANNUALLY">Anual</option>
                             </select>
-
-                            <!-- esto debería aparecer sólo si recurrencia es distinto de NON -->
                             <label for="endingDate">Fecha de finalización</label>
                             <input type="date" class="form-control" id="endingDate" [(ngModel)]="newSpending.endingDate" name="endingDate">
                         </form>
@@ -285,15 +277,16 @@
                 <tbody>
                     <tr *ngFor="let spending of spendingsWithoutGroup">
                         <td>{{ spending.name }}</td>
-                        <!--<td>{{ spending.users[1].email }}</td>-->
+                        <td>{{ spending.users[1].email }}</td>
                         <td>{{ spending.description }}</td>
                         <td>{{ spending.totalAmount }}</td>
                         <td>{{ spending.createdAt }}</td>
-                        <!-- esto es del botón (click)="showDetails(spending)"-->
+                         esto es del botón (click)="showDetails(spending)"
                         <td><button class="btn">Ver detalles</button></td>
                     </tr>
             </table>
         </div>
     }
+    -->
     
 </div>
