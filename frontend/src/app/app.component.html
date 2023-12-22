@@ -1,1 +1,10 @@
-<router-outlet></router-outlet>
+<app-navbar />
+
+@if (isLoggin) {
+    <app-home />
+} @else {
+    <app-index />
+}
+
+<app-footer />
+    

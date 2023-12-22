@@ -20,7 +20,7 @@ export class SpendingService {
 
   // crea un nuevo gasto
   createSpending(spending: Spending): Observable<any> {
-    const url = `${this.apiUrl}`; // qué url va a acá??
+    const url = `${this.apiUrl}/spendings`; // qué url va a acá??
     return this.http.post<any>(url, spending);
   }
 
@@ -29,19 +29,19 @@ export class SpendingService {
     return this.http.get<any[]>(`${this.apiUrl}/groups`);
   }
 
-  // lista los miembros de un grupo
-  // getMembers(): Observable<any[]> {
-  //   return this.http.get<any[]>(`${this.apiUrl}/members`);
-  // }
-
   // lista las categorías de gastos
   getSpendingCategories(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/spendingCategories`);
   }
 
   // lista los contactos de un usuario
-  // getContacts(): Observable<any[]> {
-  //   return this.http.get<any[]>(`${this.apiUrl}/contacts`);
-  // }
+  //getContacts(): Observable<any[]> {
+   // return this.http.get<any[]>(`${this.apiUrl}/contacts`);
+  //}
 
+  // editar el gasto que se le manda
+  editSpending(spending: Spending): Observable<any> {
+    const url = `${this.apiUrl}/spendings`;
+    return this.http.put<any>(url, spending);
+  }
 }

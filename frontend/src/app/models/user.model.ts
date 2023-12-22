@@ -2,7 +2,8 @@ import { Group } from './group.model';
 import { Spending } from './spending.model';
 
 export class User {
-    //public email: string;
+    public id: number;
+    public email: string;
     //public username: string;
     //public password: string; //hasheado?
     public name: string;
@@ -17,7 +18,8 @@ export class User {
     //public spendings: Array<Spending>;
 
     constructor (
-        //email: string,
+        id: number,
+        email: string,
         //username: string,
         //password: string,
         name: string,
@@ -31,7 +33,8 @@ export class User {
         //groups: Group[],
         //spendings: Spending[],
     ) {
-        //this.email = email;
+        this.id = id;
+        this.email = email;
         //this.username = username;
         //this.password = password;
         this.name = name;
