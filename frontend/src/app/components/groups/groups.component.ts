@@ -12,12 +12,14 @@ import { GroupDetailsComponent } from '../modals/group/group-details/group-detai
 import { GroupsService } from '../../services/groups/groups.service';
 import { Groups } from '../../models/groups/groups.model';
 import { GroupDetails } from '../../models/groups/groupDetails.model';
+import { GroupCategories } from '../../models/groupCategories/groupCategories.model';
+import { GroupsInvitationsListComponent } from './groups-invitations-list/groups-invitations-list.component';
 
 @Component({
   selector: 'app-groups',
   standalone: true,
   imports: [NgIconComponent, NavbarComponent, FooterComponent, GroupsListComponent,
-    GroupCreateComponent, GroupDetailsComponent],
+    GroupCreateComponent, GroupDetailsComponent, GroupsInvitationsListComponent],
   providers: [
     provideIcons({
       faSolidCakeCandles, faSolidPlaneDeparture, faSolidBagShopping,
@@ -29,10 +31,10 @@ import { GroupDetails } from '../../models/groups/groupDetails.model';
 
 export class GroupsComponent implements OnInit {
   constructor(private groupsService: GroupsService) { }
+
   groups: Groups = { listGroups: [], listOwnedGroups: [] };
-  actualGroupId: number = 0;
   actualGroup: GroupDetails = {
-    groupId: 0,
+    groupId: -1,
     name: '',
     totalBalance: 0,
     groupCategory: {},
@@ -41,32 +43,77 @@ export class GroupsComponent implements OnInit {
     members: [],
     invitations: []
   };
+  error: any = {
+    message: '',
+    description: '',
+    status: ''
+  }
+
+  // Categorias para la creacion de grupo
+  groupCategories: GroupCategories[] = [{ id: 0, name: '', base64Image: '' }];
+
+  // spendings
+  groupSpendings: any[] = [];
+
 
   ngOnInit(): void {
     this.getGroups();
   }
 
-  getGroups() {
-    this.groupsService.getAllGroups().subscribe(
-      (response) => { 
-        this.groups = response;
-        const actualGroupId = response.listOwnedGroups[0].groupId || '';
-        this.getGroup(actualGroupId)
+  getGroupSpendings(groupId: number) {
+    this.groupsService.getGroupSpendings(groupId).subscribe({
+      next: (res: any) => {
+        console.log(res)
+        this.groupSpendings = res;
       },
-      (error) => {
-        console.error('Error carga de grupos', error);
-      }
-    )
+      error: (error) => {
+        console.log(error.message)
+      },
+      complete: () => console.info('API call completed')
+    })
   }
 
-  getGroup(actualGroupId: number) {
-    this.groupsService.getGroup(actualGroupId).subscribe(
-      (res) => {
-        this.actualGroup = res;
+  getGroupCategories() {
+    this.groupsService.getGroupCategories().subscribe({
+      next: (res: any) => {
+        console.log(res)
+        this.groupCategories = res;
       },
-      (err) => {
-        console.error('Error busqueda de grupo individual', err);
-      }
-    );
+      error: (error) => {
+        console.log(error.message)
+      },
+      complete: () => console.info('API call completed')
+    })
+  }
+
+  getGroups() {
+    this.groupsService.getAllGroups().subscribe({
+      next: (res: any) => {
+        this.groups = res;
+        // const actualGroupId = res.listOwnedGroups[0]?.groupId || -1;
+        const actualGroupId = res.listOwnedGroups.length > 0 ? res.listOwnedGroups[0].groupId : -1;
+        this.getGroup(actualGroupId);
+        this.getGroupSpendings(actualGroupId);
+      },
+      error: (error) => {
+        console.log(error.message)
+      },
+      complete: () => console.info('API call completed')
+    })
+  }
+
+  getGroup(groupId: number) {
+    this.groupsService.getGroup(groupId).subscribe({
+      next: (res: any) => {
+        this.actualGroup = res;
+        this.getGroupSpendings(groupId)
+      },
+      error: (error) => {
+        this.error.message = "El usuario no tiene grupos";
+        this.error.status = error.status;
+        this.error.description = error.message
+      },
+      complete: () => console.info('API call completed')
+    })
   }
 }

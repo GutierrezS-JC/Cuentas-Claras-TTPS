@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { faSolidCirclePlus } from '@ng-icons/font-awesome/solid';
 
@@ -11,5 +11,6 @@ import { faSolidCirclePlus } from '@ng-icons/font-awesome/solid';
   styleUrl: './groups-list.component.css'
 })
 export class GroupsListComponent {
+  @Input() groupSpendings: any;
 
 }

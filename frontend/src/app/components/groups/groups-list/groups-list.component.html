@@ -10,96 +10,17 @@
       </tr>
     </thead>
     <tbody class="table-group-divider" style="vertical-align: middle;">
-      <tr>
-        <td>Juliana</td>
-        <td>Torta</td>
-        <td>1100</td>
-        <td>29/09/23</td>
-        <td class="text-center" data-bs-target="#modal-group-details" data-bs-toggle="modal">
-          <ng-icon name="faSolidCirclePlus" size="25px" />
-        </td>
-      </tr>
-      <tr>
-        <td>Matías</td>
-        <td>Gaseosa</td>
-        <td>5000</td>
-        <td>26/09/23</td>
-        <td class="text-center">
-          <ng-icon name="faSolidCirclePlus" size="25px" style="vertical-align: middle;" />
-        </td>
-      </tr>
-      <tr>
-        <td>Matías</td>
-        <td>Velas</td>
-        <td>10000</td>
-        <td>24/09/23</td>
-        <td class="text-center">
-          <ng-icon name="faSolidCirclePlus" size="25px" style="vertical-align: middle;" />
-        </td>
-      </tr>
-      <tr>
-        <td>Manaos</td>
-        <td>Papitas y mani</td>
-        <td>10000</td>
-        <td>23/09/23</td>
-        <td class="text-center">
-          <ng-icon name="faSolidCirclePlus" size="25px" style="vertical-align: middle;" />
-        </td>
-      </tr>
-      <tr>
-        <td>Manaos</td>
-        <td>Papitas y mani</td>
-        <td>10000</td>
-        <td>23/09/23</td>
-        <td class="text-center">
-          <ng-icon name="faSolidCirclePlus" size="25px" style="vertical-align: middle;" />
-        </td>
-      </tr>
-      <tr>
-        <td>Manaos</td>
-        <td>Papitas y mani</td>
-        <td>10000</td>
-        <td>23/09/23</td>
-        <td class="text-center">
-          <ng-icon name="faSolidCirclePlus" size="25px" style="vertical-align: middle;" />
-        </td>
-      </tr>
-      <tr>
-        <td>Manaos</td>
-        <td>Papitas y mani</td>
-        <td>10000</td>
-        <td>23/09/23</td>
-        <td class="text-center">
-          <ng-icon name="faSolidCirclePlus" size="25px" style="vertical-align: middle;" />
-        </td>
-      </tr>
-      <tr>
-        <td>Manaos</td>
-        <td>Papitas y mani</td>
-        <td>10000</td>
-        <td>23/09/23</td>
-        <td class="text-center">
-          <ng-icon name="faSolidCirclePlus" size="25px" style="vertical-align: middle;" />
-        </td>
-      </tr>
-      <tr>
-        <td>Manaos</td>
-        <td>Papitas y mani</td>
-        <td>10000</td>
-        <td>23/09/23</td>
-        <td class="text-center">
-          <ng-icon name="faSolidCirclePlus" size="25px" style="vertical-align: middle;" />
-        </td>
-      </tr>
-      <tr>
-        <td>Manaos</td>
-        <td>Papitas y mani</td>
-        <td>10000</td>
-        <td>23/09/23</td>
-        <td class="text-center">
-          <ng-icon name="faSolidCirclePlus" size="25px" style="vertical-align: middle;" />
-        </td>
-      </tr>
+      @for (spending of groupSpendings; track $index) {
+        <tr>
+          <td>{{spending.owner.name}}</td>
+          <td>{{spending.description}}</td>
+          <td>${{spending.totalAmount}}</td>
+          <td>{{spending.createdAt}}</td>
+          <td class="text-center" data-bs-target="#modal-group-details" data-bs-toggle="modal">
+            <ng-icon name="faSolidCirclePlus" size="25px" />
+          </td>
+        </tr>
+      }
     </tbody>
   </table>
 </div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { faSolidFileArrowDown } from '@ng-icons/font-awesome/solid';
 
@@ -11,5 +11,6 @@ import { faSolidFileArrowDown } from '@ng-icons/font-awesome/solid';
   styleUrl: './group-details.component.css'
 })
 export class GroupDetailsComponent {
+  @Input() groupSpendings: any;
 
 }

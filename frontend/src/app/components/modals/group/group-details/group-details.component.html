@@ -12,38 +12,31 @@
         <div class="mb-2">
           <h2 class="fs-5">Categoria</h2>
           <ul>
-            <li>Alimentos</li>
+            <li>{{groupSpendings.category}}</li>
           </ul>
         </div>
 
         <div class="mb-2">
           <h2 class="fs-5">Tipo de division</h2>
           <ul>
-            <li>Igual monto</li>
+            <li>{{groupSpendings.division}}</li>
           </ul>
         </div>
 
         <div class="mb-2">
           <h2 class="fs-5">Recurrencia</h2>
           <ul>
-            <li>No tiene</li>
+            <li>{{groupSpendings.recurrence}}</li>
           </ul>
         </div>
 
         <div class="mb-2">
           <h2 class="fs-5">Monto por miembro</h2>
           <ul class="list-group">
+            @for (spendingMembers of groupSpendings.spendingMembers; track $index) {}
             <li class="list-group-item d-flex justify-content-between align-items-center">
-              Juliana (julii)
+              <!-- {{spendingMembers}} -->
               <span class="badge bg-secondary p-2 rounded-pill">$500</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              Juan Cruz (Manaos)
-              <span class="badge bg-secondary p-2 rounded-pill">$600</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              Matias (Matokuun)
-              <span class="badge bg-secondary  p-2 rounded-pill">$1000</span>
             </li>
           </ul>
         </div>
@@ -60,9 +53,6 @@
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-          Crear grupo
-        </button>
       </div>
     </div>
   </div>
