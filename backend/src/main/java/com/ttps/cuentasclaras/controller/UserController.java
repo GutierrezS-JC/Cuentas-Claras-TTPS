@@ -16,9 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ttps.cuentasclaras.dto.GroupDetailsDTO;
 import com.ttps.cuentasclaras.dto.SpendingUserDTO;
+import com.ttps.cuentasclaras.dto.SpendingUserExtendDTO;
 import com.ttps.cuentasclaras.dto.UserAltDTO;
 import com.ttps.cuentasclaras.dto.UserDTO;
+import com.ttps.cuentasclaras.dto.UserGroupsDTO;
 import com.ttps.cuentasclaras.dto.UserLoginDTO;
 import com.ttps.cuentasclaras.dto.UserWithGroupsDTO;
 import com.ttps.cuentasclaras.model.User;
@@ -95,5 +98,20 @@ public class UserController {
 		}
 		return ResponseEntity.ok(listResponse);
 	}
-
+	
+	@GetMapping("/getMySpendingsExtended")
+	public ResponseEntity<List<SpendingUserExtendDTO>> getMySpendingsExtended(@RequestParam Integer id) {
+		User searchedUser = userService.findUserById(id);
+		List<SpendingUserExtendDTO> listResponse = userService.mapSpendingUserExtendDTO(searchedUser);
+		if (searchedUser == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(listResponse);
+	}
+	
+	@GetMapping("/searchUser/{userId}")
+	public ResponseEntity<List<UserAltDTO>> searchUser(@PathVariable Integer userId, @RequestParam String username) {
+		List<UserAltDTO> listResponse = userService.searchUser(userId, username);
+		return ResponseEntity.ok(listResponse);
+	}
 }

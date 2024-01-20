@@ -1,0 +1,8 @@
+td ng-icon:hover{
+    cursor: pointer;
+}
+
+td ng-icon{
+    display: initial;
+    overflow: inherit;
+}

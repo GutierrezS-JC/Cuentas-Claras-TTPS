@@ -6,12 +6,19 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ttps.cuentasclaras.dto.SpendingUserExtendDTO;
 import com.ttps.cuentasclaras.dto.GroupDTO;
+import com.ttps.cuentasclaras.dto.GroupDetailsDTO;
 import com.ttps.cuentasclaras.dto.SpendingUserDTO;
+import com.ttps.cuentasclaras.dto.SpendingUserExtendDTO;
 import com.ttps.cuentasclaras.dto.UserAltDTO;
 import com.ttps.cuentasclaras.dto.UserDTO;
+import com.ttps.cuentasclaras.dto.UserGroupsDTO;
 import com.ttps.cuentasclaras.dto.UserLoginDTO;
 import com.ttps.cuentasclaras.dto.UserWithGroupsDTO;
 import com.ttps.cuentasclaras.exception.ResourceNotFoundException;
@@ -170,6 +177,32 @@ public class UserService {
 	public UserAltDTO mapUserAlt(User user) {
 		return new UserAltDTO(user.getId(), user.getEmail(), user.getUsername(), user.getName(), user.getLastName(),
 				user.getProfilepicBase64());
+	}
+	
+    public List<SpendingUserExtendDTO> mapSpendingUserExtendDTO(User searchedUser) {
+        Set<SpendingUser> spendings = searchedUser.getSpendings();
+        List<SpendingUserExtendDTO> spendingResponse = new ArrayList<>();
+        for (SpendingUser spendingUser : spendings) {
+            spendingResponse.add(new SpendingUserExtendDTO(spendingUser.getId(), this.mapUserDto(searchedUser),
+                    spendingUser.getAmount(), spendingUser.getCreated_at(), spendingUser.getUpdated_at(),
+                    spendingUser.getSpending().getId(), spendingUser.getSpending().getName(),
+                    spendingUser.getSpending().getDescription()));
+        }
+        return spendingResponse;
+    }
+
+	public List<UserAltDTO> searchUser(Integer userId, String username) {
+		List<UserAltDTO> response = new ArrayList<>();
+
+		if (!username.isBlank() && username != null) {
+			List<User> searched = userRepository.findTop3ByUsernameContainingAndIdNot(username, userId);
+			if (!searched.isEmpty()) {
+				for (User user : searched) {
+					response.add(this.mapUserAlt(user));
+				}
+			}
+		}
+		return response;
 	}
 
 }

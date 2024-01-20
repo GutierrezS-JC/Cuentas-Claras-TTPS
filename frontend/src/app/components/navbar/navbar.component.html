@@ -1,17 +1,63 @@
-<nav class="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
+@if (isLogged()){
+<nav class="navbar navbar-expand-lg">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Cuentas Claras</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-      aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand" routerLink="/home" routerLinkActive="active">Cuentas Claras</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link active" aria-current="page" href="#">Home</a>
-        <a class="nav-link" href="#">Features</a>
-        <a class="nav-link" href="#">Pricing</a>
-        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-      </div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" routerLink="/grupos">Grupos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" routerLink="/payments">Pagos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" routerLink="contacts">Contactos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" routerLink="/spendings">Gastos</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" routerLink="/" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <img src="../../assets/images/dropdown.png" height="30px">
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" routerLink="/">Mi perfil</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" routerLink="/login" (click)="logOut()">Cerrar sesión</a></li>
+          </ul>
+        </li>
+      </ul>
     </div>
+
   </div>
 </nav>
+} @else {
+<!--TODO: navbar usuario no logueado-->
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">CuentasClaras</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" routerLink="/login">Iniciar sesión</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" routerLink="/register">Registrarse</a>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</nav>
+}

@@ -1,0 +1,59 @@
+<div class="modal fade" id="modal-group-details" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h1 class="modal-title fs-3 text-center" id="details-Modal">Detalles</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="mb-2">
+          <h2 class="fs-5">Categoria</h2>
+          <ul>
+            <li>{{groupSpendings.category}}</li>
+          </ul>
+        </div>
+
+        <div class="mb-2">
+          <h2 class="fs-5">Tipo de division</h2>
+          <ul>
+            <li>{{groupSpendings.division}}</li>
+          </ul>
+        </div>
+
+        <div class="mb-2">
+          <h2 class="fs-5">Recurrencia</h2>
+          <ul>
+            <li>{{groupSpendings.recurrence}}</li>
+          </ul>
+        </div>
+
+        <div class="mb-2">
+          <h2 class="fs-5">Monto por miembro</h2>
+          <ul class="list-group">
+            @for (spendingMembers of groupSpendings.spendingMembers; track $index) {}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <!-- {{spendingMembers}} -->
+              <span class="badge bg-secondary p-2 rounded-pill">$500</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="mb-2 mt-3">
+          <h2 class="fs-5">Comprobante</h2>
+          <span class="ms-4 file">
+            <ng-icon name="faSolidFileArrowDown" size="28px" style="margin-right: 8px;" />
+            <span>nombre_archivo.pdf</span>
+          </span>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
