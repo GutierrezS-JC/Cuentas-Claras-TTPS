@@ -3,6 +3,11 @@
     src: url("../../../assets/fonts/Poppins/SemiBold/Poppins-SemiBold.ttf") format('truetype');
 }
 
+@font-face {
+    font-family: "Popins Regular";
+    src: url("../../../assets/fonts/Poppins/Regular/Poppins-Regular.ttf") format('truetype');
+}
+
 h1 {
     font-family: "Poppins SemiBold", sans-serif;
     font-size: 5em;
@@ -43,7 +48,7 @@ h1 {
 
 .hover-text {
     transition: visibility 0s ease-in;
-    visibility: visible;
+    visibility: hidden;
 }
 
 .option:hover .default-text {
@@ -52,4 +57,12 @@ h1 {
 
 .option:hover .hover-text {
     visibility: visible;
+    color: white;
+    font-family: "Poppins Regular", sans-serif;
+    font-size: .95em;
+    text-align: justify;
+}
+
+.option:hover .hover-container {
+    padding: 1em;
 }
