@@ -14,11 +14,11 @@ import { IndexComponent } from './components/index/index.component';
 export const routes: Routes = [
     { path: 'home', component: HomeComponent },
     { path: 'grupos', component: GroupsComponent},
-    { path: 'payments', component: PaymentsComponent},
-    { path: 'contacts', component: ContactsComponent },
-    { path: 'spendings', component: SpendingsComponent },
+    { path: 'pagos', component: PaymentsComponent},
+    { path: 'contactos', component: ContactsComponent },
+    { path: 'gastos', component: SpendingsComponent },
     { path: 'login', component: LoginComponent },
-    { path: 'register', component: RegisterComponent },
+    { path: 'registro', component: RegisterComponent },
     { path: 'index', component: IndexComponent },
     { path: '**', redirectTo: 'index', pathMatch: 'full' }
 ];
