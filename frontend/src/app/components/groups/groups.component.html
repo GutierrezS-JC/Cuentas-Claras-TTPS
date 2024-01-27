@@ -1,100 +1,91 @@
-<div class="container">
-  <div>
-    <h1 class="display-3 mt-2">Grupos</h1>
-    <button type="button" class="btn btn-sm btn-dark px-4" data-bs-target="#modal-group-add-form" data-bs-toggle="modal"
-      (click)="getGroupCategories()">
-      Crear grupo
-    </button>
+<div style="min-height: 100vh; background-color: #212529;">
+  <div class="container" style="max-width: 1200px;">
+    <div
+      style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+      <h1 class="display-3 pt-4" style="color: white;">Grupos</h1>
+      <button type="button" class="btn btn-lg btn-light px-4 mt-3" id="btn-new-group"
+        data-bs-target="#modal-group-add-form" data-bs-toggle="modal" (click)="getGroupCategories()">
+        Nuevo grupo
+      </button>
+    </div>
+
+    <!-- MODALS para la creacion y edicion de grupos. -->
+    <app-group-create [groupCategories]="groupCategories" />
+    <app-group-details [groupSpendings]="groupSpendings" />
+
+    <div class="btn-group mt-4" role="group" aria-label="Basic radio toggle button group">
+      <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" checked>
+      <label class="btn btn-outline-light" for="btnradio2">Mis grupos</label>
+
+      <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+      <label class="btn btn-outline-light" for="btnradio3">Grupos en los que formo parte</label>
+    </div>
   </div>
-  <app-group-create [groupCategories]="groupCategories" />
-  <app-group-details [groupSpendings]="groupSpendings" />
-  <div class="btn-group mt-4" role="group" aria-label="Basic radio toggle button group">
-    <!-- <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-    <label class="btn btn-sm btn-outline-dark" for="btnradio1">Todos</label> -->
 
-    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" checked>
-    <label class="btn btn-sm btn-outline-dark" for="btnradio2">Mis grupos</label>
 
-    <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-    <label class="btn btn-sm btn-outline-dark" for="btnradio3">Grupos en los que formo parte</label>
-  </div>
+  <div class="container" style="max-width: 1200px;">
+    <div class="mt-4 pb-5">
+      <div class="row">
+        <!-- Columna lateral a la izquierda -->
+        <div class="col-md-4 sidebar">
+          <ul class="list-group">
+            @for (group of groups.listOwnedGroups; track $index) {
+            <li class="list-group-item p-4 text-break" id={{group.groupId}} (click)="getGroup(group.groupId)">
+              <span style="align-items: center; display: flex; justify-content:center;">
+                {{ group.name }}
+              </span>
+            </li>
+            }
+          </ul>
+        </div>
 
-  <div class="mt-4 mb-5">
-    <div class="row">
-      <!-- Barra lateral a la izquierda -->
-      <div class="col-md-4 sidebar">
-        <ul class="list-group">
-          @for (group of groups.listOwnedGroups; track $index) {
-          <li class="list-group-item p-4" id={{group.groupId}} (click)="getGroup(group.groupId)">
-            <span style="align-items: center; display: flex; justify-content:center;">
-              <ng-icon name="faSolidCakeCandles" size="28px" style="margin-right: 8px;" />
-              {{ group.name }}
-            </span>
-          </li>
-          }
-        </ul>
-      </div>
-
-      <!-- Contenido a la derecha -->
-      <div class="col-md-8 content" style="background-color: #f6f6f6;">
-
-        <!-- Titulo y descripcion -->
-        <div class="px-5 py-4">
-          <span style="display: flex; flex-wrap: wrap; align-items: center;">
-            <h1 class="display-5">{{ actualGroup.name }}</h1>
-            <ng-icon name="faSolidCakeCandles" size="35px" style="margin-left: 1.2em; margin-top: -5px;" />
-          </span>
-          <hr />
-          <h4 style="font-size: large; font-weight: bold;">Total gastos: ${{ actualGroup.totalBalance }}</h4>
-          <div>
-            <b>Categoria:</b> {{ actualGroup.groupCategory.name }}
+        <!-- Contenido a la derecha -->
+        <div class="col-md-8 content px-5 py-5" style="background-color: #f6f6f6; border-radius: 7px;">
+          <!-- Detalles del grupo -->
+          @if (false) {
+          <div class="d-flex flex-column justify-content-center align-items-center" style="height: 100%;">
+            <i class="bi bi-files" style="font-size: 15em; color: rgba(0, 0, 0, 0.367);"></i>
+            <h2 class="fs-4 text-center" style="margin-top: -1.5em; width: 50%; color: #505050;">
+              Seleccione un grupo para ver los detalles
+            </h2>
           </div>
-          <p>
-            <b>Descripcion:</b> {{ actualGroup.description }}
-          </p>
-
-          <button class="btn btn-sm btn-dark">
-            Agregar integrante
-          </button>
-          <hr />
-
-          <!-- Adminstracion de integrantes y tablas (listas) -->
-          <div>
-            <h2>Miembros</h2>
-            <div class="mt-2">
-              @for (member of actualGroup.members; track $index) {
-              <span class="badge rounded-pill text-bg-dark py-2 px-3" id={{member.id}}>{{ member.name }}</span>
-              }
-            </div>
+          }
+          @else {
+          <div style="position: relative;">
+            <h2 class="text-break main-title-details-group" style="width: 75%;">{{actualGroup.name}}</h2>
+            <!-- <hr /> -->
+            <!-- <span class="badge rounded-pill text-bg-dark details-price">${{actualGroup.totalBalance}}</span> -->
+            <h3 class="details-price">${{actualGroup.totalBalance}}</h3>
+            <p class="mt-2">
+              <b>Categoria:</b> {{ actualGroup.groupCategory.name }}
+              <br />
+              <b>Descripcion:</b> {{ actualGroup.description }}
+            </p>
+            <i class="bi {{actualGroup.groupCategory.base64Image}}"
+              style="font-size: 8.8em; color: rgba(0, 0, 0, 0.367); position: absolute; top: -.35em; right: 0"></i>
             <hr />
+          </div>
+          }
+          <div class="mt-4">
+            <!-- Lista invitaciones -->
+            <span class="mb-1" style="display: flex;">
+              <h3>Invitaciones</h3>
+            </span>
 
-            <div class="mt-4">
-              <!-- Lista invitaciones -->
-              <span class="mb-1" style="display: flex;">
-                <h3>Invitaciones</h3>
-              </span>
+            <app-groups-invitations-list [invitations]="actualGroup.invitations" />
 
-              <app-groups-invitations-list [invitations]="actualGroup.invitations" />
-
-              <!-- Lista Gastos -->
-              <span class="mt-5 mb-1" style="display: flex;">
-                <h3>Gastos</h3>
-                <button class="btn btn-sm btn-dark ms-2" style="height: fit-content;">Agregar</button>
-              </span>
-              <div class="col-12 overflow-x-hidden overflow-y-scroll" style="max-height:350px;">
-                <app-groups-list [groupSpendings]="groupSpendings" />
-              </div>
+            <!-- Lista Gastos -->
+            <span class="mt-5 mb-1" style="display: flex;">
+              <h3>Gastos</h3>
+              <button class="btn btn-sm btn-dark ms-2" style="height: fit-content;">Agregar</button>
+            </span>
+            <div class="col-12 overflow-x-hidden overflow-y-scroll" style="max-height:350px;">
+              <app-groups-list [groupSpendings]="groupSpendings" />
             </div>
-
-            <!-- <div class="row justify-content-end">
-              <button class="btn px-3 btn-dark mt-4" style="width: inherit;">Marcar como finalizado</button>
-            </div> -->
-
           </div>
         </div>
       </div>
     </div>
   </div>
-
 </div>
 <!-- <app-footer /> -->
