@@ -11,7 +11,7 @@
 
     <!-- MODALS para la creacion y edicion de grupos. -->
     <app-group-create [groupCategories]="groupCategories" />
-    <app-group-details [groupSpendings]="groupSpendings" />
+    <app-group-details [selectedSpending]="selectedSpending" [deleteSelectedSpending]="deleteSelectedSpending" />
 
     <div class="btn-group mt-4" role="group" aria-label="Basic radio toggle button group">
       <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" checked>
@@ -30,7 +30,8 @@
         <div class="col-md-4 sidebar">
           <ul class="list-group">
             @for (group of groups.listOwnedGroups; track $index) {
-            <li class="list-group-item p-4 text-break" id={{group.groupId}} (click)="getGroup(group.groupId)">
+            <li class="list-group-item p-4 text-break" id={{group.groupId}} (click)="getGroup(group.groupId)"
+              [class.selected]="isSelectedGroup(group.groupId)">
               <span style="align-items: center; display: flex; justify-content:center;">
                 {{ group.name }}
               </span>
@@ -42,7 +43,7 @@
         <!-- Contenido a la derecha -->
         <div class="col-md-8 content px-5 py-5" style="background-color: #f6f6f6; border-radius: 7px;">
           <!-- Detalles del grupo -->
-          @if (false) {
+          @if (actualGroup.groupId == -1) {
           <div class="d-flex flex-column justify-content-center align-items-center" style="height: 100%;">
             <i class="bi bi-files" style="font-size: 15em; color: rgba(0, 0, 0, 0.367);"></i>
             <h2 class="fs-4 text-center" style="margin-top: -1.5em; width: 50%; color: #505050;">
@@ -65,24 +66,22 @@
               style="font-size: 8.8em; color: rgba(0, 0, 0, 0.367); position: absolute; top: -.35em; right: 0"></i>
             <hr />
           </div>
-          }
+
           <div class="mt-4">
             <!-- Lista invitaciones -->
             <span class="mb-1" style="display: flex;">
-              <h3>Invitaciones</h3>
+              <h4>Invitaciones</h4>
             </span>
 
             <app-groups-invitations-list [invitations]="actualGroup.invitations" />
 
             <!-- Lista Gastos -->
-            <span class="mt-5 mb-1" style="display: flex;">
-              <h3>Gastos</h3>
-              <button class="btn btn-sm btn-dark ms-2" style="height: fit-content;">Agregar</button>
-            </span>
-            <div class="col-12 overflow-x-hidden overflow-y-scroll" style="max-height:350px;">
-              <app-groups-list [groupSpendings]="groupSpendings" />
+            <h4 class="mt-5 mb-2">Gastos</h4>
+            <div class="col-12 overflow-x-hidden spendings-list" style="max-height:350px;">
+              <app-groups-list [groupSpendings]="groupSpendings" [setSelectedSpending]="setSelectedSpending" />
             </div>
           </div>
+          }
         </div>
       </div>
     </div>

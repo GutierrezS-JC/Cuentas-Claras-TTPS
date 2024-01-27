@@ -33,17 +33,22 @@ li {
     cursor: pointer;
 }
 
-li:not(.selected-snapshot):hover {
+li:not(.selected):hover {
     background-color: #e9e9e9;
 }
 
-.selected-snapshot {
+.selected {
     background-color: #d4d4d4;
 }
 
 h1 {
     font-family: Poppins Bold, sans-serif;
     font-size: 4em;
+}
+
+h4 {
+    font-family: Poppins Medium, sans-serif;
+    font-size: 2em;
 }
 
 #btn-new-group {

@@ -2,7 +2,6 @@
 <table class="table table-striped table-hover table-bordered">
   <thead class="table-secondary">
     <tr>
-      <th scope="col">#</th>
       <th scope="col">Emisor</th>
       <th scope="col">Invitado</th>
       <th scope="col">Estado de invitacion</th>
@@ -11,7 +10,6 @@
   <tbody class="table-group-divider">
     @for (invitation of invitations; track $index) {
     <tr>
-      <th scope="row">{{invitation.id}}</th>
       <td>{{invitation.senderUser.name}} {{invitation.senderUser.lastName}}</td>
       <td>{{invitation.receiverUser.name}} {{invitation.receiverUser.lastName}}</td>
       <td>{{invitation.status}}</td>

@@ -55,6 +55,8 @@ export class GroupsComponent implements OnInit {
   // spendings
   groupSpendings: any[] = [];
 
+  // Spending (gasto) seleccionado - ACTUAL
+  selectedSpending: any | null = null;
 
   ngOnInit(): void {
     this.getGroups();
@@ -63,7 +65,6 @@ export class GroupsComponent implements OnInit {
   getGroupSpendings(groupId: number) {
     this.groupsService.getGroupSpendings(groupId).subscribe({
       next: (res: any) => {
-        console.log(res)
         this.groupSpendings = res;
       },
       error: (error) => {
@@ -76,7 +77,6 @@ export class GroupsComponent implements OnInit {
   getGroupCategories() {
     this.groupsService.getGroupCategories().subscribe({
       next: (res: any) => {
-        console.log(res)
         this.groupCategories = res;
       },
       error: (error) => {
@@ -90,10 +90,6 @@ export class GroupsComponent implements OnInit {
     this.groupsService.getAllGroups().subscribe({
       next: (res: any) => {
         this.groups = res;
-        // const actualGroupId = res.listOwnedGroups[0]?.groupId || -1;
-        const actualGroupId = res.listOwnedGroups.length > 0 ? res.listOwnedGroups[0].groupId : -1;
-        this.getGroup(actualGroupId);
-        this.getGroupSpendings(actualGroupId);
       },
       error: (error) => {
         console.log(error.message)
@@ -103,17 +99,53 @@ export class GroupsComponent implements OnInit {
   }
 
   getGroup(groupId: number) {
-    this.groupsService.getGroup(groupId).subscribe({
-      next: (res: any) => {
-        this.actualGroup = res;
-        this.getGroupSpendings(groupId)
-      },
-      error: (error) => {
-        this.error.message = "El usuario no tiene grupos";
-        this.error.status = error.status;
-        this.error.description = error.message
-      },
-      complete: () => console.info('API call completed')
-    })
+    if (this.actualGroup && this.actualGroup.groupId === groupId) {
+      // Si ya esta seleccionado el grupo... eliminamos la seleccion 
+      // volviendo a setear los valores por defecto
+      this.resetActualGroup();
+    }
+    else {
+      this.groupsService.getGroup(groupId).subscribe({
+        next: (res: any) => {
+          this.actualGroup = res;
+          this.getGroupSpendings(groupId)
+        },
+        error: (error) => {
+          this.error.message = "El usuario no tiene grupos";
+          this.error.status = error.status;
+          this.error.description = error.message
+        },
+        complete: () => console.info('API call completed')
+      })
+    }
+  }
+  // Usado para setear los detalles del gasto seleccionado
+  setSelectedSpending = (spending: any) => {
+    this.selectedSpending = spending;
+  }
+
+  // Eliminamos el detalle del gasto seleccionado
+  deleteSelectedSpending = () => {
+    this.selectedSpending = null;
+  }
+
+  // Usado para setear los detalles del gasto seleccionado
+  isSelectedGroup(groupId: number): boolean {
+    return !!this.actualGroup.groupId && (groupId === this.actualGroup.groupId);
+  }
+
+  // Usado para setear los detalles del grupo a su valor por defecto
+  resetActualGroup = () => {
+    this.actualGroup = {
+      groupId: -1,
+      name: '',
+      totalBalance: 0,
+      groupCategory: {},
+      description: '',
+      owner: {},
+      members: [],
+      invitations: []
+    };
   }
 }
+

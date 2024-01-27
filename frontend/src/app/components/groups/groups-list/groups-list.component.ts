@@ -12,5 +12,5 @@ import { faSolidCirclePlus } from '@ng-icons/font-awesome/solid';
 })
 export class GroupsListComponent {
   @Input() groupSpendings: any;
-
+  @Input() setSelectedSpending!: (spending: any) => void;
 }

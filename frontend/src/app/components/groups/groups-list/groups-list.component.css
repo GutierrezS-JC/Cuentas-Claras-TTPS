@@ -1,8 +1,12 @@
-td ng-icon:hover{
+td i{
     cursor: pointer;
 }
 
-td ng-icon{
+td i{
     display: initial;
     overflow: inherit;
+}
+
+.spendings-list {
+    overflow-y: auto;
 }
