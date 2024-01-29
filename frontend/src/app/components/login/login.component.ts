@@ -4,11 +4,12 @@ import { AuthService } from '../../services/auth.service';
 import { UserLogin } from '../../models/login.model';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, RouterModule],
+  imports: [FormsModule, RouterModule, NavbarComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -16,7 +17,9 @@ export class LoginComponent {
   user= new UserLogin('','');
   router= new Router();
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) { 
+    console.log(this.router.url);
+  }
 
   onSubmit(): void {
     this.authService.login(this.user).subscribe(
