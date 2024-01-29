@@ -56,8 +56,13 @@
           <a class="nav-link">Contacto</a>
         </li>
         <li class="nav-item ms-1">
+          @if (isLoginPage) {
+            <a class="btn btn-sm btn-cst" routerLink="/registro">Registrarse</a>
+          }
+          @else{
+            <a class="btn btn-sm btn-cst" routerLink="/login">Iniciar Sesion</a>
+          }
           <!-- <a class="nav-link" routerLink="/registro">Registrarse</a> -->
-          <a class="btn btn-sm btn-cst" routerLink="/login">Registrarse</a>
         </li>
       </ul>
     </div>

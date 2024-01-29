@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -10,7 +10,13 @@ import { RouterModule } from '@angular/router';
 })
 export class NavbarComponent {
   parsearVariable: string= 'hello';
+  isLoginPage: boolean = false;
 
+  constructor(private router: Router) {
+    console.log(this.router.url);
+    this.isLoginPage = this.router.url.endsWith('/login');
+  }
+  
   isLogged(){
     if(localStorage.getItem('user') != null){
       this.parsearVariable= localStorage.getItem('user') || "";
