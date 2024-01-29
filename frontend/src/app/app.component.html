@@ -1,7 +1,9 @@
-<!-- @if (isLogged()) { -->
+@if (isLogged()) {
   <app-navbar />
-    <router-outlet></router-outlet>
+  <router-outlet></router-outlet>
   <!-- <app-footer /> -->
-<!-- } @else {
-    <app-index />
-} -->
+}
+@else {
+  <app-navbar />
+  <router-outlet></router-outlet>
+}
