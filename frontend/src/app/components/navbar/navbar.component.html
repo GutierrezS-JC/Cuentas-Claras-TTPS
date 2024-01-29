@@ -1,7 +1,10 @@
 @if (isLogged()){
-<nav class="navbar navbar-expand-lg" style="background-color: black" data-bs-theme="dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" routerLink="/home" routerLinkActive="active">Cuentas Claras</a>
+<nav class="navbar navbar-expand-lg" style="background-color: #000000; border: 1px solid #161616" data-bs-theme="dark">
+  <div class="container-fluid pt-1">
+    <a class="navbar-brand" routerLink="/home">
+      <i class="bi bi-coin me-1"></i>
+      Cuentas Claras
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -20,19 +23,14 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/gastos">Gastos</a>
         </li>
-        <!-- <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            <img src="../../assets/images/dropdown.png" height="30px">
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" routerLink="/">Mi perfil</a></li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li><a class="dropdown-item" routerLink="/login" (click)="logOut()">Cerrar sesión</a></li>
-          </ul>
-        </li> -->
+      </ul>
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item me-1">
+          <a class="nav-link" routerLink="/home">Mi perfil</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-sm btn-cst" routerLink="/login" (click)="logOut()">Cerrar sesion</a>
+        </li>
       </ul>
     </div>
 
@@ -42,7 +40,7 @@
 <!--TODO: navbar usuario no logueado-->
 <nav class="navbar navbar-expand-lg" style="background-color: #000000; border: 1px solid #161616" data-bs-theme="dark">
   <div class="container pt-1">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" routerLink="/login">
       <i class="bi bi-coin me-1"></i>
       Cuentas Claras
     </a>
@@ -52,17 +50,16 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item">
+        <li class="nav-item me-1">
           <a class="nav-link">Contacto</a>
         </li>
-        <li class="nav-item ms-1">
+        <li class="nav-item">
           @if (isLoginPage) {
-            <a class="btn btn-sm btn-cst" routerLink="/registro">Registrarse</a>
+          <a class="btn btn-sm btn-cst" routerLink="/registro">Registrarse</a>
           }
           @else{
-            <a class="btn btn-sm btn-cst" routerLink="/login">Iniciar Sesion</a>
+          <a class="btn btn-sm btn-cst" routerLink="/login">Iniciar Sesion</a>
           }
-          <!-- <a class="nav-link" routerLink="/registro">Registrarse</a> -->
         </li>
       </ul>
     </div>
