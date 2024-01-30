@@ -2,6 +2,7 @@ package com.ttps.cuentasclaras.controller;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,9 @@ import com.ttps.cuentasclaras.model.GroupCategory;
 import com.ttps.cuentasclaras.service.GroupCategoryService;
 
 @RestController
-@RequestMapping("/groupCategories")
+@SecurityRequirement(name = "Bearer Authentication")
 @CrossOrigin
+@RequestMapping("/groupCategories")
 public class GroupCategoryController {
 
 	@Autowired

@@ -5,6 +5,8 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.ttps.cuentasclaras.model.User;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public interface UserRepository extends JpaRepository<User, Integer>{
@@ -14,5 +16,6 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	
     List<User> findTop3ByUsernameContainingAndIdNot(String username, Integer id);
 
-    Optional<User> findByUsername(String username);
+    @Query(value = "SELECT * FROM User u WHERE u.username = :username COLLATE utf8mb4_bin", nativeQuery = true)
+    Optional<User> findByUsername(@Param("username") String username);
 }
