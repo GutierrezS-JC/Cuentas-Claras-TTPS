@@ -22,8 +22,8 @@ import com.ttps.cuentasclaras.service.GroupCategoryService;
 
 @RestController
 @SecurityRequirement(name = "Bearer Authentication")
-@CrossOrigin
 @RequestMapping("/groupCategories")
+@CrossOrigin
 public class GroupCategoryController {
 
 	@Autowired
