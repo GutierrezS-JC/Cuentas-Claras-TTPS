@@ -12,6 +12,7 @@ import { UserContact } from '../../models/userContact.model';
 import { SpendingUser } from '../../models/spendingUser.model';
 
 import { MySpending } from '../../models/mySpending.model';
+import { NavbarComponent } from '../navbar/navbar.component';
 declare var $: any;
 
 
@@ -19,7 +20,7 @@ declare var $: any;
 @Component({
   selector: 'app-spendings',
   standalone: true,
-  imports: [ FormsModule, CommonModule ],
+  imports: [ FormsModule, CommonModule, NavbarComponent ],
   providers: [ DatePipe ],
   templateUrl: './spendings.component.html',
   styleUrl: './spendings.component.css'

@@ -37,7 +37,6 @@ export class LoginComponent implements OnInit {
 
     // Valido que el formulario sea valido antes del submit
     if (this.loginForm.valid) {
-      console.log('Es valido')
       this.loading = true;
 
       const credentials = {
@@ -45,20 +44,20 @@ export class LoginComponent implements OnInit {
         password: this.loginForm.controls.password.value as string,
       };
 
-      this.authenticationService.login(credentials.username, credentials.password).pipe(first()).subscribe({
-        next: (result) => {
-          console.log('Successful login', result);
-          // this.router.navigate(['/home']);
-          this.router.navigateByUrl('/home');
-          console.log('After navigate');
-        },
-        error: (error) => {
-          console.log(error)
-          this.error = "Nombre de usuario o Contraseña incorrecta";
-          this.loading = false
-          alert(this.error)
-        }
-      })
+      this.authenticationService.login(credentials.username, credentials.password)
+        .pipe(first())
+        .subscribe({
+          next: (result: any) => {
+            console.log('Successful login', result);
+            this.router.navigate(['/home']);
+          },
+          error: (error: any) => {
+            console.log(error)
+            this.error = "Nombre de usuario o Contraseña incorrecta";
+            this.loading = false
+            alert(this.error)
+          },
+        })
     }
   }
 

@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { UserService } from './services/user/user.service';
 import { GroupsService } from './services/groups/groups.service';
 import { SpendingService } from './services/spending.service';
@@ -11,9 +11,9 @@ import { NavbarComponent } from './components/navbar/navbar.component'
 import { IndexComponent } from './components/index/index.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { RegisterService } from './services/register.service';
-import { AuthService } from './services/auth.service';
 import { AuthenticationService } from './services/authentication/authentication.service';
 import { User } from './models/user/user.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -25,28 +25,4 @@ import { User } from './models/user/user.model';
 })
 export class AppComponent {
   title = 'Cuentas Claras';
-  currentUser: User | undefined;
-
-  constructor(
-    private router: Router,
-    private authenticationService: AuthenticationService
-  ) {
-    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
-  }
-  // parsearVariable = null;
-
-  isLogged() {
-    // if (localStorage.getItem('user') != null) {
-    //   const parsearVariable = localStorage.getItem('user') || "";
-    //   console.log(parsearVariable)
-    //   return JSON.parse(parsearVariable);
-    // }
-    // return false;
-    return localStorage.getItem('currentUser') != null;
-  }
-
-  logout() {
-    this.authenticationService.logout();
-    this.router.navigate(['/login']);
-  }
 }

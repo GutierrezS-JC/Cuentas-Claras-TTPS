@@ -14,6 +14,9 @@ import { Groups } from '../../models/groups/groups.model';
 import { GroupDetails } from '../../models/groups/groupDetails.model';
 import { GroupCategories } from '../../models/groupCategories/groupCategories.model';
 import { GroupsInvitationsListComponent } from './groups-invitations-list/groups-invitations-list.component';
+import { AuthenticationService } from '../../services/authentication/authentication.service';
+import { User } from '../../models/user/user.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-groups',
@@ -30,7 +33,9 @@ import { GroupsInvitationsListComponent } from './groups-invitations-list/groups
 })
 
 export class GroupsComponent implements OnInit {
-  constructor(private groupsService: GroupsService) { }
+  currentUser!: User | null;
+
+  constructor(private groupsService: GroupsService, private authService: AuthenticationService) { }
 
   groups: Groups = { listGroups: [], listOwnedGroups: [] };
   actualGroup: GroupDetails = {
@@ -59,7 +64,13 @@ export class GroupsComponent implements OnInit {
   selectedSpending: any | null = null;
 
   ngOnInit(): void {
-    this.getGroups();
+    // this.getGroups();
+    // this.currentUserSubscription = this.authService.currentUser.subscribe(user => {
+    //   this.currentUser = user;
+    //   console.log('Usuario actual:', this.currentUser);
+    // });
+    const token = this.authService.currentUserValue;
+    console.log('Token:', token);
   }
 
   getGroupSpendings(groupId: number) {
@@ -75,12 +86,12 @@ export class GroupsComponent implements OnInit {
   }
 
   getGroupCategories() {
-    this.groupsService.getGroupCategories().subscribe({
+    this.groupsService.getGroupCategoriesNoBs().subscribe({
       next: (res: any) => {
         this.groupCategories = res;
       },
       error: (error) => {
-        console.log(error.message)
+        console.log(error)
       },
       complete: () => console.info('API call completed')
     })

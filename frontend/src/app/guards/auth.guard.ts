@@ -1,26 +1,27 @@
 import { Injectable } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
-import { AuthenticationService } from '../services/authentication/authentication.service';
-
 @Injectable({ providedIn: 'root' })
 export class AuthGuard {
-  constructor(
-    private router: Router,
-    private authenticationService: AuthenticationService
-  ) { }
+  constructor(private router: Router) {
+    console.log('Guard canActivate created')
+  }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const currentUser = this.authenticationService.currentUserValue;
-    console.log(currentUser.token)
-    if (currentUser) {
-      console.log('Dentro de currentUser');
-      // si esta logeado lo dejo activar la ruta
+  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    // Bueno, hcie el intento con el metodo original pero no se pudo
+    // asi que la solucion mas facil es la siguiente ok? 
+    const currentUserString = localStorage.getItem('currentUser');
+    let isLogged: boolean = false;
+
+    if (currentUserString) {
+      isLogged = !!JSON.parse(currentUserString);
+    }
+
+    if (isLogged) {
       return true;
     }
 
     // No esta logeado, entonces redirecciono a la pagina de login
-    console.log('No esta logeado');
     this.router.navigate(['/login']);
     return false;
   }
