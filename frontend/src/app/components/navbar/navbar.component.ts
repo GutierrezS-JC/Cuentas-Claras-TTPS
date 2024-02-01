@@ -18,9 +18,10 @@ export class NavbarComponent {
   }
   
   isLogged(){
-    if(localStorage.getItem('user') != null){
-      this.parsearVariable= localStorage.getItem('user') || "";
-      return JSON.parse(this.parsearVariable);
+    if(localStorage.getItem('currentUser') != null){
+      // this.parsearVariable= localStorage.getItem('currentUser') || "";
+      // return JSON.parse(this.parsearVariable);
+      return true
     }
     return false;
   }

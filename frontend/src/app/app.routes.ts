@@ -10,16 +10,20 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import { IndexComponent } from './components/index/index.component';
+import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-    { path: 'home', component: HomeComponent },
-    { path: 'grupos', component: GroupsComponent},
-    { path: 'pagos', component: PaymentsComponent},
-    { path: 'contactos', component: ContactsComponent },
-    { path: 'gastos', component: SpendingsComponent },
+    // { path: '', component: IndexComponent }, Index... eventualmente
     { path: 'login', component: LoginComponent },
     { path: 'registro', component: RegisterComponent },
-    { path: 'index', component: IndexComponent },
+    
+    { path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
+    { path: 'grupos', component: GroupsComponent, canActivate: [AuthGuard]},
+    { path: 'pagos', component: PaymentsComponent, canActivate: [AuthGuard]},
+    { path: 'contactos', component: ContactsComponent, canActivate: [AuthGuard]},
+    { path: 'gastos', component: SpendingsComponent, canActivate: [AuthGuard]},
+    { path: 'index', component: IndexComponent, canActivate: [AuthGuard]},
+    
     { path: '**', redirectTo: 'login', pathMatch: 'full' }
 ];
 
