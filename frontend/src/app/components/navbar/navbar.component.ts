@@ -18,7 +18,7 @@ export class NavbarComponent {
   }
   
   isLogged(){
-    if(localStorage.getItem('currentUser') != null){
+    if(localStorage.getItem('currentUser')){
       // this.parsearVariable= localStorage.getItem('currentUser') || "";
       // return JSON.parse(this.parsearVariable);
       return true
