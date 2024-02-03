@@ -55,6 +55,15 @@ public class UserController {
 		return ResponseEntity.ok(searchedUser);
 	}
 
+	@GetMapping("/getUserDetails")
+	public ResponseEntity<UserAltDTO> getUserDetails(@RequestParam String username) {
+		UserAltDTO searchedUser = userService.getUserDetails(username);
+		if (searchedUser == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(searchedUser);
+	}
+
 	@PostMapping
 	public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userRequest) {
 		if (userService.userExist(userRequest)) {
