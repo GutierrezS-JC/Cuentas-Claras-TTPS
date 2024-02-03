@@ -3,8 +3,11 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { FooterComponent } from '../footer/footer.component';
 import { RouterModule } from '@angular/router';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
-import { User } from '../../models/user/user.model';
+import { UserToken } from '../../models/user/user-token.model';
 import { Subscription } from 'rxjs';
+import { decodeJwt } from '../../utils/jwt-decode';
+import { User } from '../../models/user/user.model';
+import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-home',
@@ -17,17 +20,28 @@ export class HomeComponent implements OnInit {
   currentUser!: User | null;
   private currentUserSubscription!: Subscription;
 
-  constructor(private authService: AuthenticationService) { }
+  constructor(
+    private authService: AuthenticationService,
+    private userService: UserService
+    ) { }
 
   ngOnInit(): void {
     this.currentUserSubscription = this.authService.currentUser.subscribe(user => {
-      this.currentUser = user;
-      console.log('Usuario actual:', this.currentUser);
+      const token = user?.token as string;
+      const username = (decodeJwt(token)?.sub)
+
+      this.userService.getUserDetails(username).subscribe({
+        next: userDetails => {
+          this.currentUser = userDetails;
+        },
+        error: error => {
+          console.error('Error al obtener detalles del usuario:', error);
+        }
+      });
     });
   }
 
   ngOnDestroy(): void {
-    // Desuscribirse para evitar fugas de memoria
     if (this.currentUserSubscription) {
       this.currentUserSubscription.unsubscribe();
     }

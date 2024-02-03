@@ -12,8 +12,6 @@ import { IndexComponent } from './components/index/index.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { RegisterService } from './services/register.service';
 import { AuthenticationService } from './services/authentication/authentication.service';
-import { User } from './models/user/user.model';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',

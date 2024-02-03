@@ -3,9 +3,7 @@ import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/ro
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard {
-  constructor(private router: Router) {
-    console.log('Guard canActivate created')
-  }
+  constructor(private router: Router) { }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     // Bueno, hcie el intento con el metodo original pero no se pudo

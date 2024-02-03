@@ -21,10 +21,9 @@ export class GroupsService {
       'Authorization': `Bearer ${token}`
     });
   }
-  constructor(private http: HttpClient, private userService: UserService) { }
+  constructor(private http: HttpClient) { }
 
-  getAllGroups(): Observable<Groups> {
-    const userId = this.userService.getUserId();
+  getAllGroups(userId: number): Observable<Groups> {
     return this.http.get<any>(`${this.apiUrl}/user/${userId}`);
   }
 

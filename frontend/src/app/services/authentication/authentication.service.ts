@@ -3,31 +3,28 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { User } from '../../models/user/user.model';
+import { UserToken } from '../../models/user/user-token.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
   private apiUrl = 'http://localhost:9090/auth';
 
-  private currentUserSubject: BehaviorSubject<User>;
-  public currentUser: Observable<User>;
+  private currentUserSubject: BehaviorSubject<UserToken>;
+  public currentUser: Observable<UserToken>;
 
   constructor(private http: HttpClient) {
-    console.log('Authentication Service created')
-    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')!));
+    this.currentUserSubject = new BehaviorSubject<UserToken>(JSON.parse(localStorage.getItem('currentUser')!));
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  public get currentUserValue(): User {
+  public get currentUserValue(): UserToken {
     return this.currentUserSubject.value;
   }
 
   login(username: string, password: string) {
     return this.http.post<any>(`${this.apiUrl}/authenticate`, { username, password })
       .pipe(map(credentials => {
-        // login successful si hay un token en la respuesta
         if (credentials && credentials.token) {
-          // store user details and jwt token in local storage to keep user logged in between page refreshes
           localStorage.setItem('currentUser', JSON.stringify(credentials));
           this.currentUserSubject.next(credentials);
         }
@@ -37,7 +34,6 @@ export class AuthenticationService {
   }
 
   logout() {
-    // elimino las credenciales del localstorage al deslogearme
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null!);
   }

@@ -3,13 +3,6 @@
   src: url("../../../assets/fonts/Poppins/Bold/Poppins-Bold.ttf") format('truetype');
 }
 
-.left-col {
-  /* background: rgb(56, 149, 131); */
-  /* background: linear-gradient(180deg, rgba(56, 149, 131, 1) 0%, rgba(92, 219, 148, 1) 50%, rgba(141, 228, 175, 1) 100%); */
-  /* background: rgb(93,93,93); */
-  /* background: linear-gradient(0deg, rgba(93,93,93,1) 0%, rgba(69,69,69,1) 36%, rgba(17,17,17,1) 78%); */
-}
-
 .login-footer {
   justify-content: space-between;
   max-width: 52rem;
