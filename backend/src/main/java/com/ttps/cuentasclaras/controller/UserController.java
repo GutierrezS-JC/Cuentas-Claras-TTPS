@@ -2,6 +2,7 @@ package com.ttps.cuentasclaras.controller;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,7 @@ import com.ttps.cuentasclaras.model.User;
 import com.ttps.cuentasclaras.service.UserService;
 
 @RestController
+@SecurityRequirement(name = "Bearer Authentication")
 @CrossOrigin
 @RequestMapping("/users")
 public class UserController {
@@ -47,6 +49,15 @@ public class UserController {
 	@GetMapping("/{id}")
 	public ResponseEntity<UserWithGroupsDTO> getUser(@PathVariable(name = "id") Integer id) {
 		UserWithGroupsDTO searchedUser = userService.getUserDTO(id);
+		if (searchedUser == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(searchedUser);
+	}
+
+	@GetMapping("/getUserDetails")
+	public ResponseEntity<UserAltDTO> getUserDetails(@RequestParam String username) {
+		UserAltDTO searchedUser = userService.getUserDetails(username);
 		if (searchedUser == null) {
 			return ResponseEntity.notFound().build();
 		}

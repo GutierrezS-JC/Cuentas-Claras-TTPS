@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { UserService } from '../../../../services/user/user.service';
 import { GroupsService } from '../../../../services/groups/groups.service';
 import { GroupCategories } from '../../../../models/groupCategories/groupCategories.model';
+import { User } from '../../../../models/user/user.model';
 
 @Component({
   selector: 'app-group-create',
@@ -28,9 +29,10 @@ export class GroupCreateComponent {
   // Arreglo de usuarios buscados
   searched: any = [];
   @Input() groupCategories: any;
+  @Input() user!: User;
 
   handleSearch() {
-    this.userService.searchUser(this.createForm.get('searchInput')?.value).subscribe({
+    this.userService.searchUser(this.user.id, this.createForm.get('searchInput')?.value).subscribe({
       next: (res: any) => {
         console.log(res)
         this.searched = res;
@@ -51,7 +53,7 @@ export class GroupCreateComponent {
 
   handleAddUser(userId: number) {
     const selectedUserIdsArray = this.createForm.get('selectedUserIds') as FormArray;
-    
+
     if (selectedUserIdsArray.value.includes(userId)) {
       console.log('El usuario ya está en la lista');
       return;

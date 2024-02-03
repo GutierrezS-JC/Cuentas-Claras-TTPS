@@ -205,4 +205,12 @@ public class UserService {
 		return response;
 	}
 
+	public UserAltDTO getUserDetails(String username) {
+		Optional<User> searchedUser = userRepository.findByUsername(username);
+		User user = searchedUser.orElse(null);
+		if (user != null) {
+			return this.mapUserAlt(user);
+		}
+		return null;
+	}
 }

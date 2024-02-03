@@ -15,15 +15,13 @@ export class SpendingService {
 
   // lista todos los gastos grupales e individuales
   // hay que discriminarlos de alguna forma
-  getMySpendingsExtended(): Observable<any[]> {
-    const userId = this.userService.getUserId();
+  getMySpendingsExtended(userId: number): Observable<any[]> {
   return this.http.get<any[]>(`${this.apiUrl}/users/getMySpendingsExtended?id=${userId}`);
   };
 
   // crea un nuevo gasto
-  createSpending(spending: Spending): Observable<any> {
+  createSpending(spending: Spending, userId: number): Observable<any> {
     const url = `${this.apiUrl}/spendings`;
-    const userId = this.userService.getUserId();
     console.log(spending);
     const spendingObject = {
       name: spending.group.name,

@@ -13,14 +13,12 @@ export class NavbarComponent {
   isLoginPage: boolean = false;
 
   constructor(private router: Router) {
-    console.log(this.router.url);
     this.isLoginPage = this.router.url.endsWith('/login');
   }
   
   isLogged(){
-    if(localStorage.getItem('user') != null){
-      this.parsearVariable= localStorage.getItem('user') || "";
-      return JSON.parse(this.parsearVariable);
+    if(localStorage.getItem('currentUser')){
+      return true
     }
     return false;
   }

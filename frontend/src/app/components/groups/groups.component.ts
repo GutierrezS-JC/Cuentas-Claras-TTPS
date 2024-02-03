@@ -14,6 +14,11 @@ import { Groups } from '../../models/groups/groups.model';
 import { GroupDetails } from '../../models/groups/groupDetails.model';
 import { GroupCategories } from '../../models/groupCategories/groupCategories.model';
 import { GroupsInvitationsListComponent } from './groups-invitations-list/groups-invitations-list.component';
+import { AuthenticationService } from '../../services/authentication/authentication.service';
+import { UserToken } from '../../models/user/user-token.model';
+import { User } from '../../models/user/user.model';
+import { decodeJwt } from '../../utils/jwt-decode';
+import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-groups',
@@ -30,7 +35,14 @@ import { GroupsInvitationsListComponent } from './groups-invitations-list/groups
 })
 
 export class GroupsComponent implements OnInit {
-  constructor(private groupsService: GroupsService) { }
+
+  constructor(
+    private groupsService: GroupsService, 
+    private authService: AuthenticationService,
+    private userService: UserService
+    ) { }
+
+  currentUser!: User | null;
 
   groups: Groups = { listGroups: [], listOwnedGroups: [] };
   actualGroup: GroupDetails = {
@@ -59,7 +71,18 @@ export class GroupsComponent implements OnInit {
   selectedSpending: any | null = null;
 
   ngOnInit(): void {
-    this.getGroups();
+    const token = this.authService.currentUserValue.token as string;
+    const username = (decodeJwt(token).sub)
+
+    this.userService.getUserDetails(username).subscribe({
+      next: userDetails => {
+        this.currentUser = userDetails;
+        this.getGroups();
+      },
+      error: error => {
+        console.error('Error al obtener detalles del usuario:', error);
+      }
+    });
   }
 
   getGroupSpendings(groupId: number) {
@@ -75,20 +98,21 @@ export class GroupsComponent implements OnInit {
   }
 
   getGroupCategories() {
-    this.groupsService.getGroupCategories().subscribe({
+    this.groupsService.getGroupCategoriesNoBs().subscribe({
       next: (res: any) => {
         this.groupCategories = res;
       },
       error: (error) => {
-        console.log(error.message)
+        console.log(error)
       },
       complete: () => console.info('API call completed')
     })
   }
 
   getGroups() {
-    this.groupsService.getAllGroups().subscribe({
+    this.groupsService.getAllGroups(this.currentUser!.id).subscribe({
       next: (res: any) => {
+        console.log(res)
         this.groups = res;
       },
       error: (error) => {
