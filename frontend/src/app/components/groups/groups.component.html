@@ -11,7 +11,7 @@
     </div>
 
     <!-- MODALS para la creacion y edicion de grupos. -->
-    <app-group-create [groupCategories]="groupCategories" />
+    <app-group-create [groupCategories]="groupCategories" [user]="currentUser!" />
     <app-group-details [selectedSpending]="selectedSpending" [deleteSelectedSpending]="deleteSelectedSpending" />
 
     <div class="btn-group mt-4" role="group" aria-label="Basic radio toggle button group">
@@ -30,13 +30,22 @@
         <!-- Columna lateral a la izquierda -->
         <div class="col-md-4 sidebar">
           <ul class="list-group">
-            @for (group of groups.listOwnedGroups; track $index) {
-            <li class="list-group-item p-4 text-break" id={{group.groupId}} (click)="getGroup(group.groupId)"
-              [class.selected]="isSelectedGroup(group.groupId)">
-              <span style="align-items: center; display: flex; justify-content:center;">
-                {{ group.name }}
-              </span>
-            </li>
+            @if (groups.listOwnedGroups.length === 0) {
+              <li class="list-group-item p-4 text-break" style="background-color: #b0afaf; border-radius: 7px; 
+                cursor: default;">
+                <span style="align-items: center; display: flex; justify-content:center;">
+                  ...
+                </span>
+            }
+            @else {
+              @for (group of groups.listOwnedGroups; track $index) {
+              <li class="list-group-item p-4 text-break" id={{group.groupId}} (click)="getGroup(group.groupId)"
+                [class.selected]="isSelectedGroup(group.groupId)">
+                <span style="align-items: center; display: flex; justify-content:center;">
+                  {{ group.name }}
+                </span>
+              </li>
+              }
             }
           </ul>
         </div>
@@ -44,44 +53,55 @@
         <!-- Contenido a la derecha -->
         <div class="col-md-8 content px-5 py-5" style="background-color: #f6f6f6; border-radius: 7px;">
           <!-- Detalles del grupo -->
-          @if (actualGroup.groupId == -1) {
-          <div class="d-flex flex-column justify-content-center align-items-center" style="height: 100%;">
-            <i class="bi bi-files" style="font-size: 15em; color: rgba(0, 0, 0, 0.367);"></i>
-            <h2 class="fs-4 text-center" style="margin-top: -1.5em; width: 50%; color: #505050;">
-              Seleccione un grupo para ver los detalles
-            </h2>
-          </div>
-          }
-          @else {
-          <div style="position: relative;">
-            <h2 class="text-break main-title-details-group" style="width: 75%;">{{actualGroup.name}}</h2>
-            <!-- <hr /> -->
-            <!-- <span class="badge rounded-pill text-bg-dark details-price">${{actualGroup.totalBalance}}</span> -->
-            <h3 class="details-price">${{actualGroup.totalBalance}}</h3>
-            <p class="mt-2">
-              <b>Categoria:</b> {{ actualGroup.groupCategory.name }}
-              <br />
-              <b>Descripcion:</b> {{ actualGroup.description }}
-            </p>
-            <i class="bi {{actualGroup.groupCategory.base64Image}}"
-              style="font-size: 8.8em; color: rgba(0, 0, 0, 0.367); position: absolute; top: -.35em; right: 0"></i>
-            <hr />
-          </div>
-
-          <div class="mt-4">
-            <!-- Lista invitaciones -->
-            <span class="mb-1" style="display: flex;">
-              <h4>Invitaciones</h4>
-            </span>
-
-            <app-groups-invitations-list [invitations]="actualGroup.invitations" />
-
-            <!-- Lista Gastos -->
-            <h4 class="mt-5 mb-2">Gastos</h4>
-            <div class="col-12 overflow-x-hidden spendings-list" style="max-height:350px;">
-              <app-groups-list [groupSpendings]="groupSpendings" [setSelectedSpending]="setSelectedSpending" />
+          @if (groups.listOwnedGroups.length === 0) {
+            <div class="d-flex flex-column justify-content-center align-items-center" style="height: 100%;">
+              <!-- <i class="bi bi-files" style="font-size: 15em; color: rgba(0, 0, 0, 0.367);"></i> -->
+              <img style="width: 20em;" src="../../../assets/images/no_data.svg" alt="Descripción alternativa">
+              <h2 class="fs-4 text-center" style="margin-top: 1em; width: 50%; color: #505050;">
+                No ha creado ningun grupo
+              </h2>
             </div>
-          </div>
+          }
+          @else{
+            @if (actualGroup.groupId == -1) {
+            <div class="d-flex flex-column justify-content-center align-items-center" style="height: 100%;">
+              <i class="bi bi-files" style="font-size: 15em; color: rgba(0, 0, 0, 0.367);"></i>
+              <h2 class="fs-4 text-center" style="margin-top: -1.5em; width: 50%; color: #505050;">
+                Seleccione un grupo para ver los detalles
+              </h2>
+            </div>
+            }
+            @else {
+            <div style="position: relative;">
+              <h2 class="text-break main-title-details-group" style="width: 75%;">{{actualGroup.name}}</h2>
+              <!-- <hr /> -->
+              <!-- <span class="badge rounded-pill text-bg-dark details-price">${{actualGroup.totalBalance}}</span> -->
+              <h3 class="details-price">${{actualGroup.totalBalance}}</h3>
+              <p class="mt-2">
+                <b>Categoria:</b> {{ actualGroup.groupCategory.name }}
+                <br />
+                <b>Descripcion:</b> {{ actualGroup.description }}
+              </p>
+              <i class="bi {{actualGroup.groupCategory.base64Image}}"
+                style="font-size: 8.8em; color: rgba(0, 0, 0, 0.367); position: absolute; top: -.35em; right: 0"></i>
+              <hr />
+            </div>
+
+            <div class="mt-4">
+              <!-- Lista invitaciones -->
+              <span class="mb-1" style="display: flex;">
+                <h4>Invitaciones</h4>
+              </span>
+
+              <app-groups-invitations-list [invitations]="actualGroup.invitations" />
+
+              <!-- Lista Gastos -->
+              <h4 class="mt-5 mb-2">Gastos</h4>
+              <div class="col-12 overflow-x-hidden spendings-list" style="max-height:350px;">
+                <app-groups-list [groupSpendings]="groupSpendings" [setSelectedSpending]="setSelectedSpending" />
+              </div>
+            </div>
+            }
           }
         </div>
       </div>

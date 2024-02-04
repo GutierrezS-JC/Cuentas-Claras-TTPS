@@ -16,22 +16,26 @@ import { User } from '../../../../models/user/user.model';
 })
 export class GroupCreateComponent {
   constructor(private userService: UserService) { }
+  
+  @Input() groupCategories: any;
+  @Input() user!: User;
 
   createForm: FormGroup = new FormGroup({
     name: new FormControl(''),
     description: new FormControl(''),
     categoryId: new FormControl(-1, Validators.min(1)),
-    amount: new FormControl(),
+    amount: new FormControl(0),
     selectedUserIds: new FormArray([]),
     searchInput: new FormControl('')
   })
 
-  // Arreglo de usuarios buscados
+  // Arreglo de usuarios buscados/encontrados
   searched: any = [];
-  @Input() groupCategories: any;
-  @Input() user!: User;
+
+  selectedUsers: User[] = [];
 
   handleSearch() {
+    console.log(this.user)
     this.userService.searchUser(this.user.id, this.createForm.get('searchInput')?.value).subscribe({
       next: (res: any) => {
         console.log(res)
@@ -45,25 +49,35 @@ export class GroupCreateComponent {
   }
 
   handleClose() {
-    this.searched = [];
-    // this.createForm.reset();
+    this.createForm.reset({
+      name: '',
+      description: '',
+      categoryId: -1,
+      amount: 0,
+      searchInput: ''
+    });
+
     const selectedUserIdsArray = this.createForm.get('selectedUserIds') as FormArray;
     selectedUserIdsArray.clear()
+    
+    this.searched = [];
+    this.selectedUsers = [];
   }
 
-  handleAddUser(userId: number) {
+  handleAddUser(user: User) {
     const selectedUserIdsArray = this.createForm.get('selectedUserIds') as FormArray;
-
-    if (selectedUserIdsArray.value.includes(userId)) {
+    
+    if (selectedUserIdsArray.value.includes(user.id)) {
       console.log('El usuario ya está en la lista');
       return;
     }
 
     // Agrega el nuevo usuario al FormArray
-    selectedUserIdsArray.push(new FormControl(userId));
+    selectedUserIdsArray.push(new FormControl(user.id));
+    this.selectedUsers = this.selectedUsers = [...this.selectedUsers, user];
 
     // Limpiar input despues de agregar el usuario
-    this.createForm.get('searchInput')?.reset();
+    this.createForm.get('searchInput')?.reset('');
     this.searched = [];
   }
 }
