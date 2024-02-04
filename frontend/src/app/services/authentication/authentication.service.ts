@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { UserToken } from '../../models/user/user-token.model';
+import { UserRegister } from '../../models/user/user-register.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -25,6 +26,19 @@ export class AuthenticationService {
     return this.http.post<any>(`${this.apiUrl}/authenticate`, { username, password })
       .pipe(map(credentials => {
         if (credentials && credentials.token) {
+          localStorage.setItem('currentUser', JSON.stringify(credentials));
+          this.currentUserSubject.next(credentials);
+        }
+
+        return credentials;
+      }));
+  }
+
+  register(user: UserRegister) {
+    return this.http.post<any>(`${this.apiUrl}/register`, user)
+      .pipe(map(credentials => {
+        if (credentials && credentials.token) {
+          console.log(credentials);
           localStorage.setItem('currentUser', JSON.stringify(credentials));
           this.currentUserSubject.next(credentials);
         }
