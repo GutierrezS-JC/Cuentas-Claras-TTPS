@@ -11,7 +11,6 @@ import { faSolidFileArrowDown } from '@ng-icons/font-awesome/solid';
   styleUrl: './group-details.component.css'
 })
 export class GroupDetailsComponent {
-  @Input() groupSpendings: any;
   @Input() selectedSpending: any;
   @Input() deleteSelectedSpending!: () => void;
 

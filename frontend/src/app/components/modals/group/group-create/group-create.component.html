@@ -43,7 +43,7 @@
               (input)="handleSearch()">
           </div>
           @if (searched.length !== 0 ) {
-            <ul class="list-group list-group-numbered">
+            <ul class="list-group list-group-numbered mt-3">
               @for (searchedUser of searched; track $index) {
                 <li class="list-group-item d-flex justify-content-between align-items-start" (click)="handleAddUser(searchedUser)">
                   <div class="ms-2 me-auto">

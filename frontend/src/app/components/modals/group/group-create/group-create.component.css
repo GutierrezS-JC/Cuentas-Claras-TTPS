@@ -2,6 +2,11 @@ ul:hover {
     cursor: pointer;
 }
 
-ul li{
-    background-color: #f6f6f6;
+ul li {
+    background-color: #fafafa;
+}
+
+ul li:hover {
+    background-color: #ebeaea;
+    cursor: pointer;
 }

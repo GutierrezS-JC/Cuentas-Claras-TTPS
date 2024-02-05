@@ -14,12 +14,11 @@ import { User } from '../../../../models/user/user.model';
   templateUrl: './group-create.component.html',
   styleUrl: './group-create.component.css'
 })
-export class GroupCreateComponent {
-  constructor(private userService: UserService) { }
-  
+export class GroupCreateComponent implements OnInit {
+  constructor(private userService: UserService, private groupsService: GroupsService) { }
   @Input() groupCategories: any;
   @Input() user!: User;
-
+  
   createForm: FormGroup = new FormGroup({
     name: new FormControl(''),
     description: new FormControl(''),
@@ -28,11 +27,23 @@ export class GroupCreateComponent {
     selectedUserIds: new FormArray([]),
     searchInput: new FormControl('')
   })
-
+  
   // Arreglo de usuarios buscados/encontrados
   searched: any = [];
-
+  
   selectedUsers: User[] = [];
+  
+  ngOnInit(): void {
+    this.groupsService.getGroupCategoriesNoBs().subscribe({
+      next: (res: any) => {
+        this.groupCategories = res;
+      },
+      error: (error) => {
+        console.log(error)
+      },
+      complete: () => console.info('API call completed')
+    })
+  }
 
   handleSearch() {
     console.log(this.user)
@@ -59,14 +70,14 @@ export class GroupCreateComponent {
 
     const selectedUserIdsArray = this.createForm.get('selectedUserIds') as FormArray;
     selectedUserIdsArray.clear()
-    
+
     this.searched = [];
     this.selectedUsers = [];
   }
 
   handleAddUser(user: User) {
     const selectedUserIdsArray = this.createForm.get('selectedUserIds') as FormArray;
-    
+
     if (selectedUserIdsArray.value.includes(user.id)) {
       console.log('El usuario ya está en la lista');
       return;
