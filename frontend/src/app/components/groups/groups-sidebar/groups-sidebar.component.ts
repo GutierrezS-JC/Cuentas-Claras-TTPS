@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Groups } from '../../../models/groups/groups.model';
 import { GroupsService } from '../../../services/groups/groups.service';
 import { GroupDetails } from '../../../models/groups/groupDetails.model';
@@ -17,7 +17,9 @@ export class GroupsSidebarComponent {
   @Input() groups!: Groups
   @Input() selectedGroupOption!: string;
 
-  @Input() actualGroup!: GroupDetails
+  @Input() actualGroup!: GroupDetails;
+  @Output() actualGroupChange = new EventEmitter<GroupDetails>();
+
   @Input() groupSpendings: any[] = [];
 
   getGroup(groupId: number) {
@@ -25,18 +27,22 @@ export class GroupsSidebarComponent {
       // Si ya esta seleccionado el grupo... eliminamos la seleccion 
       // volviendo a setear los valores por defecto
       this.resetActualGroup();
+      // Emite el evento que indica la actualizacion del grupo seleccionado
+      this.actualGroupChange.emit(this.actualGroup);
+
     }
     else {
       this.groupsService.getGroup(groupId).subscribe({
         next: (res: any) => {
           this.actualGroup = res;
+          // Emite el evento que indica la actualizacion del grupo seleccionado
+          this.actualGroupChange.emit(this.actualGroup);
           this.getGroupSpendings(groupId)
         },
         error: (error) => {
           console.log('Ocurrio un error: ')
           console.log(error)
-        },
-        complete: () => console.info('API call completed')
+        }
       })
     }
   }
@@ -48,8 +54,7 @@ export class GroupsSidebarComponent {
       },
       error: (error) => {
         console.log(error.message)
-      },
-      complete: () => console.info('API call completed')
+      }
     })
   }
 
@@ -71,4 +76,5 @@ export class GroupsSidebarComponent {
       invitations: []
     };
   }
+
 }

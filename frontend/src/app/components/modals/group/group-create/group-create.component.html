@@ -66,7 +66,8 @@
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="handleClose()">Cerrar</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+        <button type="button" [disabled]="createForm.invalid" (click)="handleGroupCreation()" 
+          class="btn btn-primary" data-bs-dismiss="modal">
           Crear grupo
         </button>
       </div>

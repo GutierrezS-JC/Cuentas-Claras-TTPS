@@ -34,7 +34,9 @@
         <!-- Columna lateral a la izquierda - Sidebar seleccion de grupos -->
         <div class="col-md-4 sidebar">
           <app-groups-sidebar [groups]="groups" 
-            [selectedGroupOption]="selectedGroupOption" [actualGroup]="actualGroup" [groupSpendings]="groupSpendings"/>
+            [selectedGroupOption]="selectedGroupOption" [actualGroup]="actualGroup" [groupSpendings]="groupSpendings"
+            (actualGroupChange)="onActualGroupChange($event)"  
+          />
         </div>
         
         <!-- Contenido a la derecha -->

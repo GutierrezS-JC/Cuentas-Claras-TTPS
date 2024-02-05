@@ -6,6 +6,7 @@ import { UserService } from '../../../../services/user/user.service';
 import { GroupsService } from '../../../../services/groups/groups.service';
 import { GroupCategories } from '../../../../models/groupCategories/groupCategories.model';
 import { User } from '../../../../models/user/user.model';
+import { GroupDetails } from '../../../../models/groups/groupDetails.model';
 
 @Component({
   selector: 'app-group-create',
@@ -18,8 +19,11 @@ export class GroupCreateComponent implements OnInit {
   constructor(private userService: UserService, private groupsService: GroupsService) { }
   @Input() groupCategories: any;
   @Input() user!: User;
-  
-  createForm: FormGroup = new FormGroup({
+
+  loading = false;
+  submitted = false;
+
+  createForm = new FormGroup({
     name: new FormControl(''),
     description: new FormControl(''),
     categoryId: new FormControl(-1, Validators.min(1)),
@@ -27,35 +31,62 @@ export class GroupCreateComponent implements OnInit {
     selectedUserIds: new FormArray([]),
     searchInput: new FormControl('')
   })
-  
+
   // Arreglo de usuarios buscados/encontrados
   searched: any = [];
-  
+
   selectedUsers: User[] = [];
-  
+
   ngOnInit(): void {
-    this.groupsService.getGroupCategoriesNoBs().subscribe({
+    this.groupsService.getGroupCategories().subscribe({
       next: (res: any) => {
         this.groupCategories = res;
       },
       error: (error) => {
         console.log(error)
-      },
-      complete: () => console.info('API call completed')
+      }
     })
   }
 
+  handleGroupCreation() {
+    this.submitted = true;
+    if (this.createForm.valid) {
+      console.log('Es valido')
+      this.loading = true;
+
+      let idList = this.createForm.controls.selectedUserIds.value.map((userId: number) => {
+        return { id: userId }
+      })
+
+      let group: GroupCreate = {
+        name: this.createForm.controls.name.value as string,
+        totalBalance: this.createForm.controls.amount.value as number,
+        userOwnerId: this.user.id,
+        description: this.createForm.controls.description.value as string,
+        groupCategoryId: this.createForm.controls.categoryId.value as number,
+        usersIds: idList
+      };
+      //Subscribe
+      this.groupsService.createGroup(group).subscribe({
+        next: (res: any) => {
+          console.log('Grupo creado')
+        },
+        error: (error) => {
+          console.log(error)
+        }
+      });
+    }
+  }
+
+  // Busqueda de usuarios en formulario de creacion de grupo
   handleSearch() {
-    console.log(this.user)
-    this.userService.searchUser(this.user.id, this.createForm.get('searchInput')?.value).subscribe({
+    this.userService.searchUser(this.user.id, this.createForm.controls.searchInput.value as string).subscribe({
       next: (res: any) => {
-        console.log(res)
         this.searched = res;
       },
       error: (error) => {
         console.log(error.message)
-      },
-      complete: () => console.info('API call completed')
+      }
     })
   }
 
@@ -75,6 +106,7 @@ export class GroupCreateComponent implements OnInit {
     this.selectedUsers = [];
   }
 
+  // Agregar usuario de la lista de integrantes del grupo
   handleAddUser(user: User) {
     const selectedUserIdsArray = this.createForm.get('selectedUserIds') as FormArray;
 

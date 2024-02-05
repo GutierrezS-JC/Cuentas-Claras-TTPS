@@ -57,6 +57,7 @@ export class GroupsComponent implements OnInit {
     members: [],
     invitations: []
   };
+
   error: any = {
     message: '',
     description: '',
@@ -94,14 +95,18 @@ export class GroupsComponent implements OnInit {
       },
       error: (error) => {
         console.log(error.message)
-      },
-      complete: () => console.info('API call completed')
+      }
     })
   }
 
   // Selector de tipo de grupo (mis grupos y grupos en los que participa el usuario)
   setGroupOption(option: string) {
     this.selectedGroupOption = option;
+  }
+
+  // Recibo el evento de actualizacion desde groups-sidebar
+  onActualGroupChange(newActualGroup: GroupDetails) {
+    this.actualGroup = newActualGroup;
   }
 }
 

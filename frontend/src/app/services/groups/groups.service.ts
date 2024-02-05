@@ -5,6 +5,7 @@ import { UserService } from '../user/user.service';
 import { Groups } from '../../models/groups/groups.model';
 import { GroupDetails } from '../../models/groups/groupDetails.model';
 import { GroupCategories } from '../../models/groupCategories/groupCategories.model';
+import { GroupCreate } from '../../models/groups/gropCreate.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,13 +15,6 @@ export class GroupsService {
   private apiCategoriesUrl = 'http://localhost:9090/groupCategories';
   private apiSpendingsUrl = 'http://localhost:9090/spendings';
 
-  private getAuthorizationHeader(): HttpHeaders {
-    const token = localStorage.getItem('currentUser');
-    console.log(token);
-    return new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-  }
   constructor(private http: HttpClient) { }
 
   getAllGroups(userId: number): Observable<Groups> {
@@ -32,16 +26,15 @@ export class GroupsService {
   }
 
   getGroupCategories(): Observable<GroupCategories[]> {
-    const headers = this.getAuthorizationHeader();
-    return this.http.get<GroupCategories[]>(`${this.apiCategoriesUrl}`, { headers });
-  }
-
-  getGroupCategoriesNoBs(): Observable<GroupCategories[]> {
     return this.http.get<GroupCategories[]>(`${this.apiCategoriesUrl}`);
   }
 
   getGroupSpendings(groupId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiSpendingsUrl}/getGroupSpendings?groupId=${groupId}`);
+  }
+
+  createGroup(group: GroupCreate): Observable<any> {
+    return this.http.post<GroupCreate>(`${this.apiUrl}`, group);
   }
 
 }
