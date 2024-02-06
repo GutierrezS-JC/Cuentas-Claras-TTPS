@@ -6,6 +6,9 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
 import { first } from 'rxjs';
 
+import Swal from 'sweetalert2';
+import { swalAlert, swalToast } from '../../utils/sweet-alert';
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -47,15 +50,20 @@ export class LoginComponent implements OnInit {
       this.authenticationService.login(credentials.username, credentials.password)
         .pipe(first())
         .subscribe({
-          next: (result: any) => {
-            console.log('Successful login', result);
+          next: () => {
             this.router.navigate(['/home']);
+            swalToast('success', 'Sesion iniciada. Bienvenido :)');
+            this.loading = false
           },
           error: (error: any) => {
             console.log(error)
             this.error = "Nombre de usuario o Contraseña incorrecta";
             this.loading = false
-            alert(this.error)
+            swalAlert(
+              'error',
+              'Credenciales incorrectas',
+              'El nombre de usuario o la contraseña es incorrecta. Por favor revise sus credenciales e intente nuevamente.'
+            );
           },
         })
     }

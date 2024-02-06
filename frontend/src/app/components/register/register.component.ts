@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
 import { UserRegister } from '../../models/user/user-register.model';
+import { swalToast } from '../../utils/sweet-alert';
 
 @Component({
   selector: 'app-register',
@@ -55,7 +56,7 @@ export class RegisterComponent implements OnInit {
         this.authenticationService.register(user).subscribe({
           next: (result: any) => {
             console.log(result);
-            alert('Register succeded!')
+            swalToast("success", "Registro exitoso. Bienvenido!");
             this.router.navigate(['/home']);
           },
           error: (error: any) => {
