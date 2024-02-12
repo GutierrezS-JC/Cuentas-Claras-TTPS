@@ -29,7 +29,6 @@ export class GroupsSidebarComponent {
       this.resetActualGroup();
       // Emite el evento que indica la actualizacion del grupo seleccionado
       this.actualGroupChange.emit(this.actualGroup);
-
     }
     else {
       this.groupsService.getGroup(groupId).subscribe({
@@ -37,7 +36,6 @@ export class GroupsSidebarComponent {
           this.actualGroup = res;
           // Emite el evento que indica la actualizacion del grupo seleccionado
           this.actualGroupChange.emit(this.actualGroup);
-          this.getGroupSpendings(groupId)
         },
         error: (error) => {
           console.log('Ocurrio un error: ')
@@ -45,17 +43,6 @@ export class GroupsSidebarComponent {
         }
       })
     }
-  }
-
-  getGroupSpendings(groupId: number) {
-    this.groupsService.getGroupSpendings(groupId).subscribe({
-      next: (res: any) => {
-        this.groupSpendings = res;
-      },
-      error: (error) => {
-        console.log(error.message)
-      }
-    })
   }
 
   // Usado para setear los detalles del gasto seleccionado

@@ -19,14 +19,29 @@
         <div class="mb-2">
           <h2 class="fs-5">Tipo de division</h2>
           <ul>
-            <li>{{selectedSpending?.division}}</li>
+            <li>
+              @switch (selectedSpending?.division) {
+                @case ('EVEN') { Mismo monto para todos }
+                @case ('FIXAMOUNT') { Monto fijo por integrante }
+                @case ('SAMEPERCENTAGE') { Mismo porcentaje para todos }
+                @case ('FIXPERCENTAGE') { Porcentaje fijo por integrante }
+              }
+            </li>
           </ul>
         </div>
 
         <div class="mb-2">
           <h2 class="fs-5">Recurrencia</h2>
           <ul>
-            <li>{{selectedSpending?.recurrence}}</li>
+            <li>
+              @switch (selectedSpending?.recurrence) {
+                @case ('NON') { Gasto no recurrente }
+                @case ('DAILY') { Gasto diario }
+                @case ('WEEKLY') { Gasto semanal }
+                @case ('MONTHLY') { Gasto mensual }
+                @case ('ANNUALLY') { Gasto anual }
+              }
+            </li>
           </ul>
         </div>
 
