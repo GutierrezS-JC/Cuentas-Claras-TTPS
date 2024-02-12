@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Groups } from '../../../models/groups/groups.model';
 import { GroupDetails } from '../../../models/groups/groupDetails.model';
 import { GroupsInvitationsListComponent } from '../groups-invitations-list/groups-invitations-list.component';
@@ -21,6 +21,7 @@ export class GroupsMainComponent {
   @Input() selectedGroupOption!: string;
   
   @Input() user!: User;
+  @Output() actualGroupChange = new EventEmitter<GroupDetails>();
 
   // Spending (gasto) seleccionado - ACTUAL
   selectedSpending: any | null = null;
@@ -33,5 +34,9 @@ export class GroupsMainComponent {
   // Eliminamos el detalle del gasto seleccionado
   deleteSelectedSpending = () => {
     this.selectedSpending = null;
+  }
+
+  onActualGroupChange(newActualGroup: GroupDetails) {
+    this.actualGroupChange.emit(newActualGroup);
   }
 }

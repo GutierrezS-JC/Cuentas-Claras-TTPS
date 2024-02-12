@@ -55,7 +55,8 @@
       <h4>Invitaciones</h4>
     </span>
     
-    <app-groups-invitations-list [invitations]="actualGroup.invitations" [user]="user!" />
+    <app-groups-invitations-list [invitations]="actualGroup.invitations" [user]="user!" [actualGroup]="actualGroup"
+      (actualGroupChange)="actualGroupChange.emit($event)" />
 
     <!-- Lista Gastos -->
     <h4 class="mt-5 mb-2">Gastos</h4>

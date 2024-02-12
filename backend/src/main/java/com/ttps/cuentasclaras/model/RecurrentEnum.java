@@ -2,7 +2,7 @@ package com.ttps.cuentasclaras.model;
 
 public enum RecurrentEnum {
 	NON,
-	DIARY,
+	DAILY,
 	WEEKLY,
 	MONTHLY,
 	ANUALLY

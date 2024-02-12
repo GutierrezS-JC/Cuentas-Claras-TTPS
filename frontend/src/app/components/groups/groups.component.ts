@@ -87,10 +87,10 @@ export class GroupsComponent implements OnInit {
       }
     });
   }
+
   getGroups() {
     this.groupsService.getAllGroups(this.currentUser!.id).subscribe({
       next: (res: any) => {
-        console.log(res)
         this.groups = res;
       },
       error: (error) => {
@@ -102,11 +102,47 @@ export class GroupsComponent implements OnInit {
   // Selector de tipo de grupo (mis grupos y grupos en los que participa el usuario)
   setGroupOption(option: string) {
     this.selectedGroupOption = option;
+    this.resetActualGroup();
+    this.resetGroupSpendings();
   }
 
   // Recibo el evento de actualizacion desde groups-sidebar
   onActualGroupChange(newActualGroup: GroupDetails) {
     this.actualGroup = newActualGroup;
+    if (this.actualGroup.groupId !== -1) {
+      this.getGroupSpendings(newActualGroup.groupId);
+    }
+  }
+
+  // Obtengo los gastos del grupo recibido por el evento de actualizacion
+  getGroupSpendings(groupId: number) {
+    this.groupsService.getGroupSpendings(groupId).subscribe({
+      next: (res: any) => {
+        this.groupSpendings = res;
+      },
+      error: (error) => {
+        console.log(error.message)
+      }
+    })
+  }
+
+  // Reset de actualGroup al estado inicial
+  resetActualGroup() {
+    this.actualGroup = {
+      groupId: -1,
+      name: '',
+      totalBalance: 0,
+      groupCategory: {},
+      description: '',
+      owner: {},
+      members: [],
+      invitations: []
+    };
+  }
+
+  // Reset de groupSpendings al estado inicial
+  resetGroupSpendings() {
+    this.groupSpendings = [];
   }
 }
 
