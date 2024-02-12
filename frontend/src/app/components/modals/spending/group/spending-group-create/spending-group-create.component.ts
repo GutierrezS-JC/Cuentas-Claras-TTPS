@@ -41,14 +41,14 @@ export class SpendingGroupCreateComponent {
   usersSelected: User[] = [];
 
   // Los users que son parte del grupo seleccionado
-  groupUsers: GroupDetails | null = null;
+  groupUsers: any[] | null = null;
 
   // Busco los miembros del grupo para el select
   getGroupMembersSelect() {
     if (this.createSpendingForm.get('groupId')?.value) {
       this.groupsService.getGroup(this.createSpendingForm.get('groupId')?.value).subscribe(
         (group: GroupDetails) => {
-          this.groupUsers = group;
+          this.groupUsers = group.members;
         }
       );
     }

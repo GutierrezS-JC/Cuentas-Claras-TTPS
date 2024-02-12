@@ -13,7 +13,7 @@
             <select class="form-select" aria-label="Group select" formControlName="groupId" 
               (change)="getGroupMembersSelect()">
               @for (group of groups; track $index){
-                <option [ngValue]="group">{{ group.name }}</option>
+                <option [ngValue]="group.groupId">{{ group.name }}</option>
               }
             </select>
           </div>
@@ -23,8 +23,8 @@
             <div class="mb-3">
               <label for="members">Integrantes que realizaron el gasto</label>
               <select class="form-select" aria-label="Members select">
-                @for (member of groupUsers?.members; track member.id ){
-                  <option [ngValue]="member" (click)="addMember(member)">{{ member.name }}</option>
+                @for (member of groupUsers; track member.id ){
+                  <option [ngValue]="member" (click)="addMember(member)">{{ member.name }} {{ member.lastName }}</option>
                 }
               </select>
             </div>

@@ -180,7 +180,7 @@ export class SpendingsComponent implements OnInit {
     });
   }
 
-  // funciones para la edición del gasto TODO
+  // funciones para la edición del gasto TO-DO
   getSpendingToEdit(spendingId: number): void {
     this.selectedSpendingToEdit = spendingId;
   }
