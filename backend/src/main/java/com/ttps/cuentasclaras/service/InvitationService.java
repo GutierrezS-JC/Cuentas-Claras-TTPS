@@ -71,16 +71,13 @@ public class InvitationService {
 		return listResponse;
 	}
 
-//	public List<InvitationDTO> getGroupInvitations(Integer groupId) {
-//		Group searchedGroup = groupService.findById(groupId);
-//		List<Invitation> list = invitationRepository.findByGroupId(searchedGroup.getId());
-//		List<InvitationDTO> listResponse = new ArrayList<>();
-//
-//		for (Invitation invitation : list) {
-//			listResponse.add(new InvitationDTO(invitation.getId(), userService.mapUserAlt(invitation.getSenderUser()),
-//					userService.mapUserAlt(invitation.getReceiverUser()), invitation.getStatus()));
-//		}
-//		return listResponse;
-//	}
-
+	public boolean cancelInvitation(Integer invitationId, Integer userId) {
+		Invitation invitation = invitationRepository.findById(invitationId).orElse(null);
+		if (userId == invitation.getSenderUser().getId() && invitation.getStatus() == InvitationStatus.PENDING) {
+			invitation.setStatus(InvitationStatus.CANCELLED);
+			invitationRepository.save(invitation);
+			return true;
+		}
+		return false;
+	}
 }

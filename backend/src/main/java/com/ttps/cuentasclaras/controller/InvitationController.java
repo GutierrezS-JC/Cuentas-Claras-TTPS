@@ -35,16 +35,6 @@ public class InvitationController {
 		}
 		return new ResponseEntity<>(invitations, HttpStatus.OK);
 	}
-	
-//	@GetMapping("/groupInvitations/{groupId}")
-//	public ResponseEntity<List<InvitationDTO>> getGroupInvitations(@PathVariable Integer groupId) {
-//		List<InvitationDTO> invitations = invitationService.getGroupInvitations(groupId);
-//		if (invitations.isEmpty()) {
-//			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//		}
-//		return new ResponseEntity<>(invitations, HttpStatus.OK);
-//	}
-
 
 	@PostMapping("/send")
 	public ResponseEntity<Void> sendInvitation(@RequestBody InvitationCreateDTO invitationRequest) {
@@ -70,4 +60,12 @@ public class InvitationController {
 		return new ResponseEntity<>(HttpStatus.CONFLICT);
 	}
 
+	@PostMapping("/cancel/{invitationId}/{userId}")
+	public ResponseEntity<Boolean> cancelInvitation(@PathVariable Integer invitationId,
+													@PathVariable Integer userId) {
+		if (invitationService.cancelInvitation(invitationId, userId)) {
+			return new ResponseEntity<>(true, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(false, HttpStatus.CONFLICT);
+	}
 }
