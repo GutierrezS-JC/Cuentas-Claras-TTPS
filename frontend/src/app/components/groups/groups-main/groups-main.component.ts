@@ -4,6 +4,7 @@ import { GroupDetails } from '../../../models/groups/groupDetails.model';
 import { GroupsInvitationsListComponent } from '../groups-invitations-list/groups-invitations-list.component';
 import { GroupsListComponent } from '../groups-list/groups-list.component';
 import { GroupDetailsComponent } from '../../modals/group/group-details/group-details.component';
+import { User } from '../../../models/user/user.model';
 
 @Component({
   selector: 'app-groups-main',
@@ -19,6 +20,8 @@ export class GroupsMainComponent {
   @Input() groupSpendings: any[] = [];
   @Input() selectedGroupOption!: string;
   
+  @Input() user!: User;
+
   // Spending (gasto) seleccionado - ACTUAL
   selectedSpending: any | null = null;
 

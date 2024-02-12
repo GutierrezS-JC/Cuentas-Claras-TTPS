@@ -29,46 +29,11 @@
     max-height: 800px;
 }
 
-/* li {
-    cursor: pointer;
-}
-
-li:not(.selected):hover {
-    background-color: #e9e9e9;
-}
-
-.selected {
-    background-color: #d4d4d4;
-} */
-
 h1 {
     font-family: Poppins Bold, sans-serif;
     font-size: 4em;
 }
 
-h4 {
-    font-family: Poppins Medium, sans-serif;
-    font-size: 2em;
-}
-
 #btn-new-group {
     font-family: Poppins Regular, sans-serif;
-}
-
-.main-title-details-group {
-    font-family: Poppins Bold, sans-serif;
-    font-size: 3em;
-    color: #3d3d3d;
-}
-
-.title-details-group {
-    font-family: Poppins Medium, sans-serif;
-    font-size: 3em;
-    /* color: #3d3d3d; */
-}
-
-.details-price {
-    font-family: Poppins Bold, sans-serif;
-    font-size: 2.5em;
-    color: #0000005c;
 }

@@ -1,0 +1,21 @@
+.main-title-details-group {
+    font-family: Poppins Bold, sans-serif;
+    font-size: 3em;
+    color: #3d3d3d;
+}
+
+.details-price {
+    font-family: Poppins Bold, sans-serif;
+    font-size: 2.5em;
+    color: #0000005c;
+}
+
+h1 {
+    font-family: Poppins Bold, sans-serif;
+    font-size: 4em;
+}
+
+h4 {
+    font-family: Poppins Medium, sans-serif;
+    font-size: 2em;
+}

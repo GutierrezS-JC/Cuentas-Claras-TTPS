@@ -34,8 +34,10 @@
   }
   @else {
   <div style="position: relative;">
-    <h2 class="text-break main-title-details-group" style="width: 75%;">{{actualGroup.name}}</h2>
-    <!-- <span class="badge rounded-pill text-bg-dark details-price">${{actualGroup.totalBalance}}</span> -->
+    <span style="width: 75%; display: flex; align-items: center;" >
+      <h2 class="text-break main-title-details-group">{{actualGroup.name}}</h2>
+      <i class="bi bi-pencil-square ms-3 fs-4" style="color: #212529d4; cursor: pointer;"></i>
+    </span>
     <h3 class="details-price">${{actualGroup.totalBalance}}</h3>
     <p class="mt-2">
       <b>Categoria:</b> {{ actualGroup.groupCategory.name }}
@@ -52,8 +54,8 @@
     <span class="mb-1" style="display: flex;">
       <h4>Invitaciones</h4>
     </span>
-
-    <app-groups-invitations-list [invitations]="actualGroup.invitations" />
+    
+    <app-groups-invitations-list [invitations]="actualGroup.invitations" [user]="user!" />
 
     <!-- Lista Gastos -->
     <h4 class="mt-5 mb-2">Gastos</h4>

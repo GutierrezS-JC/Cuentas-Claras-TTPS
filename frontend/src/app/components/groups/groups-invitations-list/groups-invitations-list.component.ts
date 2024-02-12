@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { User } from '../../../models/user/user.model';
 
 @Component({
   selector: 'app-groups-invitations-list',
@@ -9,5 +10,6 @@ import { Component, Input } from '@angular/core';
 })
 export class GroupsInvitationsListComponent {
   @Input() invitations : any;
+  @Input() user!: User;
 
 }

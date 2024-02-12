@@ -5,6 +5,7 @@
       <th scope="col">Emisor</th>
       <th scope="col">Invitado</th>
       <th scope="col">Estado de invitacion</th>
+      <th></th>
     </tr>
   </thead>
   <tbody class="table-group-divider">
@@ -12,7 +13,19 @@
     <tr>
       <td>{{invitation.senderUser.name}} {{invitation.senderUser.lastName}}</td>
       <td>{{invitation.receiverUser.name}} {{invitation.receiverUser.lastName}}</td>
-      <td>{{invitation.status}}</td>
+      <td>
+        @switch (invitation.status) {
+          @case ('ACCEPTED') { Aceptada }
+          @case ('PENDING') { Pendiente }
+          @case ('REJECTED') { Rechazada }
+        }
+      </td>
+      <!-- <td>{{invitation.status}}</td> -->
+      <td>
+        @if (invitation.senderUser.id === user.id) {
+          <i class="bi bi-trash3-fill ms-3 fs-5" style="color: #212529d4; cursor: pointer;"></i>
+        }
+      </td>
     </tr>
     }
   </tbody>
