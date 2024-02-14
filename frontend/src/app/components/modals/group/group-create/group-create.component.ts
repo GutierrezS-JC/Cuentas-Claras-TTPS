@@ -4,9 +4,9 @@ import { FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Va
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../../../services/user/user.service';
 import { GroupsService } from '../../../../services/groups/groups.service';
-import { GroupCategories } from '../../../../models/groupCategories/groupCategories.model';
 import { User } from '../../../../models/user/user.model';
-import { GroupDetails } from '../../../../models/groups/groupDetails.model';
+import { swalAlert } from '../../../../utils/sweet-alert';
+import { SharedDataService } from '../../../../services/sharedData/shared-data.service';
 
 @Component({
   selector: 'app-group-create',
@@ -16,7 +16,12 @@ import { GroupDetails } from '../../../../models/groups/groupDetails.model';
   styleUrl: './group-create.component.css'
 })
 export class GroupCreateComponent implements OnInit {
-  constructor(private userService: UserService, private groupsService: GroupsService) { }
+  constructor(
+    private userService: UserService,
+    private groupsService: GroupsService,
+    private sharedDataService: SharedDataService
+  ) { }
+  
   @Input() groupCategories: any;
   @Input() user!: User;
 
@@ -51,7 +56,6 @@ export class GroupCreateComponent implements OnInit {
   handleGroupCreation() {
     this.submitted = true;
     if (this.createForm.valid) {
-      console.log('Es valido')
       this.loading = true;
 
       let idList = this.createForm.controls.selectedUserIds.value.map((userId: number) => {
@@ -66,13 +70,18 @@ export class GroupCreateComponent implements OnInit {
         groupCategoryId: this.createForm.controls.categoryId.value as number,
         usersIds: idList
       };
-      //Subscribe
+
       this.groupsService.createGroup(group).subscribe({
-        next: (res: any) => {
-          console.log('Grupo creado')
+        next: () => {
+          this.sharedDataService.updateGroupList(this.user);
+          swalAlert('success', 'Grupo creado', 'El grupo se ha creado correctamente')
         },
         error: (error) => {
           console.log(error)
+        },
+        complete: () => {
+          this.loading = false;
+          this.submitted = false;
         }
       });
     }

@@ -164,11 +164,11 @@ public class GroupService {
 			return false;
 	}
 
-	public GroupEditDTO updateGroup(Integer id, GroupEditDTO groupRequest) {
+	public GroupDetailsDTO updateGroup(Integer groupId, Integer userId, GroupEditDTO groupRequest) {
 		try {
-			Optional<Group> searchedGroup = groupRepository.findById(id);
+			Optional<Group> searchedGroup = groupRepository.findById(groupId);
 			Group group = searchedGroup
-					.orElseThrow(() -> new ResourceNotFoundException("Group not found with ID: " + id));
+					.orElseThrow(() -> new ResourceNotFoundException("Group not found with ID: " + groupId));
 
 			// Edit user with data from userRequest object (sent form client)
 			if (groupRequest.getName() != null) {
@@ -184,10 +184,12 @@ public class GroupService {
 				}
 				group.setGroupCategory(groupCategory);
 			}
+			if (groupRequest.getDescription() != null) {
+				group.setDescription(groupRequest.getDescription());
+			}
 
 			groupRepository.save(group);
-			return new GroupEditDTO(group.getId(), group.getName(), group.getTotalBalance(),
-					group.getGroupCategory().getId());
+			return this.mapGroupDetailsDTO(group);
 		} catch (ResourceNotFoundException e) {
 			e.printStackTrace();
 			return null;

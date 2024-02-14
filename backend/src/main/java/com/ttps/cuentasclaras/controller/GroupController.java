@@ -71,10 +71,11 @@ public class GroupController {
 		return new ResponseEntity<Group>(HttpStatus.BAD_REQUEST);
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<GroupEditDTO> updateGroup(@PathVariable(name = "id") Integer id,
+	@PutMapping("/{id}/owner/{userId}")
+	public ResponseEntity<GroupDetailsDTO> updateGroup(@PathVariable(name = "id") Integer groupId,
+			@PathVariable(name = "userId") Integer userId,
 			@RequestBody GroupEditDTO groupRequest) {
-		GroupEditDTO groupUpdateResult = groupService.updateGroup(id, groupRequest);
+		GroupDetailsDTO groupUpdateResult = groupService.updateGroup(groupId, userId, groupRequest);
 		if (groupUpdateResult == null) {
 			return ResponseEntity.notFound().build();
 		}
