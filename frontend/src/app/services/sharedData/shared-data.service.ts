@@ -16,9 +16,7 @@ export class SharedDataService {
   private groupsSubject = new BehaviorSubject<Groups>({ listGroups: [], listOwnedGroups: [] });
   groups$: Observable<Groups> = this.groupsSubject.asObservable();
 
-  updateGroups(user: User): void {
-    // Reutiliza la lógica existente para obtener la lista de grupos desde tu servicio original
-    // Reemplaza 'this.groupsService.getAllGroups()' con la llamada a tu servicio correspondiente
+  updateGroupList(user: User): void {
     this.groupsService.getAllGroups(user.id).subscribe({
       next: (res: Groups) => {
         this.groupsSubject.next(res);

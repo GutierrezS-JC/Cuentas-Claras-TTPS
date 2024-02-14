@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { User } from '../../../../models/user/user.model';
 import { GroupsService } from '../../../../services/groups/groups.service';
 import { GroupEdit } from '../../../../models/groups/groupEdit.interface';
@@ -68,7 +68,7 @@ export class GroupEditComponent implements OnChanges, OnInit {
       this.groupsService.updateGroup(group, this.actualGroup.groupId, this.user.id).subscribe({
         next: (res: GroupDetails) => {
           this.actualGroupChange.emit(res);
-          this.sharedDataService.updateGroups(this.user);
+          this.sharedDataService.updateGroupList(this.user);
           swalAlert('success', 'Grupo actualizado', 'El grupo fue actualizado correctamente');
         },
         error: (error: any) => {

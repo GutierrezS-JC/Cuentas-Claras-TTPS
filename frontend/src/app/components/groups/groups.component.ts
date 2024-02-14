@@ -88,7 +88,7 @@ export class GroupsComponent implements OnInit {
           this.groups = updatedGroups;
         });
 
-        this.sharedDataService.updateGroups(this.currentUser);
+        this.sharedDataService.updateGroupList(this.currentUser);
       },
       error: error => {
         console.error('Error al obtener detalles del usuario:', error);
