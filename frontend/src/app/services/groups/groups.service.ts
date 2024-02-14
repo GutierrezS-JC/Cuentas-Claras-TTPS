@@ -6,6 +6,7 @@ import { Groups } from '../../models/groups/groups.model';
 import { GroupDetails } from '../../models/groups/groupDetails.model';
 import { GroupCategories } from '../../models/groupCategories/groupCategories.model';
 import { GroupCreate } from '../../models/groups/gropCreate.model';
+import { GroupEdit } from '../../models/groups/groupEdit.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class GroupsService {
   constructor(private http: HttpClient) { }
 
   getAllGroups(userId: number): Observable<Groups> {
-    return this.http.get<any>(`${this.apiUrl}/user/${userId}`);
+    return this.http.get<Groups>(`${this.apiUrl}/user/${userId}`);
   }
 
   getGroup(groupId: number): Observable<GroupDetails> {
@@ -37,4 +38,7 @@ export class GroupsService {
     return this.http.post<GroupCreate>(`${this.apiUrl}`, group);
   }
 
+  updateGroup(group: GroupEdit, groupId: number, userId: number): Observable<GroupDetails> {
+    return this.http.put<GroupDetails>(`${this.apiUrl}/${groupId}/owner/${userId}`, group);
+  }
 }

@@ -20,6 +20,7 @@ import { UserService } from '../../services/user/user.service';
 import { FormsModule } from '@angular/forms';
 import { GroupsSidebarComponent } from './groups-sidebar/groups-sidebar.component';
 import { GroupsMainComponent } from './groups-main/groups-main.component';
+import { SharedDataService } from '../../services/sharedData/shared-data.service';
 
 @Component({
   selector: 'app-groups',
@@ -40,7 +41,8 @@ export class GroupsComponent implements OnInit {
   constructor(
     private groupsService: GroupsService,
     private authService: AuthenticationService,
-    private userService: UserService
+    private userService: UserService,
+    private sharedDataService: SharedDataService
   ) { }
 
   currentUser!: User | null;
@@ -80,23 +82,19 @@ export class GroupsComponent implements OnInit {
     this.userService.getUserDetails(username).subscribe({
       next: userDetails => {
         this.currentUser = userDetails;
-        this.getGroups();
+
+        // Hacemos la suscripcion al observable de grupos :)
+        this.sharedDataService.groups$.subscribe(updatedGroups => {
+          this.groups = updatedGroups;
+        });
+
+        this.sharedDataService.updateGroups(this.currentUser);
       },
       error: error => {
         console.error('Error al obtener detalles del usuario:', error);
       }
     });
-  }
-
-  getGroups() {
-    this.groupsService.getAllGroups(this.currentUser!.id).subscribe({
-      next: (res: any) => {
-        this.groups = res;
-      },
-      error: (error) => {
-        console.log(error.message)
-      }
-    })
+    
   }
 
   // Selector de tipo de grupo (mis grupos y grupos en los que participa el usuario)
