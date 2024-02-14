@@ -55,8 +55,25 @@
     </div>
 
     <div class="mt-4">
-      <!-- Lista invitaciones -->
+      <!-- List de integrantes del grupo -->
       <span class="mb-1" style="display: flex;">
+        <h4>Integrantes</h4>
+      </span>
+      @if (actualGroup.members.length === 0) {
+        <ul>
+          <li>No hay integrantes registrados para este grupo</li>
+        </ul>
+      }
+      @else {
+        @for (member of actualGroup.members; track $index) {
+          <div class="ms-3">
+            <span class="badge rounded-pill text-bg-dark py-2 px-3 me-1">{{member.username}}</span>
+          </div>
+        }
+      }
+
+      <!-- Lista invitaciones -->
+      <span class="mt-4 mb-2" style="display: flex;">
         <h4>Invitaciones</h4>
       </span>
       
@@ -64,7 +81,7 @@
         (actualGroupChange)="actualGroupChange.emit($event)" />
 
       <!-- Lista Gastos -->
-      <h4 class="mt-5 mb-2">Gastos</h4>
+      <h4 class="mt-4 mb-2">Gastos</h4>
       <div class="col-12 overflow-x-hidden spendings-list" style="max-height:350px;">
         <app-groups-list [groupSpendings]="groupSpendings" [setSelectedSpending]="setSelectedSpending" />
       </div>
