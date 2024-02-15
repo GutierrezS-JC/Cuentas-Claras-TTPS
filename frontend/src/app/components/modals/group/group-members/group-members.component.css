@@ -1,0 +1,16 @@
+ul:hover {
+    cursor: pointer;
+}
+
+ul li {
+    background-color: #fafafa;
+}
+
+ul li:hover {
+    background-color: #ebeaea;
+    cursor: pointer;
+}
+
+.delete-member-option {
+    cursor: pointer;
+}

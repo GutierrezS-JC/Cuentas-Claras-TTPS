@@ -1,9 +1,10 @@
 <!-- Detalles del grupo -->
 <app-group-details [selectedSpending]="selectedSpending" [deleteSelectedSpending]="deleteSelectedSpending" />
 
+<!-- Modals para editar datos y administrar integrantes del grupo seleccionado -->
 @if (actualGroup.groupId !== -1) {
   <app-group-edit [user]="user" [actualGroup]="actualGroup" (actualGroupChange)="actualGroupChange.emit($event)" />
-  <app-group-members />
+  <app-group-members [user]="user" />
 }
 
 @if (groups.listOwnedGroups.length === 0 && selectedGroupOption === "misGrupos") {
