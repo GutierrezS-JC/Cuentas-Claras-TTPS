@@ -6,11 +6,13 @@ import { GroupsListComponent } from '../groups-list/groups-list.component';
 import { GroupDetailsComponent } from '../../modals/group/group-details/group-details.component';
 import { User } from '../../../models/user/user.model';
 import { GroupEditComponent } from '../../modals/group/group-edit/group-edit.component';
+import { GroupMembersComponent } from '../../modals/group/group-members/group-members.component';
 
 @Component({
   selector: 'app-groups-main',
   standalone: true,
-  imports: [GroupsInvitationsListComponent, GroupsListComponent, GroupDetailsComponent, GroupEditComponent],
+  imports: [GroupsInvitationsListComponent, GroupsListComponent, GroupDetailsComponent, 
+    GroupEditComponent, GroupMembersComponent],
   templateUrl: './groups-main.component.html',
   styleUrl: './groups-main.component.css'
 })

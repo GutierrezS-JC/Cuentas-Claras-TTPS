@@ -19,3 +19,20 @@ h4 {
     font-family: Poppins Medium, sans-serif;
     font-size: 2em;
 }
+
+.delete-member-option {
+    background-color: white;
+    width: 1.5em;
+    height: 1.5em;
+    border: 1px solid #ccc;
+    text-align: center;
+    color: #343434;
+    margin-left: .5em;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.delete-member-option:hover {
+    background-color: #dddddd;
+    color: black;
+}
