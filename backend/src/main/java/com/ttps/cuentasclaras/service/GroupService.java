@@ -1,11 +1,6 @@
 package com.ttps.cuentasclaras.service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,8 +74,11 @@ public class GroupService {
 			membersDTO.add(userService.mapUserAlt(member));
 		}
 
+		List<Invitation> invitationsList = new ArrayList<>(invitations);
+		invitationsList.sort(Comparator.comparing(Invitation::getId));
+
 		List<InvitationDTO> invitationsDTO = new ArrayList<>();
-		for (Invitation invitation : invitations) {
+		for (Invitation invitation : invitationsList) {
 			UserAltDTO sender = userService.mapUserAlt(invitation.getSenderUser());
 			UserAltDTO receiver = userService.mapUserAlt(invitation.getReceiverUser());
 			invitationsDTO.add(new InvitationDTO(invitation.getId(), sender, receiver, invitation.getStatus()));
@@ -102,9 +100,9 @@ public class GroupService {
 	public Group getGroup(Integer id) {
 		try {
 			Optional<Group> searchedGroup = groupRepository.findById(id);
-			Group user = searchedGroup
+			Group group = searchedGroup
 					.orElseThrow(() -> new ResourceNotFoundException("Group not found with ID: " + id));
-			return user;
+			return group;
 		} catch (ResourceNotFoundException e) {
 			e.printStackTrace();
 			return null;
@@ -229,8 +227,8 @@ public class GroupService {
 	}
 
 	public UserGroupsDTO getGroupsByUser(User searchedUser) {
-		Set<Group> groupsUser = new TreeSet<>((e1, e2) -> Integer.compare(e1.getId(), e2.getId()));
-		Set<Group> groupsOwner = new TreeSet<>((e1, e2) -> Integer.compare(e1.getId(), e2.getId()));
+		Set<Group> groupsUser = new TreeSet<>(Comparator.comparingInt(Group::getId));
+		Set<Group> groupsOwner = new TreeSet<>(Comparator.comparingInt(Group::getId));
 		groupsUser.addAll(searchedUser.getGroups());
 		groupsOwner.addAll(searchedUser.getOwnedGroups());
 		

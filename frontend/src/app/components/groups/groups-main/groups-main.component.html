@@ -4,7 +4,7 @@
 <!-- Modals para editar datos y administrar integrantes del grupo seleccionado -->
 @if (actualGroup.groupId !== -1) {
   <app-group-edit [user]="user" [actualGroup]="actualGroup" (actualGroupChange)="actualGroupChange.emit($event)" />
-  <app-group-members [user]="user" />
+  <app-group-members [user]="user" (actualGroupChange)="actualGroupChange.emit($event)" [actualGroup]="actualGroup" />
 }
 
 @if (groups.listOwnedGroups.length === 0 && selectedGroupOption === "misGrupos") {

@@ -13,4 +13,11 @@ ul li:hover {
 
 .delete-member-option {
     cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.71);
+    transition: background-color 0.3s;
+}
+
+.delete-member-option:hover {
+    background-color: #212529;
+    cursor: pointer;
 }

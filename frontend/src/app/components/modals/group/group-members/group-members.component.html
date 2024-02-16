@@ -24,11 +24,15 @@
 
         <!-- Formulario de busqueda (filtro en BD) para todos los usuaros -->
         @if (selectedUserOption === "usuariosGeneral") {
-          <form [formGroup]="membersForm">
+          <form [formGroup]="membersForm" class="mb-5">
             <div class="mb-2 mt-2">
               <label for="name-add-form" class="col-form-label">Buscar usuario:</label>
               <input type="text" class="form-control" id="name-add-form" 
                 formControlName="searchInput" (input)="handleSearch()">
+                <div class="form-text">
+                  Podes buscar a cualquier usuario registrado en la aplicacion e invitarlo al grupo.
+                  Tambien podras encontrar a aquellos usuarios que ya son tus contactos :)
+                </div>
             </div>
             @if (searched.length !== 0 ) {
               <ul class="list-group mt-3">
@@ -47,25 +51,34 @@
         @else {
           <!-- Muestro los contactos del usuario para que sea mas facil y rapido acceder a ellos (preferencia) -->
           <div class="mt-4">
-            <ul class="list-group">
-            @for (contact of [1,2]; track $index) {
-              <li class="list-group-item d-flex justify-content-between align-items-start">
-                <div class="ms-1 me-auto">
-                  <div class="fw-bold">Manaos</div>
-                  Juan Cruz Gutierrez
-                </div>
-              </li>
-              }
-            </ul>
+            @if (contacts.length !== 0) {
+              <ul class="list-group">
+              @for (contact of contacts; track $index) {
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                  <div class="ms-1 me-auto">
+                    <div class="fw-bold">{{contact.username}}</div>
+                    {{contact.name}} {{contact.lastName}}
+                  </div>
+                </li>
+                }
+              </ul>
+            }
+            @else {
+              <div class="d-flex flex-column justify-content-center align-items-center">
+                <img style="width: 10em;" src="../../../assets/images/void.svg" alt="Sin contactos registrados">
+                <p class="text-center mt-2">No tenes contactos registrados</p>
+              </div>
+            }
           </div>
         }
         <!-- Lista de usuarios seleccionados -->
         @if (selectedUsers.length !== 0) {
           <div class="mt-3" style="line-height: 2em;">
+            <hr style="margin: .5rem 0 !important;"/>
             Usuarios seleccionados:
             <br/>
             @for (user of selectedUsers; track $index) {
-                <span class="badge rounded-pill text-bg-dark py-2 px-3 ms-1 me-1 delete-member-option" 
+                <span class="badge rounded-pill py-2 px-3 ms-1 me-1 delete-member-option" 
                   style="font-size: .65em;" (click)="handleDeleteMember(user)">
                   {{user.username}}
                 </span>
@@ -77,7 +90,7 @@
       <!-- FOOTER -->
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="handleClose()">Cerrar</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="membersForm.invalid" (click)="handleSendInvitation()">
           @if (selectedUsers.length > 1) {
             Enviar invitaciones
           }
