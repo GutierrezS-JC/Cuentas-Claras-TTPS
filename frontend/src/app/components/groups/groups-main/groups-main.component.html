@@ -1,8 +1,10 @@
 <!-- Detalles del grupo -->
 <app-group-details [selectedSpending]="selectedSpending" [deleteSelectedSpending]="deleteSelectedSpending" />
 
+<!-- Modals para editar datos y administrar integrantes del grupo seleccionado -->
 @if (actualGroup.groupId !== -1) {
   <app-group-edit [user]="user" [actualGroup]="actualGroup" (actualGroupChange)="actualGroupChange.emit($event)" />
+  <app-group-members [user]="user" (actualGroupChange)="actualGroupChange.emit($event)" [actualGroup]="actualGroup" />
 }
 
 @if (groups.listOwnedGroups.length === 0 && selectedGroupOption === "misGrupos") {
@@ -58,6 +60,8 @@
       <!-- List de integrantes del grupo -->
       <span class="mb-1" style="display: flex;">
         <h4>Integrantes</h4>
+        <i class="bi bi-person-fill-add fs-3 ms-2" data-bs-target="#modal-group-invite" data-bs-toggle="modal"
+          style="color: #212529d4; cursor: pointer;"></i>
       </span>
       @if (actualGroup.members.length === 0) {
         <ul>
@@ -65,11 +69,14 @@
         </ul>
       }
       @else {
-        @for (member of actualGroup.members; track $index) {
-          <div class="ms-3">
-            <span class="badge rounded-pill text-bg-dark py-2 px-3 me-1">{{member.username}}</span>
-          </div>
-        }
+        <div class="ms-2">
+          @for (member of actualGroup.members; track $index) {
+            <span class="badge text-bg-dark py-2 px-3 me-1" style="font-size: .8em; display: flex; width: fit-content; align-items: center;">
+              {{member.username}} 
+              <span class="rounded-circle delete-member-option">x</span>
+            </span>
+          }
+        </div>
       }
 
       <!-- Lista invitaciones -->

@@ -23,7 +23,7 @@
       </td>
       <td class="text-center">
         @if (invitation.senderUser.id === user.id && invitation.status === 'PENDING') {
-          <i class="bi bi-trash3-fill fs-5" style="color: #212529d4; cursor: pointer;"
+          <i class="bi bi-trash3-fill fs-6" style="color: #212529d4; cursor: pointer;"
             (click)="cancelInvitation(invitation.id)"></i>
         }
       </td>
