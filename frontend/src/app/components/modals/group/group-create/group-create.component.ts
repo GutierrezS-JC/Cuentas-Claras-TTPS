@@ -21,7 +21,7 @@ export class GroupCreateComponent implements OnInit {
     private groupsService: GroupsService,
     private sharedDataService: SharedDataService
   ) { }
-  
+
   @Input() groupCategories: any;
   @Input() user!: User;
 
@@ -29,11 +29,28 @@ export class GroupCreateComponent implements OnInit {
   submitted = false;
 
   createForm = new FormGroup({
-    name: new FormControl(''),
-    description: new FormControl(''),
-    categoryId: new FormControl(-1, Validators.min(1)),
-    amount: new FormControl(0),
-    selectedUserIds: new FormArray([]),
+    name: new FormControl('', [
+      Validators.required,
+      Validators.minLength(4),
+      Validators.maxLength(50)
+    ]),
+    description: new FormControl('', [
+      Validators.required,
+      Validators.maxLength(200)
+    ]),
+    categoryId: new FormControl(-1, [
+      Validators.required,
+      Validators.min(1),
+    ]),
+    amount: new FormControl(0, [
+      Validators.required,
+      Validators.min(1),
+      Validators.pattern(/^[1-9]\d*$/)
+    ]),
+    selectedUserIds: new FormArray([], [
+      Validators.required,
+      Validators.minLength(1)
+    ]),
     searchInput: new FormControl('')
   })
 
@@ -120,7 +137,7 @@ export class GroupCreateComponent implements OnInit {
     const selectedUserIdsArray = this.createForm.get('selectedUserIds') as FormArray;
 
     if (selectedUserIdsArray.value.includes(user.id)) {
-      console.log('El usuario ya está en la lista');
+      swalAlert("info", "No se pudo agregar al usuario", "El usuario ya se encuentra en la lista de seleccionados");
       return;
     }
 
@@ -132,4 +149,16 @@ export class GroupCreateComponent implements OnInit {
     this.createForm.get('searchInput')?.reset('');
     this.searched = [];
   }
+
+  handleDeleteMember(member: User) {
+    const selectedUserIdsArray = this.createForm.get('selectedUserIds') as FormArray;
+    const index = selectedUserIdsArray.value.indexOf(member.id);
+
+    if (index !== -1) {
+      selectedUserIdsArray.removeAt(index);
+    }
+
+    this.selectedUsers = this.selectedUsers.filter(u => u.id !== member.id);
+  }
+
 }

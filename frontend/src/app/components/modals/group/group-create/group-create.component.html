@@ -57,7 +57,9 @@
           @if (selectedUsers.length !== 0) {
             <div class="mt-4">
               @for (user of selectedUsers; track $index) {
-                  <span class="badge rounded-pill text-bg-dark py-2 px-3 me-1">{{user.username}}</span>
+                  <span class="badge rounded-pill py-2 px-3 me-1 delete-member-option" (click)="handleDeleteMember(user)">
+                    {{user.username}}
+                  </span>
               }
             </div>
           }
