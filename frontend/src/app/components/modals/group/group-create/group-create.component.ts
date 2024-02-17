@@ -36,7 +36,8 @@ export class GroupCreateComponent implements OnInit {
     ]),
     description: new FormControl('', [
       Validators.required,
-      Validators.maxLength(200)
+      Validators.minLength(5),
+      Validators.maxLength(300)
     ]),
     categoryId: new FormControl(-1, [
       Validators.required,

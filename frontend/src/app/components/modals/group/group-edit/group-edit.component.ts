@@ -28,10 +28,25 @@ export class GroupEditComponent implements OnChanges, OnInit {
   groupCategories: any;
 
   editForm = new FormGroup({
-    name: new FormControl(''),
-    amount: new FormControl(0),
-    categoryId: new FormControl(-1, Validators.min(1)),
-    description: new FormControl(''),
+    name: new FormControl('', [
+      Validators.required,
+      Validators.minLength(4),
+      Validators.maxLength(50)
+    ]),
+    amount: new FormControl(0, [
+      Validators.required,
+      Validators.min(1),
+      Validators.pattern(/^[1-9]\d*$/)
+    ]),
+    categoryId: new FormControl(-1, [
+      Validators.required,
+      Validators.min(1),
+    ]),
+    description: new FormControl('', [
+      Validators.required,
+      Validators.minLength(5),
+      Validators.maxLength(300)
+    ]),
   })
 
   ngOnInit(): void {
