@@ -45,7 +45,7 @@
         <i class="bi bi-pencil-square ms-3 fs-4" data-bs-target="#modal-group-edit-form" data-bs-toggle="modal" 
           style="color: #212529d4; cursor: pointer;"></i>
       </span>
-      <h3 class="details-price">${{actualGroup.totalBalance}}</h3>
+      <h3 class="details-price">{{actualGroup.totalBalance | currency:"ARS":"symbol":'.0-0': 'es-Ar' }}</h3>
       <p class="mt-2">
         <b>Categoria:</b> {{ actualGroup.groupCategory.name }}
         <br />

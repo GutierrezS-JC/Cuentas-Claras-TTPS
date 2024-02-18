@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { Router, RouterOutlet } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { UserService } from './services/user/user.service';
@@ -12,6 +12,8 @@ import { IndexComponent } from './components/index/index.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { RegisterService } from './services/register.service';
 import { AuthenticationService } from './services/authentication/authentication.service';
+import localeEsAr from '@angular/common/locales/es-AR';
+registerLocaleData(localeEsAr, 'es-Ar');
 
 @Component({
   selector: 'app-root',
