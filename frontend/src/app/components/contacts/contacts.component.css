@@ -1,0 +1,57 @@
+@font-face {
+  font-family: "Poppins Bold";
+  src: url("../../../assets/fonts/Poppins/Bold/Poppins-Bold.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: "Poppins SemiBold";
+  src: url("../../../assets/fonts/Poppins/SemiBold/Poppins-SemiBold.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: "Poppins Regular";
+  src: url("../../../assets/fonts/Poppins/Regular/Poppins-Regular.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: "Poppins Medium";
+  src: url("../../../assets/fonts/Poppins/Medium/Poppins-Medium.ttf") format('truetype');
+}
+
+h1 {
+  font-family: Poppins Bold, sans-serif;
+  font-size: 4em;
+}
+
+#btn-new-group {
+  font-family: Poppins Regular, sans-serif;
+}
+
+.avatar-md {
+  height: 5rem;
+  width: 5rem;
+}
+
+.img-thumbnail {
+    padding: 0.25rem;
+    background-color: #f1f3f7;
+    border: 1px solid #cbccce;
+    border-radius: 0.75rem;
+}
+
+.avatar-title {
+    align-items: center;
+    background-color: #3b76e1;
+    color: #fff;
+    display: flex;
+    font-weight: 500;
+    height: 100%;
+    justify-content: center;
+    width: 100%;
+}
+
+.dropdown-item:active {
+  color: var(--bs-dropdown-link-active-color);
+  text-decoration: none;
+  background-color: #3b3e42;
+}
