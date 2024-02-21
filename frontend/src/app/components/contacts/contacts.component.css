@@ -23,7 +23,7 @@ h1 {
   font-size: 4em;
 }
 
-#btn-new-group {
+#btn-new-contact {
   font-family: Poppins Regular, sans-serif;
 }
 
@@ -37,17 +37,6 @@ h1 {
     background-color: #f1f3f7;
     border: 1px solid #cbccce;
     border-radius: 0.75rem;
-}
-
-.avatar-title {
-    align-items: center;
-    background-color: #3b76e1;
-    color: #fff;
-    display: flex;
-    font-weight: 500;
-    height: 100%;
-    justify-content: center;
-    width: 100%;
 }
 
 .dropdown-item:active {

@@ -17,4 +17,16 @@ export class UserContactService {
     return this.http.get<User[]>(`${this.apiUrl}/user/${userId}`);
   }
 
+  searchUserContact(userId: number, searchString: string): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiUrl}/user/${userId}/search?searchString=${searchString}`);
+  }
+
+  sendFriendRequests(senderId: number, userList: number[]): Observable<any> {
+    let payload = {
+      senderId: senderId,
+      receiverListId: userList
+    } 
+    return this.http.post(`${this.apiUrl}/sendFriendRequest`, payload);
+  }
+
 }

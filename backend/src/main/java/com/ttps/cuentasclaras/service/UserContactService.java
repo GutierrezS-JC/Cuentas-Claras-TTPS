@@ -1,6 +1,7 @@
 package com.ttps.cuentasclaras.service;
 
 import com.ttps.cuentasclaras.dto.UserAltDTO;
+import com.ttps.cuentasclaras.dto.UserContactDTO;
 import com.ttps.cuentasclaras.model.User;
 import com.ttps.cuentasclaras.model.UserContact;
 import com.ttps.cuentasclaras.repository.UserRepository;
@@ -30,6 +31,19 @@ public class UserContactService {
                 if (contact.getContactSince() != null) {
                     response.add(userService.mapUserAlt(contact.getUser()));
                 }
+            }
+            return response;
+        }
+        return null;
+    }
+
+    public List<UserAltDTO> searchUsers(Integer userId, String searchString) {
+        User searchedUser = userRepository.findById(userId).orElse(null);
+        if (searchedUser != null) {
+            List<User> searchResults = userRepository.searchUsers(searchString, userId);
+            List<UserAltDTO> response = new ArrayList<>();
+            for (User user : searchResults) {
+                response.add(userService.mapUserAlt(user));
             }
             return response;
         }

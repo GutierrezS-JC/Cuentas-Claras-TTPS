@@ -1,0 +1,66 @@
+<div class="modal fade" id="modal-search-contact-form" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5">Invitar nuevo usuario</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          (click)="handleClose()"></button>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="contactsForm" class="mb-5">
+          <div class="mb-2">
+            <label for="name-add-form" class="col-form-label">Buscar usuario:</label>
+            <input type="text" class="form-control" id="name-add-form" formControlName="searchInput"
+              (input)="handleSearch()">
+            <div class="form-text">
+              Podes buscar a cualquier usuario registrado en la aplicacion ingresando su nombre o nombre de usuario.
+            </div>
+          </div>
+          @if (searched.length !== 0 ) {
+          <ul class="list-group mt-3">
+            @for (searchedUser of searched; track $index) {
+            <li class="list-group-item d-flex justify-content-between align-items-start"
+              (click)="handleAddUser(searchedUser)">
+              <div class="ms-1 me-auto">
+                <div class="fw-bold">{{searchedUser.username}}</div>
+                {{searchedUser.name}} {{searchedUser.lastName}}
+              </div>
+            </li>
+            }
+          </ul>
+          }
+        </form>
+
+        <!-- Lista de usuarios seleccionados -->
+        @if (selectedUsers.length !== 0) {
+          <div class="mt-3" style="line-height: 2em;">
+            <hr style="margin: .5rem 0 !important;"/>
+            Usuarios seleccionados:
+            <br/>
+            @for (user of selectedUsers; track $index) {
+                <span class="badge rounded-pill py-2 px-3 ms-1 me-1 delete-member-option" 
+                  style="font-size: .65em;" (click)="handleDeleteMember(user)">
+                  {{user.username}}
+                </span>
+              }
+          </div>
+        }
+      </div>
+
+      <!-- FOOTER -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="handleClose()">Cerrar</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="contactsForm.invalid" (click)="handleSendInvitations()">
+          @if (selectedUsers.length > 1) {
+            Enviar invitaciones
+          }
+          @else {
+            Enviar invitacion
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
