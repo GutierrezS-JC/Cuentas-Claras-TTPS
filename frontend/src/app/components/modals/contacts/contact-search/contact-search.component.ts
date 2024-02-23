@@ -43,11 +43,10 @@ export class ContactSearchComponent {
         }
       })
     }
-    else{
+    else {
       this.searched = [];
-      this.contactsForm.reset({
-        searchInput: ''
-      })
+      this.contactsForm.get('searchInput')?.reset('');
+
     }
   }
 
@@ -98,7 +97,7 @@ export class ContactSearchComponent {
     let idList = this.contactsForm.controls.selectedUserIds.value as number[];
     this.userContactService.sendFriendRequests(this.user.id, idList).subscribe({
       next: () => {
-        this.sharedDataService.updateContactsList(this.user);
+        this.sharedDataService.updateInvitationsList(this.user);
         this.handleClose();
         swalAlert("success", "Invitaciones enviadas", "Las invitaciones fueron enviadas correctamente");
       },

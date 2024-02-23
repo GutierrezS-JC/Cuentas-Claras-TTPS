@@ -1,7 +1,6 @@
 package com.ttps.cuentasclaras.controller;
 
-import com.ttps.cuentasclaras.dto.UserAltDTO;
-import com.ttps.cuentasclaras.dto.UserContactDTO;
+import com.ttps.cuentasclaras.dto.*;
 import com.ttps.cuentasclaras.model.UserContact;
 import com.ttps.cuentasclaras.service.UserContactService;
 import com.ttps.cuentasclaras.service.UserService;
@@ -33,5 +32,34 @@ public class UserContactController {
                                                             @RequestParam String searchString) {
         List<UserAltDTO> searchResults = userContactService.searchUsers(userId, searchString);
         return new ResponseEntity<>(searchResults, HttpStatus.OK);
+    }
+
+    @PostMapping("/sendFriendRequest")
+    public ResponseEntity<InvitationsUserContactDTO> sendContactInvitations(@RequestBody InvitationContactDTO invitationReq) {
+        InvitationsUserContactDTO response = userContactService.sendInvitations(invitationReq);
+        if (response != null) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @GetMapping("/user/{userId}/invitations")
+    public ResponseEntity<InvitationsUserContactDTO> getInvitations(@PathVariable Integer userId) {
+        InvitationsUserContactDTO response = userContactService.getInvitations(userId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PutMapping("/acceptSolicitud/{solicitudId}/user/{userId}")
+    public ResponseEntity<InvitationsUserContactDTO> acceptSolicitud(@PathVariable Integer solicitudId,
+                                                                    @PathVariable Integer userId) {
+        InvitationsUserContactDTO response = userContactService.acceptSolicitud(solicitudId, userId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/deleteSolicitud/{solicitudId}/user/{userId}")
+    public ResponseEntity<InvitationsUserContactDTO> deleteSolicitud(@PathVariable Integer solicitudId,
+                                                                     @PathVariable Integer userId) {
+        InvitationsUserContactDTO response = userContactService.deleteSolicitud(solicitudId, userId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

@@ -49,9 +49,15 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "user")
 	private Set<Payment> payments;
 
-	@ManyToMany
-	@JoinTable(name = "user_contact", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "contact_id"))
-	private Set<UserContact> contacts;
+//	@ManyToMany
+//	@JoinTable(name = "user_contact", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "contact_id"))
+//	private Set<UserContact> contacts;
+
+	@OneToMany(mappedBy = "user")
+	private Set<UserContact> sentContactRequests;
+
+	@OneToMany(mappedBy = "contact")
+	private Set<UserContact> receivedContactRequests;
 
 	@ManyToMany(mappedBy = "users")
 	private Set<Group> groups;
@@ -86,7 +92,8 @@ public class User implements UserDetails {
 		this.myCreatedSpendings = new HashSet<>();
 		this.ownedPayments = new HashSet<>();
 		this.payments = new HashSet<>();
-		this.contacts = new HashSet<>();
+		this.sentContactRequests = new HashSet<>();
+		this.receivedContactRequests = new HashSet<>();
 		this.groups = new HashSet<>();
 		this.spendings = new HashSet<>();
 	}
@@ -103,7 +110,8 @@ public class User implements UserDetails {
 		this.myCreatedSpendings = new HashSet<>();
 		this.ownedPayments = new HashSet<>();
 		this.payments = new HashSet<>();
-		this.contacts = new HashSet<>();
+		this.sentContactRequests = new HashSet<>();
+		this.receivedContactRequests = new HashSet<>();
 		this.groups = new HashSet<>();
 		this.spendings = new HashSet<>();
 	}
@@ -179,8 +187,24 @@ public class User implements UserDetails {
 		return payments;
 	}
 
-	public Set<UserContact> getContacts() {
-		return contacts;
+//	public Set<UserContact> getContacts() {
+//		return contacts;
+//	}
+
+	public Set<UserContact> getSentContactRequests() {
+		return sentContactRequests;
+	}
+
+	public void setSentContactRequests(Set<UserContact> sentContactRequests) {
+		this.sentContactRequests = sentContactRequests;
+	}
+
+	public Set<UserContact> getReceivedContactRequests() {
+		return receivedContactRequests;
+	}
+
+	public void setReceivedContactRequests(Set<UserContact> receivedContactRequests) {
+		this.receivedContactRequests = receivedContactRequests;
 	}
 
 	public Set<Group> getGroups() {

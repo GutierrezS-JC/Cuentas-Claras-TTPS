@@ -23,6 +23,11 @@ h1 {
   font-size: 4em;
 }
 
+h4 {
+  font-family: Poppins Medium, sans-serif;
+  font-size: 2em;
+}
+
 #btn-new-contact {
   font-family: Poppins Regular, sans-serif;
 }
@@ -43,4 +48,10 @@ h1 {
   color: var(--bs-dropdown-link-active-color);
   text-decoration: none;
   background-color: #3b3e42;
+}
+
+.no-contacts {
+  color: #cdcdcd;
+  font-family: Poppins SemiBold, sans-serif;
+  font-size: 1.2em;
 }

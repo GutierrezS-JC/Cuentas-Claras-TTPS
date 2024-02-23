@@ -13,23 +13,29 @@
           <div class="mb-2">
             <label for="name-add-form" class="col-form-label">Buscar usuario:</label>
             <input type="text" class="form-control" id="name-add-form" formControlName="searchInput"
-              (input)="handleSearch()">
+              (input)="handleSearch()" placeholder="Nombre completo o nombre de usuario">
             <div class="form-text">
-              Podes buscar a cualquier usuario registrado en la aplicacion ingresando su nombre o nombre de usuario.
+              <p>Si esta seguro de estar ingresando el nombre del usuario correctamente y aun asi no lo encuentra
+              puede ser debido a: </p>
+              <ol>
+                <li>Que ya tenga una solicitud pendiente de aceptacion.</li>
+                <li>Que ya haya enviado una solicitud al usuario.</li>
+                <li>Que ya sea contacto suyo.</li>
+              </ol>
             </div>
           </div>
           @if (searched.length !== 0 ) {
-          <ul class="list-group mt-3">
-            @for (searchedUser of searched; track $index) {
-            <li class="list-group-item d-flex justify-content-between align-items-start"
-              (click)="handleAddUser(searchedUser)">
-              <div class="ms-1 me-auto">
-                <div class="fw-bold">{{searchedUser.username}}</div>
-                {{searchedUser.name}} {{searchedUser.lastName}}
-              </div>
-            </li>
-            }
-          </ul>
+            <ul class="list-group mt-3">
+              @for (searchedUser of searched; track $index) {
+              <li class="list-group-item d-flex justify-content-between align-items-start"
+                (click)="handleAddUser(searchedUser)">
+                <div class="ms-1 me-auto">
+                  <div class="fw-bold">{{searchedUser.username}}</div>
+                  {{searchedUser.name}} {{searchedUser.lastName}}
+                </div>
+              </li>
+              }
+            </ul>
           }
         </form>
 

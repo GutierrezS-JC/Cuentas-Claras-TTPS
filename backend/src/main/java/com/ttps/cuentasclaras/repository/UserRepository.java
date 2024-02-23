@@ -23,6 +23,7 @@ public interface UserRepository extends JpaRepository<User, Integer>{
             "WHERE (LOWER(CONCAT(u.name, ' ', u.lastName)) LIKE LOWER(CONCAT('%', :searchString, '%')) " +
             "       OR LOWER(u.username) LIKE LOWER(CONCAT('%', :searchString, '%'))) " +
             "       AND u.id <> :userId" +
-            "       AND u.id NOT IN (SELECT uc.contact.id FROM UserContact uc WHERE uc.user.id = :userId)")
+            "       AND u.id NOT IN (SELECT uc.contact.id FROM UserContact uc WHERE uc.user.id = :userId)" +
+            "       AND u.id NOT IN (SELECT uc.user.id FROM UserContact uc WHERE uc.contact.id = :userId)")
     List<User> searchUsers(@Param("searchString") String searchString, @Param("userId") Integer userId);
 }

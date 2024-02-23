@@ -1,0 +1,45 @@
+<div class="table-responsive">
+  <table class="table table-striped table-hover table-bordered spendings-list">
+    <thead class="table-secondary">
+      <tr>
+        <th scope="col">Usuario</th>
+        <th scope="col">Email</th>
+        <th scope="col">Nobre completo</th>
+        <th scope="col">Fecha de solicitud</th>
+        <th scope="col" class="text-center">Acciones</th>
+      </tr>
+    </thead>
+    <tbody class="table-group-divider" style="vertical-align: middle;">
+      @if (option === 'enviadas') {
+        @for (invitation of invitations; track $index) {
+          <tr>
+            <td>{{invitation.contactUser.username}}</td>
+            <td>{{invitation.contactUser.email}}</td>
+            <td>{{invitation.contactUser.name}} {{invitation.contactUser.lastName}}</td>
+            <td>{{invitation.timestamp}}</td>
+            <td class="text-center">
+              <i class="bi bi-trash3-fill fs-6" style="color: #212529d4; cursor: pointer;"
+                (click)="cancelSolicitud(invitation.id)"></i>
+            </td>
+          </tr>
+        }
+      }
+      @else {
+        @for (invitation of invitations; track $index) {
+          <tr>
+            <td>{{invitation.senderUser.username}}</td>
+            <td>{{invitation.senderUser.email}}</td>
+            <td>{{invitation.senderUser.name}} {{invitation.senderUser.lastName}}</td>
+            <td>{{invitation.timestamp}}</td>
+            <td class="text-center">
+              <i class="bi bi-check-circle-fill fs-6" style="color: #212529d4; cursor: pointer;"
+                (click)="acceptSolicitud(invitation.id)"></i>
+                <i class="bi bi-trash3-fill fs-6 ms-2" style="color: #212529d4; cursor: pointer;"
+                (click)="cancelSolicitud(invitation.id)"></i>
+            </td>
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+</div>
