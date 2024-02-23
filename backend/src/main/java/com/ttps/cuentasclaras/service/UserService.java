@@ -214,4 +214,13 @@ public class UserService {
 		}
 		return null;
 	}
+
+	public UserAltDTO getUserDetailsById(Integer userId) {
+		Optional<User> searchedUser = userRepository.findById(userId);
+		User user = searchedUser.orElse(null);
+		if (user != null) {
+			return this.mapUserAlt(user);
+		}
+		return null;
+	}
 }

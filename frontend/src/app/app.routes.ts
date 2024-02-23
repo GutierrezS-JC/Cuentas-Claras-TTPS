@@ -11,6 +11,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import { IndexComponent } from './components/index/index.component';
 import { AuthGuard } from './guards/auth.guard';
+import { UserProfileComponent } from './components/profile/user-profile/user-profile.component';
 
 export const routes: Routes = [
     // { path: '', component: IndexComponent }, Index... eventualmente
@@ -22,8 +23,9 @@ export const routes: Routes = [
     { path: 'pagos', component: PaymentsComponent, canActivate: [AuthGuard]},
     { path: 'contactos', component: ContactsComponent, canActivate: [AuthGuard]},
     { path: 'gastos', component: SpendingsComponent, canActivate: [AuthGuard]},
+    { path: 'perfil/:id', component: UserProfileComponent, canActivate: [AuthGuard]},
     { path: 'index', component: IndexComponent, canActivate: [AuthGuard]},
-    
+
     { path: '**', redirectTo: 'login', pathMatch: 'full' }
 ];
 

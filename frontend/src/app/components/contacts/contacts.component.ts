@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { ContactSearchComponent } from '../modals/contacts/contact-search/contact-search.component';
 import { User } from '../../models/user/user.model';
@@ -11,15 +11,16 @@ import { ContactsInvitationsListComponent } from './contacts-invitations-list/co
 import { CommonModule } from '@angular/common';
 import { swalAlert } from '../../utils/sweet-alert';
 import { UserContactService } from '../../services/userContact/user-contact.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-contacts',
   standalone: true,
-  imports: [CommonModule, NavbarComponent, ContactSearchComponent, ContactsInvitationsListComponent, FormsModule],
+  imports: [RouterModule, CommonModule, NavbarComponent, ContactSearchComponent, ContactsInvitationsListComponent, FormsModule],
   templateUrl: './contacts.component.html',
   styleUrl: './contacts.component.css'
 })
-export class ContactsComponent {
+export class ContactsComponent implements OnInit {
   constructor(
     private userService: UserService,
     private authService: AuthenticationService,

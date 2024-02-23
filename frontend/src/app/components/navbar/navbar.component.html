@@ -26,7 +26,7 @@
       </ul>
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item me-1">
-          <a class="nav-link" routerLink="/home">Mi perfil</a>
+          <a class="nav-link" [routerLink]="['/perfil', currentUser?.id]">Mi perfil</a>
         </li>
         <li class="nav-item">
           <a class="btn btn-sm btn-cst" routerLink="/login" (click)="logOut()">Cerrar sesion</a>

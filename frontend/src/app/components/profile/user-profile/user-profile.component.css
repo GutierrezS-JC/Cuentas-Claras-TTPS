@@ -1,0 +1,122 @@
+body {
+  margin-top: 20px;
+  background: #f7f8fa
+}
+
+.avatar-xxl {
+  height: 7rem;
+  width: 7rem;
+}
+
+.card {
+  margin-bottom: 20px;
+  box-shadow: 0 1.5px 2px #e2e3e5ab;
+}
+
+.avatar-title {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #038edc;
+  color: #fff;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  font-weight: 500;
+  height: 100%;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.rounded-circle {
+  border-radius: 50% !important;
+}
+
+.avatar-group {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  padding-left: 12px;
+}
+
+.border-end {
+  border-right: 1px solid #eff0f2 !important;
+}
+
+.d-inline-block {
+  display: inline-block !important;
+}
+
+.avatar-group .avatar-group-item {
+  margin-left: -14px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  -webkit-transition: all .2s;
+  transition: all .2s;
+}
+
+.avatar-sm {
+  height: 2rem;
+  width: 2rem;
+}
+
+/* I want to believe */
+
+@font-face {
+  font-family: "Poppins Bold";
+  src: url("../../../../assets/fonts/Poppins/Bold/Poppins-Bold.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: "Poppins SemiBold";
+  src: url("../../../../assets/fonts/Poppins/SemiBold/Poppins-SemiBold.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: "Poppins Regular";
+  src: url("../../../../assets/fonts/Poppins/Regular/Poppins-Regular.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: "Poppins Medium";
+  src: url("../../../../assets/fonts/Poppins/Medium/Poppins-Medium.ttf") format('truetype');
+}
+
+.icons-font {
+  font-family: Poppins Medium, sans-serif;
+  font-size: .9em;
+}
+
+.main-title {
+  font-family: Poppins Bold, sans-serif;
+  font-size: 3em;
+  color: #3d3d3d;
+}
+
+.main-username {
+  font-family: Poppins Bold, sans-serif;
+  font-size: 2em;
+  color: #0000005c;
+}
+
+.main-balance {
+  font-family: Poppins Bold, sans-serif;
+  font-size: 1.5em;
+  color: #6b6b6b;
+}
+
+.main-balance-data {
+  font-family: Poppins Bold, sans-serif;
+  font-size: 5em;
+  color: #4a49495c;
+}
+
+.main-sub-cards {
+  font-family: Poppins Bold, sans-serif;
+  font-size: 2.5em;
+  color: #6b6b6b;
+}
