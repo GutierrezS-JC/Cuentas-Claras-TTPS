@@ -22,8 +22,8 @@ public class UserContactController {
     UserContactService userContactService;
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<UserAltDTO>> getUserContacts(@PathVariable Integer userId) {
-        List<UserAltDTO> listResponse = userContactService.getUserContacts(userId);
+    public ResponseEntity<List<UserContactResponse>> getUserContacts(@PathVariable Integer userId) {
+        List<UserContactResponse> listResponse = userContactService.getUserContacts(userId);
         return ResponseEntity.ok(listResponse);
     }
 
@@ -60,6 +60,13 @@ public class UserContactController {
     public ResponseEntity<InvitationsUserContactDTO> deleteSolicitud(@PathVariable Integer solicitudId,
                                                                      @PathVariable Integer userId) {
         InvitationsUserContactDTO response = userContactService.deleteSolicitud(solicitudId, userId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/user/{userId}/deleteContact/{userContactId}")
+    public ResponseEntity<InvitationsUserContactDTO> deleteContact(@PathVariable Integer userId,
+                                                                  @PathVariable Integer userContactId) {
+        InvitationsUserContactDTO response = userContactService.deleteContact(userId, userContactId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

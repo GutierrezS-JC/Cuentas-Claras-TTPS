@@ -22,22 +22,24 @@ public class UserContactService {
     @Autowired
     UserService userService;
 
-    public List<UserAltDTO> getUserContacts(Integer userId) {
+    public List<UserContactResponse> getUserContacts(Integer userId) {
         User user = userRepository.findById(userId).orElse(null);
         if (user != null) {
             Set<UserContact> contacts = user.getReceivedContactRequests();
             Set<UserContact> sentContacts = user.getSentContactRequests();
 
-            List<UserAltDTO> response = new ArrayList<>();
+            List<UserContactResponse> response = new ArrayList<>();
             for (UserContact contact : contacts) {
                 if(contact.getContactSince() != null){
-                    response.add(userService.mapUserAlt(contact.getUser()));
+                    response.add(new UserContactResponse(contact.getId(), userService.mapUserAlt(contact.getUser()),
+                            contact.getContactSince()));
                 }
             }
 
             for (UserContact contact : sentContacts) {
                 if(contact.getContactSince() != null) {
-                    response.add(userService.mapUserAlt(contact.getContact()));
+                    response.add(new UserContactResponse(contact.getId(), userService.mapUserAlt(contact.getContact()),
+                            contact.getContactSince()));
                 }
             }
 
@@ -121,6 +123,16 @@ public class UserContactService {
         if (solicitud != null) {
             solicitud.setContactSince(LocalDate.now());
             userContactRepository.save(solicitud);
+            return this.getInvitations(userId);
+        }
+        return null;
+    }
+
+    public InvitationsUserContactDTO deleteContact(Integer userId, Integer userContactId) {
+        UserContact contact = userContactRepository.findById(userContactId).orElse(null);
+        if (contact != null && (contact.getUser().getId().equals(userId) ||
+                contact.getContact().getId().equals(userId))) {
+            userContactRepository.delete(contact);
             return this.getInvitations(userId);
         }
         return null;

@@ -22,12 +22,28 @@
           <input type="radio" [(ngModel)]="selectedSolicitudOption" [value]="'solicitudesEnviadas'"
             (ngModelChange)="setSolicitudOption($event)" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off"
             [checked]="selectedSolicitudOption === 'solicitudesEnviadas'">
-          <label class="btn btn-outline-light" for="btnradio2">Solicitudes Enviadas</label>
+          <label class="btn btn-outline-light" for="btnradio2">
+            Solicitudes Enviadas 
+            @if(invitaciones && invitaciones.solicitudesEnviadas && invitaciones.solicitudesEnviadas.length > 0) {
+              <span class="badge ms-1"
+              [ngClass]="{'text-bg-light': selectedSolicitudOption !== 'solicitudesEnviadas', 'text-bg-secondary': selectedSolicitudOption === 'solicitudesEnviadas'}">
+                {{invitaciones.solicitudesEnviadas.length}}
+              </span> 
+            }
+          </label>
 
           <input type="radio" [(ngModel)]="selectedSolicitudOption" [value]="'solicitudesRecibidas'"
             (ngModelChange)="setSolicitudOption($event)" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off"
             [checked]="selectedSolicitudOption === 'solicitudesRecibidas'">
-          <label class="btn btn-outline-light" for="btnradio3">Solicitudes recibidas</label>
+          <label class="btn btn-outline-light" for="btnradio3">
+            Solicitudes recibidas
+            @if(invitaciones && invitaciones.solicitudesRecibidas && invitaciones.solicitudesRecibidas.length > 0) {
+              <span class="badge ms-1"
+              [ngClass]="{'text-bg-light': selectedSolicitudOption !== 'solicitudesRecibidas', 'text-bg-secondary': selectedSolicitudOption === 'solicitudesRecibidas'}">
+                {{invitaciones.solicitudesRecibidas.length}}
+              </span> 
+            }
+          </label>
         </div>
 
         <div class="p-4 mt-3" style="background-color: #f6f6f6; border-radius: 7px;">
@@ -75,7 +91,7 @@
       </div>
     </div>
 
-    <div class="row mt-5">
+    <div class="row mt-5 pb-4">
       @if (contacts.length === 0) {
         <div class="col-12">
           <h4 style="color: #cdcdcd;">Mis contactos ({{contacts.length || 0}})</h4>
@@ -89,7 +105,7 @@
         </div>
       }
       @else {
-        <h4 class="mb-2" style="color: #cdcdcd;">Mis contactos ({{contacts.length || 0}})</h4>
+        <h4 class="mb-3" style="color: #cdcdcd;">Mis contactos ({{contacts.length || 0}})</h4>
         @for (contact of contacts; track $index) {
           <div class="col-12 col-lg-4"> 
             <div class="card mb-3 p-2 me-3" style="width: 24rem; background-color: #f2f2f2;">
@@ -101,7 +117,7 @@
                   <ul class="dropdown-menu dropdown-menu-end" data-bs-theme="dark" style="cursor:default;">
                     <li><a class="dropdown-item">Ver perfil</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item">Eliminar</a></li>
+                    <li (click)="handleDeleteContact(contact.id)"><a class="dropdown-item">Eliminar</a></li>
                   </ul>          
                 </div>
       
@@ -110,19 +126,19 @@
                     <img src="../../../assets/images/default_user.png" class="avatar-md rounded-circle img-thumbnail" />
                   </div>
                   <div class="flex-1 ms-3">
-                    <h5 class="font-size-16 mb-1"><a href="#" class="text-dark">{{contact.name}} {{contact.lastName}}</a></h5>
-                    <span class="text-muted mb-0">&#64;{{contact.username}}</span>
+                    <h5 class="font-size-16 mb-1"><a href="#" class="text-dark">{{contact.user.name}} {{contact.user.lastName}}</a></h5>
+                    <span class="text-muted mb-0">&#64;{{contact.user.username}}</span>
                   </div>
                 </div>
       
-                <div class="mt-2">
-                  <p class="text-muted mb-0 fs-6">
-                    <i class="bi bi-telephone-fill fs-4 pe-2 text-dark"></i>
-                    2211231234
+                <div class="mt-2 icons-font">
+                  <p class="text-muted mb-0">
+                    <i class="bi bi-calendar-event-fill fs-4 pe-2"></i>
+                    {{contact.contactSince | date: 'dd/MM/yyyy'}}
                   </p>
                   <p class="text-muted mb-0 mt-1">
-                    <i class="bi bi-envelope-at-fill fs-4 pe-2 text-dark"></i>
-                    {{contact.email}}
+                    <i class="bi bi-envelope-at-fill fs-4 pe-2"></i>
+                    {{contact.user.email}}
                   </p>
                 </div>
       

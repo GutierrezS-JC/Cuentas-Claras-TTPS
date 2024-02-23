@@ -8,11 +8,14 @@ import { decodeJwt } from '../../utils/jwt-decode';
 import { SharedDataService } from '../../services/sharedData/shared-data.service';
 import { FormsModule } from '@angular/forms';
 import { ContactsInvitationsListComponent } from './contacts-invitations-list/contacts-invitations-list.component';
+import { CommonModule } from '@angular/common';
+import { swalAlert } from '../../utils/sweet-alert';
+import { UserContactService } from '../../services/userContact/user-contact.service';
 
 @Component({
   selector: 'app-contacts',
   standalone: true,
-  imports: [NavbarComponent, ContactSearchComponent, ContactsInvitationsListComponent, FormsModule],
+  imports: [CommonModule, NavbarComponent, ContactSearchComponent, ContactsInvitationsListComponent, FormsModule],
   templateUrl: './contacts.component.html',
   styleUrl: './contacts.component.css'
 })
@@ -20,7 +23,8 @@ export class ContactsComponent {
   constructor(
     private userService: UserService,
     private authService: AuthenticationService,
-    private sharedDataService: SharedDataService
+    private sharedDataService: SharedDataService,
+    private userContactService: UserContactService
   ) { }
 
   currentUser!: User | null;
@@ -65,5 +69,28 @@ export class ContactsComponent {
   // Selector de tipo de grupo (mis grupos y grupos en los que participa el usuario)
   setSolicitudOption(option: string) {
     this.selectedSolicitudOption = option;
+  }
+
+  handleDeleteContact(userContactId: number) {
+    this.userContactService.deleteContact(this.currentUser?.id as number, userContactId).subscribe({
+      next: (response: any) => {
+        if (response) {
+          this.sharedDataService.updateContactsList(this.currentUser!);
+          swalAlert(
+            'success',
+            'Contacto eliminado',
+            'Se ha eliminado el contacto exitosamente.'
+          )
+        }
+      },
+      error: (error: any) => {
+        console.log(error.message)
+        swalAlert(
+          'error',
+          'Error',
+          'No se ha podido eliminar el contacto, por favor intente de nuevo.'
+        )
+      }
+    })
   }
 }

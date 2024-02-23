@@ -14,7 +14,7 @@ export class UserContactService {
   private user: User | null = null;
   
   getContacts(userId: number): Observable<User[]> {
-    return this.http.get<User[]>(`${this.apiUrl}/user/${userId}`);
+    return this.http.get<any[]>(`${this.apiUrl}/user/${userId}`);
   }
   
   getInvitations(userId: number): Observable<User[]> {
@@ -39,6 +39,10 @@ export class UserContactService {
       receiverListId: userList
     } 
     return this.http.post(`${this.apiUrl}/sendFriendRequest`, payload);
+  }
+
+  deleteContact(userId: number, userContactId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/user/${userId}/deleteContact/${userContactId}`);
   }
 
 }
