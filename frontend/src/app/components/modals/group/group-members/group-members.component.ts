@@ -39,7 +39,7 @@ export class GroupMembersComponent implements OnInit {
   selectedUserOption: string = 'misContactos';
 
   // Contactos del usuario logueado
-  contacts: User[] = [];
+  contacts: any[] = [];
 
   ngOnInit(): void {
     this.userContactService.getContacts(this.user.id).subscribe({

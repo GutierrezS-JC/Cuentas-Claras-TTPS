@@ -1,2 +1,158 @@
 <app-navbar />
-<p>contacts works!</p>
+<div style="min-height: calc(100vh - 61.6px); background-color: #000000ed;">
+  <div class="container" style="max-width: 1200px; padding-top: 1.5em;">
+    <div
+      style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+      <h1 class="display-3 pt-4" style="color: white;">Contactos</h1>
+      <button type="button" class="btn btn-lg btn-light px-4 mt-3" id="btn-search-contact"
+        data-bs-target="#modal-search-contact-form" data-bs-toggle="modal">
+        Agregar contacto
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL para buscar un usuario registrado -->
+  <app-contact-search [user]="currentUser!" [contacts]="contacts"/>
+
+  <div class="container" style="max-width: 1200px; margin-top: 1em">
+    <div class="row">
+      <div class="col-12">
+        <!-- SELECTOR DE CONTACTOS -->
+        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+          <input type="radio" [(ngModel)]="selectedSolicitudOption" [value]="'solicitudesEnviadas'"
+            (ngModelChange)="setSolicitudOption($event)" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off"
+            [checked]="selectedSolicitudOption === 'solicitudesEnviadas'">
+          <label class="btn btn-outline-light" for="btnradio2">
+            Solicitudes Enviadas 
+            @if(invitaciones && invitaciones.solicitudesEnviadas && invitaciones.solicitudesEnviadas.length > 0) {
+              <span class="badge ms-1"
+              [ngClass]="{'text-bg-light': selectedSolicitudOption !== 'solicitudesEnviadas', 'text-bg-secondary': selectedSolicitudOption === 'solicitudesEnviadas'}">
+                {{invitaciones.solicitudesEnviadas.length}}
+              </span> 
+            }
+          </label>
+
+          <input type="radio" [(ngModel)]="selectedSolicitudOption" [value]="'solicitudesRecibidas'"
+            (ngModelChange)="setSolicitudOption($event)" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off"
+            [checked]="selectedSolicitudOption === 'solicitudesRecibidas'">
+          <label class="btn btn-outline-light" for="btnradio3">
+            Solicitudes recibidas
+            @if(invitaciones && invitaciones.solicitudesRecibidas && invitaciones.solicitudesRecibidas.length > 0) {
+              <span class="badge ms-1"
+              [ngClass]="{'text-bg-light': selectedSolicitudOption !== 'solicitudesRecibidas', 'text-bg-secondary': selectedSolicitudOption === 'solicitudesRecibidas'}">
+                {{invitaciones.solicitudesRecibidas.length}}
+              </span> 
+            }
+          </label>
+        </div>
+
+        <div class="p-4 mt-3" style="background-color: #f6f6f6; border-radius: 7px;">
+          @if (invitaciones && invitaciones.solicitudesEnviadas &&
+            invitaciones.solicitudesEnviadas.length === 0 && selectedSolicitudOption === "solicitudesEnviadas") {
+            <div class="d-flex flex-row mt-4 ms-5">
+              <img style="width: 8em; margin-top: -1.2em;" src="../../../assets/images/no_data.svg" alt="Sin solicitudes">
+              <div class="d-flex flex-column ms-4 mt-2">
+                <h2 class="fs-4" style="width: 60%; color: #505050;">
+                  No tenes solicitudes enviadas
+                </h2>
+                <div class="form-text" style="margin-top: -.3em; width: 60%;">
+                  En esta seccion podes ver las solicitudes que enviaste a otros usuarios, una vez que las
+                  acepten podras verlos en tu lista de contactos.
+                </div>
+              </div>
+            </div>
+          }
+          @else if (invitaciones && invitaciones.solicitudesRecibidas &&
+            invitaciones.solicitudesRecibidas.length === 0 && selectedSolicitudOption === "solicitudesRecibidas") {
+            <div class="d-flex flex-row mt-4 ms-5">
+              <img style="width: 8em; margin-top: -1.2em;" src="../../../assets/images/no_data.svg" alt="Sin solicitudes">
+              <div class="d-flex flex-column ms-4 mt-2">
+                <h2 class="fs-4" style="width: 60%; color: #505050;">
+                  No tenes solicitudes recibidas
+                </h2>
+                <div class="form-text" style="margin-top: -.3em; width: 60%;">
+                  En esta seccion podes ver las solicitudes recibidas pendientes, una vez que las aceptes podras ver a los usuarios
+                  en tu lista de contactos.
+                </div>
+              </div>
+            </div>
+          }
+          @else {
+            @if(selectedSolicitudOption === "solicitudesEnviadas") {
+              <h4 class="mt-1 mb-3">Solicitudes enviadas</h4>
+              <app-contacts-invitations-list [user]="currentUser!" [invitations]="invitaciones.solicitudesEnviadas" [option]="'enviadas'" />
+            }
+            @else {
+              <h4 class="mt-1 mb-3">Solicitudes recibidas</h4>
+              <app-contacts-invitations-list [user]="currentUser!" [invitations]="invitaciones.solicitudesRecibidas" [option]="'recibidas'" />
+            }
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-5 pb-4">
+      @if (contacts.length === 0) {
+        <div class="col-12">
+          <h4 style="color: #cdcdcd;">Mis contactos ({{contacts.length || 0}})</h4>
+          <div class="d-flex flex-column justify-content-center align-items-center mt-5">
+            <img class="rounded-4" src="../../../assets/images/mr_fresh.gif" alt="Sin contactos registrados">
+            <p class="text-center mt-3 no-contacts">
+              No tenes contactos registrados <br/>
+              😢
+            </p>
+          </div>
+        </div>
+      }
+      @else {
+        <h4 class="mb-3" style="color: #cdcdcd;">Mis contactos ({{contacts.length || 0}})</h4>
+        @for (contact of contacts; track $index) {
+          <div class="col-12 col-lg-4"> 
+            <div class="card mb-3 p-2 me-3" style="width: 24rem; background-color: #f2f2f2;">
+              <div class="card-body">
+                <div class="dropdown float-end">
+                  <a class="text-muted dropdown-toggle font-size-16" role="button" data-bs-toggle="dropdown" aria-haspopup="true">
+                    <i class="bi bi-three-dots"></i>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-end" data-bs-theme="dark" style="cursor:default;">
+                    <li><a class="dropdown-item">Ver perfil</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li (click)="handleDeleteContact(contact.id)"><a class="dropdown-item">Eliminar</a></li>
+                  </ul>          
+                </div>
+      
+                <div class="d-flex align-items-center">
+                  <div>
+                    <img src="../../../assets/images/default_user.png" class="avatar-md rounded-circle img-thumbnail" />
+                  </div>
+                  <div class="flex-1 ms-3">
+                    <h5 class="font-size-16 mb-1"><a href="#" class="text-dark">{{contact.user.name}} {{contact.user.lastName}}</a></h5>
+                    <span class="text-muted mb-0">&#64;{{contact.user.username}}</span>
+                  </div>
+                </div>
+      
+                <div class="mt-2 icons-font">
+                  <p class="text-muted mb-0">
+                    <i class="bi bi-calendar-event-fill fs-4 pe-2"></i>
+                    {{contact.contactSince | date: 'dd/MM/yyyy'}}
+                  </p>
+                  <p class="text-muted mb-0 mt-1">
+                    <i class="bi bi-envelope-at-fill fs-4 pe-2"></i>
+                    {{contact.user.email}}
+                  </p>
+                </div>
+      
+                <div class="d-flex gap-2 pt-4">
+                  <button type="button" class="btn btn-secondary btn-sm w-50"><i class="bx bx-user me-1"></i> Ver grupos en comun</button>
+                  <button type="button" class="btn btn-dark btn-sm w-50"><i class="bx bx-message-square-dots me-1"></i> Ver perfil</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      }
+    </div>
+
+  </div>
+</div>
+<!-- <app-footer /> -->
