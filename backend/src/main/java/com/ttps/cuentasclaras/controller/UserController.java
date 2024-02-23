@@ -64,6 +64,15 @@ public class UserController {
 		return ResponseEntity.ok(searchedUser);
 	}
 
+	@GetMapping("/getUserDetails/{userId}")
+	public ResponseEntity<UserAltDTO> getUserDetailsById(@PathVariable Integer userId) {
+		UserAltDTO searchedUser = userService.getUserDetailsById(userId);
+		if (searchedUser == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(searchedUser);
+	}
+
 	@PostMapping
 	public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userRequest) {
 		if (userService.userExist(userRequest)) {

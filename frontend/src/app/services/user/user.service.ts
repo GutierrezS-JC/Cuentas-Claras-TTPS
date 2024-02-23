@@ -24,4 +24,8 @@ export class UserService {
   getUserDetails(username: string): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/getUserDetails?username=${username}`);
   }
+  
+  getUserDetailsById(userId: number): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/getUserDetails/${+userId}`);
+  }
 }

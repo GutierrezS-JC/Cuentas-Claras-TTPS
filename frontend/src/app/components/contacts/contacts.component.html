@@ -1,4 +1,4 @@
-<app-navbar />
+<app-navbar [currentUser]="currentUser" />
 <div style="min-height: calc(100vh - 61.6px); background-color: #000000ed;">
   <div class="container" style="max-width: 1200px; padding-top: 1.5em;">
     <div
@@ -126,7 +126,7 @@
                     <img src="../../../assets/images/default_user.png" class="avatar-md rounded-circle img-thumbnail" />
                   </div>
                   <div class="flex-1 ms-3">
-                    <h5 class="font-size-16 mb-1"><a href="#" class="text-dark">{{contact.user.name}} {{contact.user.lastName}}</a></h5>
+                    <h5 class="font-size-16 mb-1"><a [routerLink]="['/perfil', contact.user.id]" class="text-dark">{{contact.user.name}} {{contact.user.lastName}}</a></h5>
                     <span class="text-muted mb-0">&#64;{{contact.user.username}}</span>
                   </div>
                 </div>
