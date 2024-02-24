@@ -1,0 +1,31 @@
+/* .navbar {
+    background-color: #649a46;
+} */
+@font-face {
+  font-family: "Poppins SemiBold";
+  src: url("../../../assets/fonts/Poppins/SemiBold/Poppins-SemiBold.ttf") format('truetype');
+}
+
+.navbar-brand {
+  color: #ffffff;
+  font-family: Poppins SemiBold, sans-serif;
+}
+
+.btn-cst {
+  background-color: #0a0a0a;
+  color: #ffffff;
+  border: 1px solid #1f1f1f;
+  padding: .5em;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.btn-cst:hover {
+  background-color: #1f1f1f;
+}
+
+.btn-cst:active{
+  user-select: none;
+  color: #ffffff;
+  border: 1px solid #1f1f1f;
+}

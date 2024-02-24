@@ -1,0 +1,38 @@
+.main-title-details-group {
+    font-family: Poppins Bold, sans-serif;
+    font-size: 3em;
+    color: #3d3d3d;
+}
+
+.details-price {
+    font-family: Poppins Bold, sans-serif;
+    font-size: 2.5em;
+    color: #0000005c;
+}
+
+h1 {
+    font-family: Poppins Bold, sans-serif;
+    font-size: 4em;
+}
+
+h4 {
+    font-family: Poppins Medium, sans-serif;
+    font-size: 2em;
+}
+
+.delete-member-option {
+    background-color: white;
+    width: 1.5em;
+    height: 1.5em;
+    border: 1px solid #ccc;
+    text-align: center;
+    color: #343434;
+    margin-left: .5em;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.delete-member-option:hover {
+    background-color: #dddddd;
+    color: black;
+}

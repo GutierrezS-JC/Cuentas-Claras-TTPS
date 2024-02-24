@@ -1,0 +1,135 @@
+<div class="modal fade" id="newSpending" tabindex="-1" aria-labelledby="newSpendingLabel" aria-hidden="true"
+  data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="newSpendingLabel">Nuevo gasto grupal</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="createSpendingForm">
+          <div class="mb-3">
+            <label for="group">Seleccione el grupo</label>
+            <select class="form-select" aria-label="Group select" formControlName="groupId" 
+              (change)="getGroupMembersSelect()">
+              @for (group of groups; track $index){
+                <option [ngValue]="group.groupId">{{ group.name }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Si el grupo fue seleccionado anteriormente renderizamos el select de integrantes del grupo -->
+          @if (createSpendingForm.get('groupId')?.value && createSpendingForm.get('groupId')?.value !== -1) {
+            <div class="mb-3">
+              <label for="members">Integrantes que realizaron el gasto</label>
+              <select class="form-select" aria-label="Members select">
+                @for (member of groupUsers; track member.id ){
+                  <option [ngValue]="member" (click)="addMember(member)">{{ member.name }} {{ member.lastName }}</option>
+                }
+              </select>
+            </div>
+          }
+
+          <!-- @for (member of spendingUsers; track $index){
+              <div class="mb-2">
+                <p (click)="deleteMember(member.userId)" class="btn">{{ member.userId }} x</p>
+              </div>
+            } -->
+
+          <div class="mb-3">
+            <label for="totalAmount">Monto</label>
+            <input type="number" class="form-control" id="totalAmount" formControlName="totalAmount">
+          </div>
+          
+          <div class="mb-3">
+            <label for="createdAt">Fecha del gasto</label>
+            <input type="date" class="form-control" id="createdAt" formControlName="createdAt">
+          </div>
+
+          <div class="mb-3">
+            <label for="description">Descripción</label>
+            <input type="text" class="form-control" id="description" formControlName="description" 
+              name="description">
+          </div>
+          
+          <div class="mb-3">
+            <label for="division">División del gasto </label>
+            <select class="form-select" aria-label="Division select" formControlName="division"
+            aria-describedby="divisionHelp" (change)="calculateAmount()">
+              <option value="" selected>Elegir división</option>
+              <option value="EVEN">Mismo monto para todos</option>
+              <option value="FIXAMOUNT">Monto fijo por integrante</option>
+              <option value="SAMEPERCENTAGE">Mismo porcentaje para todos</option>
+              <option value="FIXPERCENTAGE">Porcentaje fijo para cada integrante</option>
+            </select>
+            <div id="divisionHelp" class="form-text">
+              La división del gasto deberá sumar el monto correspondiente indicado anteriormente
+            </div>
+          </div>
+
+
+          <div class="mb-3">
+            @if (createSpendingForm.get('division')?.value == "EVEN"){
+              <div>
+                <ul>
+                  @for ( member of usersSelected; track $index ){
+                  <li>{{ member.name }}: {{ usersWithAmount[$index].amount / usersWithAmount.length}}</li>
+                  }
+                </ul>
+              </div>
+            } 
+            @else if (createSpendingForm.get('division')?.value == "FIXAMOUNT") {
+              <form (ngSubmit)="calculateFixAmount($event)">
+                @for (member of usersSelected; track $index){
+                  <label for="member.id">{{ member.name }}</label>
+                  <input type="number" class="form-control" [(ngModel)]="usersWithAmount[$index].amount" >
+                }
+                <button type="submit" class="btn btn-sm btn-dark">Aceptar</button>
+              </form>
+            }
+          </div>
+
+          <div class="mb-3">
+            <label for="category">Categoría</label>
+            <select class="form-select" aria-label="Category select" 
+              formControlName="spendingCategory">
+              @for (category of spendingCategories; track $index){
+                <option [ngValue]="category.id">{{ category.name }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="recipe">Cargar comprobante</label>
+            <input type="file" class="form-control" id="inputFile">
+          </div>
+
+          <div class="mb-3">
+            <label for="recurrence">Frecuencia del gasto</label>
+            <select class="form-select" aria-label="Recurrence select" formControlName="recurrence"
+              name="recurrence">
+              <option value="NON" default>Único</option>
+              <option value="DIARY">Diario</option>
+              <option value="WEEKLY">Semanal</option>
+              <option value="MONTHLY">Mensual</option>
+              <option value="ANNUALLY">Anual</option>
+            </select>
+          </div>
+
+          @if (createSpendingForm.get('recurrence')?.value !== "NON" ) {
+            <div class="mb-3">
+              <label for="endingDate">Fecha de finalización</label>
+              <input type="date" class="form-control" id="endingDate" formControlName="endingDate"
+                name="endingDate">
+            </div>
+            }
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary" (click)="onSubmit()">Crear gasto</button>
+      </div>
+    </div>
+  </div>
+</div>

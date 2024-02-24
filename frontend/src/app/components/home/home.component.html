@@ -1,47 +1,81 @@
-<app-navbar />
-<div class="container mt-5" style="align-items: center;">
-  <div class="row">
-    <div class="row">
-      <div class="col-sm-6 mb-3 mb-sm-0">
-        <div class="card mb-3">
-          <div class="card-body" routerLink="/grupos">
-            <h5 class="card-title">Grupos</h5>
-            <img src="../../assets/images/groups.png" height="80px">
-            <p class="card-text"><small class="text-muted">Una descripción</small></p>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6 mb-3 mb-sm-0" routerLink="/payments">
-        <div class="card mb-3">
-          <div class="card-body">
-            <h5 class="card-title">Pagos</h5>
-            <img src="../../assets/images/payments.png" height="80px">
-            <p class="card-text"><small class="text-muted">Una descripción</small></p>
-          </div>
+<app-navbar [currentUser]="currentUser"/>
+<div style="min-height: calc(100vh - 61.6px); background-color: #000000ed;">
+  <div class="p-5" style="color: #ffffff; min-height: 350px;">
+    <div class="container py-5" style="width: 100%;">
+      <h1>Hola, {{ currentUser?.username }}!</h1>
+      <p class="lead" style="width: 60%;">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos delectus, quos voluptate, vero aliquam
+        perspiciatis fuga quaerat quasi iste vitae quam! Unde.
+      </p>
+    </div>
+  </div>
+
+  <div
+    style="display: flex; flex-direction: row; width: 100%; flex-wrap: wrap; justify-content: center; margin: auto; margin-top: -2.3em">
+    <div class="card mb-3 mb-md-4 me-md-4 me-0 option" style="position: relative; overflow: hidden;"
+      routerLink="/grupos">
+      <i class="bi bi-chat-fill"
+        style=" font-size: 6em; color: rgba(0, 0, 0, 0.048); position: absolute; top: -.1em; left: 35%;"></i>
+      <i class="bi bi-person-standing"
+        style=" font-size: 20em; color: rgba(0, 0, 0, 0.048); position: absolute; bottom: -.6em; left: -.3em;"></i>
+      <i class="bi bi-person-raised-hand"
+        style=" font-size: 20em; color: rgba(0, 0, 0, 0.048); position: absolute; bottom: -.6em; right: -.35em;"></i>
+      <div class="card-body p-4">
+        <h5 class="card-title text-center default-text">Grupos</h5>
+        <div class="hover-text hover-container">
+          <p class="card-text hover-text">Administrá tus grupos e invitá a tus amigos a formar parte de ellos.</p>
+          <p class="card-text hover-text">
+            Mantené un registro claro y organizado de todos los gastos compartidos. Accedé a detalles como quién
+            contribuyó y cuanto aportó cada miembro.</p>
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-sm-6 mb-3 mb-sm-0" routerLink="/contacts">
-        <div class="card mb-3">
-          <div class="card-body">
-            <h5 class="card-title">Contactos</h5>
-            <img src="../../assets/images/contacts.png" height="80px">
-            <p class="card-text"><small class="text-muted">Una descripción</small></p>
-          </div>
+
+    <div class="card mb-3 mb-md-4 me-md-4 me-0 option" style="position: relative; overflow: hidden;"
+      routerLink="/pagos">
+      <i class="bi bi-coin"
+        style=" font-size: 6em; color: rgba(0, 0, 0, 0.048); position: absolute; top: -.1em; left: 35%;"></i>
+      <i class="bi bi-piggy-bank-fill"
+        style=" font-size: 16em; color: rgba(0, 0, 0, 0.050); position: absolute; bottom: -.6em; left: 10%;"></i>
+      <div class="card-body p-4">
+        <h5 class="card-title text-center default-text">Pagos</h5>
+        <div class="hover-text hover-container">
+          <p class="card-text hover-text">Gestiona pagos fácilmente. <br /> Saldar deudas es simple: carga pagos
+            individuales o
+            grupales, especifica beneficiarios y montos con precisión.</p>
+          <p>Simplifica tu vida financiera con una herramienta diseñada para brindarte control y claridad en cada
+            transacción.</p>
         </div>
       </div>
-      <div class="col-sm-6 mb-3 mb-sm-0" routerLink="/gastos">
-        <div class="card mb-3">
-          <div class="card-body">
-            <h5 class="card-title">Gastos</h5>
-            <img src="../../assets/images/spending.png" height="80px">
-            <p class="card-text"><small class="text-muted">Una descripción</small></p>
-          </div>
+    </div>
+
+    <div class="card mb-3 mb-md-4 me-md-4 me-0 option" style="position: relative; overflow: hidden;"
+      routerLink="/contactos">
+      <i class="bi bi-person-rolodex"
+        style=" font-size: 12em; color: rgba(0, 0, 0, 0.048); position: absolute; top: 5%; left: 18%;"></i>
+      <div class="card-body p-4">
+        <h5 class="card-title text-center default-text">Contactos</h5>
+        <div class="hover-text hover-container">
+          <p class="card-text hover-text">Organiza tus contactos y amigos.</p>
+          <p>Revisá y administrá la lista de tus conexiones y miembros de grupos anteriores.</p>
+          <p>Te resultará de mucha utilidad cuando tengas que seleccionar amigos para futuros grupos o pagos.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-3 mb-md-4 me-md-4 me-0 option" style="position: relative; overflow: hidden;"
+      routerLink="/gastos">
+      <i class="bi bi-cash-coin"
+        style=" font-size: 12em; color: rgba(0, 0, 0, 0.048); position: absolute; top: 14%; left: 18%;"></i>
+      <div class="card-body p-4">
+        <h5 class="card-title text-center default-text">Gastos</h5>
+        <div class="hover-text hover-container">
+          <p class="card-text hover-text">Registra y gestiona tus gastos.</p>
+          <p>Ya sea con personas individuales o dentro de un grupo, cargá información detallada como monto, fecha,
+            comprobantes y participantes involucrados.</p>
+          <p>También podras personalizar la forma de division del gasto y la recurrencia del mismo.</p>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-<app-footer />

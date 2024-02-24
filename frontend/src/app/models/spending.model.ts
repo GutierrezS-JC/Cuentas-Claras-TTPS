@@ -1,22 +1,20 @@
 import { Group } from './group.model'
-import { User } from './user.model'
-import { RecurrentEnum } from './recurrentEnum.model';
-import { DivisionEnum } from './divisionEnum.model';
-import { SpendingCategory } from './spendingCategory.model';
+import { SpendingUser } from './spendingUser.model';
 
 export class Spending {
+    public id?: number;
     public name: string;
     public description: string;
     public totalAmount: number;
     public createdAt: Date;
-    public endingDate: Date;
-    public proofOfPayment: string;
-    public recurrence: RecurrentEnum;
-    public division: DivisionEnum;
-    public owner: User;
-    public spendingCategory: SpendingCategory;
-    public group?: Group;
-    public users: Array<User>;
+    public endingDate?: Date;
+    public proofOfPayment?: string;
+    public recurrence: string;
+    public division: string;
+    public owner: number;
+    public spendingCategory: number;
+    public group: Group;
+    public users: Array<SpendingUser>;
     
     constructor(
         name: string,
@@ -25,12 +23,12 @@ export class Spending {
         createdAt: Date,
         endingDate: Date,
         proofOfPayment: string,
-        recurrence: RecurrentEnum,
-        division: DivisionEnum,
-        owner: User,
-        spendingCategory: SpendingCategory,
+        recurrence: string,
+        division: string,
+        owner: number,
+        spendingCategory: number,
         group: Group,
-        users: User[],
+        users: SpendingUser[],
     ) {
         this.name = name;
         this.description = description;

@@ -1,0 +1,49 @@
+<div class="modal fade" id="modal-group-edit-form" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="editFormModal">Editar grupo</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="editForm">
+          <div class="mb-2">
+            <label for="name-edit-form" class="col-form-label">Nombre del grupo</label>
+            <input type="text" class="form-control" id="name-edit-form" formControlName="name">
+          </div>
+
+          <div class="mb-2">
+            <label for="name-edit-form" class="col-form-label">Monto</label>
+            <input type="text" class="form-control" id="name-edit-form" formControlName="amount">
+          </div>
+
+          <div class="mb-2">
+            <label for="docExtractor-edit-form" class="col-form-label">Descripcion</label>
+            <textarea class="form-control" id="docExtractor-edit-form" rows="3" spellcheck="false"
+              formControlName="description"></textarea>
+          </div>
+
+          <div class="mb-2 mt-2">
+            <label for="categoryEdit" class="form-label">Categoria</label>
+            <select class="form-select" name="categoryEdit" id="categoryEdit" formControlName="categoryId">
+              <option [ngValue]="-1">Seleccionar una categoria</option>
+              @for (category of groupCategories; track $index) {
+                <option [ngValue]="category.id">{{category.name}}</option>
+              }
+            </select>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" [disabled]="editForm.invalid" (click)="handleGroupEdition()" 
+          class="btn btn-primary" data-bs-dismiss="modal">
+          Editar grupo
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -2,6 +2,7 @@ package com.ttps.cuentasclaras.controller;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,17 +22,24 @@ import com.ttps.cuentasclaras.dto.GroupDTO;
 import com.ttps.cuentasclaras.dto.GroupDetailsDTO;
 import com.ttps.cuentasclaras.dto.GroupEditDTO;
 import com.ttps.cuentasclaras.dto.SpendingDTO;
+import com.ttps.cuentasclaras.dto.UserGroupsDTO;
 import com.ttps.cuentasclaras.model.Group;
+import com.ttps.cuentasclaras.model.User;
 import com.ttps.cuentasclaras.service.GroupService;
+import com.ttps.cuentasclaras.service.UserService;
 
 @RestController
 @RequestMapping("/groups")
+@SecurityRequirement(name = "Bearer Authentication")
 @CrossOrigin
 public class GroupController {
 
 	@Autowired
 	GroupService groupService;
 
+	@Autowired
+	UserService userService;
+	
 	@GetMapping
 	public ResponseEntity<List<GroupDetailsDTO>> getAllGroups() {
 		List<GroupDetailsDTO> groups = groupService.getAllGroups();
@@ -63,10 +71,11 @@ public class GroupController {
 		return new ResponseEntity<Group>(HttpStatus.BAD_REQUEST);
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<GroupEditDTO> updateGroup(@PathVariable(name = "id") Integer id,
+	@PutMapping("/{id}/owner/{userId}")
+	public ResponseEntity<GroupDetailsDTO> updateGroup(@PathVariable(name = "id") Integer groupId,
+			@PathVariable(name = "userId") Integer userId,
 			@RequestBody GroupEditDTO groupRequest) {
-		GroupEditDTO groupUpdateResult = groupService.updateGroup(id, groupRequest);
+		GroupDetailsDTO groupUpdateResult = groupService.updateGroup(groupId, userId, groupRequest);
 		if (groupUpdateResult == null) {
 			return ResponseEntity.notFound().build();
 		}
@@ -80,6 +89,16 @@ public class GroupController {
 			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.noContent().build();
+	}
+	
+	@GetMapping("/user/{id}")
+	public ResponseEntity<UserGroupsDTO> getGroupsFromUser(@PathVariable(name = "id") Integer id) {
+		User searchedUser = userService.findUserById(id);
+		UserGroupsDTO response = groupService.getGroupsByUser(searchedUser);
+		if (searchedUser == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(response);
 	}
 
 }

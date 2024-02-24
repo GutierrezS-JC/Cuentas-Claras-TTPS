@@ -1,0 +1,44 @@
+@font-face {
+  font-family: "Poppins Bold";
+  src: url("../../../assets/fonts/Poppins/Bold/Poppins-Bold.ttf") format('truetype');
+}
+
+h1 {
+  color: #ededed;
+  font-size: 2rem;
+  letter-spacing: -0.049375rem;
+  line-height: 2.5rem;
+  font-family: Poppins Bold, sans-serif;
+  width: 90%;
+}
+
+.cst-input-div {
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease-in-out;
+  box-shadow: 0 0 0 1px #1a1a1a;
+}
+
+.cst-input-div:focus-within {
+  border-radius: 8px;
+  transition: box-shadow .15s;
+  box-shadow: 0 0 0 1px #7c7c7c, 0 0 0 4px hsla(0, 0%, 100%, .24);
+}
+
+.cst-form-control-lg {
+  height: 48px;
+  font-size: 1rem;
+  border-radius: 8px;
+  width: 100%;
+  border: none;
+  background: #0a0a0a;
+  line-height: normal;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+  padding: 1em;
+  color: #e3e3e3;
+}
+
+.cst-form-control-lg::placeholder {
+  color: #454545;
+  opacity: 1;
+}

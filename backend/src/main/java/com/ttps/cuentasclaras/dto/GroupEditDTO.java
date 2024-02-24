@@ -1,25 +1,18 @@
 package com.ttps.cuentasclaras.dto;
 
 public class GroupEditDTO {
-	private Integer groupId;
 	private String name;
 	private Double totalBalance;
 	private Integer groupCategoryId;
+	private String description;
 
-	public GroupEditDTO(Integer groupId, String name, Double totalBalance, Integer groupCategoryId) {
+	public GroupEditDTO(String name, Double totalBalance, Integer groupCategoryId,
+						String description) {
 		super();
-		this.groupId = groupId;
 		this.name = name;
 		this.totalBalance = totalBalance;
 		this.groupCategoryId = groupCategoryId;
-	}
-
-	public Integer getGroupId() {
-		return groupId;
-	}
-
-	public void setGroupId(Integer groupId) {
-		this.groupId = groupId;
+		this.description = description;
 	}
 
 	public String getName() {
@@ -46,4 +39,7 @@ public class GroupEditDTO {
 		this.groupCategoryId = groupCategoryId;
 	}
 
+	public String getDescription() { return description; }
+
+	public void setDescription(String description) { this.description = description; }
 }

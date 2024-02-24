@@ -2,6 +2,7 @@ package com.ttps.cuentasclaras.controller;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,15 +17,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ttps.cuentasclaras.dto.GroupDetailsDTO;
 import com.ttps.cuentasclaras.dto.SpendingUserDTO;
+import com.ttps.cuentasclaras.dto.SpendingUserExtendDTO;
 import com.ttps.cuentasclaras.dto.UserAltDTO;
 import com.ttps.cuentasclaras.dto.UserDTO;
+import com.ttps.cuentasclaras.dto.UserGroupsDTO;
 import com.ttps.cuentasclaras.dto.UserLoginDTO;
 import com.ttps.cuentasclaras.dto.UserWithGroupsDTO;
 import com.ttps.cuentasclaras.model.User;
 import com.ttps.cuentasclaras.service.UserService;
 
 @RestController
+@SecurityRequirement(name = "Bearer Authentication")
 @CrossOrigin
 @RequestMapping("/users")
 public class UserController {
@@ -44,6 +49,24 @@ public class UserController {
 	@GetMapping("/{id}")
 	public ResponseEntity<UserWithGroupsDTO> getUser(@PathVariable(name = "id") Integer id) {
 		UserWithGroupsDTO searchedUser = userService.getUserDTO(id);
+		if (searchedUser == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(searchedUser);
+	}
+
+	@GetMapping("/getUserDetails")
+	public ResponseEntity<UserAltDTO> getUserDetails(@RequestParam String username) {
+		UserAltDTO searchedUser = userService.getUserDetails(username);
+		if (searchedUser == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(searchedUser);
+	}
+
+	@GetMapping("/getUserDetails/{userId}")
+	public ResponseEntity<UserAltDTO> getUserDetailsById(@PathVariable Integer userId) {
+		UserAltDTO searchedUser = userService.getUserDetailsById(userId);
 		if (searchedUser == null) {
 			return ResponseEntity.notFound().build();
 		}
@@ -95,5 +118,20 @@ public class UserController {
 		}
 		return ResponseEntity.ok(listResponse);
 	}
-
+	
+	@GetMapping("/getMySpendingsExtended")
+	public ResponseEntity<List<SpendingUserExtendDTO>> getMySpendingsExtended(@RequestParam Integer id) {
+		User searchedUser = userService.findUserById(id);
+		List<SpendingUserExtendDTO> listResponse = userService.mapSpendingUserExtendDTO(searchedUser);
+		if (searchedUser == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(listResponse);
+	}
+	
+	@GetMapping("/searchUser/{userId}")
+	public ResponseEntity<List<UserAltDTO>> searchUser(@PathVariable Integer userId, @RequestParam String username) {
+		List<UserAltDTO> listResponse = userService.searchUser(userId, username);
+		return ResponseEntity.ok(listResponse);
+	}
 }

@@ -28,6 +28,9 @@ public class Group {
 	@Column
 	private Double totalBalance;
 
+	@Column
+	private String description;
+
 	@ManyToOne
 	@JoinColumn(name = "owner_user_id", nullable = false)
 	private User owner;
@@ -55,10 +58,11 @@ public class Group {
 
 	}
 
-	public Group(String name, Double totalBalance, User owner, GroupCategory groupCategory) {
+	public Group(String name, Double totalBalance, String description, User owner, GroupCategory groupCategory) {
 		super();
 		this.name = name;
 		this.totalBalance = totalBalance;
+		this.description = description;
 		this.owner = owner;
 		this.users = new HashSet<>();
 		this.groupCategory = groupCategory;
@@ -66,10 +70,12 @@ public class Group {
 		this.payments = new HashSet<>();
 	}
 
-	public Group(String name, Double totalBalance, User owner, Set<User> users, GroupCategory groupCategory) {
+	public Group(String name, Double totalBalance, String description, User owner, Set<User> users,
+			GroupCategory groupCategory) {
 		super();
 		this.name = name;
 		this.totalBalance = totalBalance;
+		this.description = description;
 		this.owner = owner;
 		this.users = users;
 		this.groupCategory = groupCategory;
@@ -97,6 +103,14 @@ public class Group {
 
 	public void setTotalBalance(Double totalBalance) {
 		this.totalBalance = totalBalance;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public User getOwner() {

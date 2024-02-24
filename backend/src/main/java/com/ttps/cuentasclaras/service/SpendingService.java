@@ -184,7 +184,7 @@ public class SpendingService {
 	public void createSpending(SpendingCreateDTO spendingReq) {
 		User owner = userService.getUser(spendingReq.getOwnerId());
 		SpendingCategory category = spendingCategoryService.existsById(spendingReq.getSpendingCategoryId());
-
+		
 		Spending newSpending;
 		if (owner != null && category != null) {
 
@@ -201,7 +201,6 @@ public class SpendingService {
 						category);
 
 			}
-
 			Spending spendingCreated = spendingRepository.saveAndFlush(newSpending);
 			Set<SpendingUser> users = this.getSpendingsUsers(spendingReq.getUsersWithAmount(), spendingCreated);
 			spendingCreated.setUsers(users);

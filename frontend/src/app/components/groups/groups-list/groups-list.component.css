@@ -1,0 +1,12 @@
+td i{
+    cursor: pointer;
+}
+
+td i{
+    display: initial;
+    overflow: inherit;
+}
+
+.spendings-list {
+    overflow-y: auto;
+}

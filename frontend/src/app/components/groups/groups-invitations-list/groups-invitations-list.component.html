@@ -1,0 +1,33 @@
+<!-- Lista que debera ser componente eventualmente -->
+<table class="table table-striped table-hover table-bordered">
+  <thead class="table-secondary">
+    <tr>
+      <th scope="col">Emisor</th>
+      <th scope="col">Invitado</th>
+      <th scope="col">Estado de invitacion</th>
+      <th scope="col" class="text-center">Acciones</th>
+    </tr>
+  </thead>
+  <tbody class="table-group-divider">
+    @for (invitation of invitations; track $index) {
+    <tr>
+      <td>{{invitation.senderUser.name}} {{invitation.senderUser.lastName}}</td>
+      <td>{{invitation.receiverUser.name}} {{invitation.receiverUser.lastName}}</td>
+      <td>
+        @switch (invitation.status) {
+          @case ('ACCEPTED') { Aceptada }
+          @case ('PENDING') { Pendiente }
+          @case ('REJECTED') { Rechazada }
+          @case ('CANCELLED') { Cancelada }
+        }
+      </td>
+      <td class="text-center">
+        @if (invitation.senderUser.id === user.id && invitation.status === 'PENDING') {
+          <i class="bi bi-trash3-fill fs-6" style="color: #212529d4; cursor: pointer;"
+            (click)="cancelInvitation(invitation.id)"></i>
+        }
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>

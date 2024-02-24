@@ -1,0 +1,46 @@
+<ul class="list-group">
+  @if (selectedGroupOption === 'misGrupos') {
+    <!-- La opcion seleccionada indica que se debe renderizar la lista de grupos
+    creados por el usuario logueado... si es que tiene -->
+    @if (groups.listOwnedGroups.length === 0) {
+      <li class="list-group-item p-4 text-break" style="background-color: #b0afaf; border-radius: 7px; 
+              cursor: default;">
+        <span style="align-items: center; display: flex; justify-content: center;">
+          No creaste grupos :(
+        </span>
+      </li>
+    }
+    @else {
+      @for (group of groups.listOwnedGroups; track $index) {
+      <li class="list-group-item p-4 text-break" id={{group.groupId}} (click)="getGroup(group.groupId)"
+        [class.selected]="isSelectedGroup(group.groupId)">
+        <span style="align-items: center; display: flex; justify-content: center;">
+          {{ group.name }}
+        </span>
+      </li>
+      }
+    }
+  }
+  @else {
+    <!-- Caso contrario se procede a renderizar la lista donde el usuario
+    es miembro... es decir aquellos grupos donde NO es el owner -->
+    @if (groups.listGroups.length === 0) {
+      <li class="list-group-item p-4 text-break" style="background-color: #b0afaf; border-radius: 7px; 
+              cursor: default;">
+        <span style="align-items: center; display: flex; justify-content: center;">
+          No estas en ningun grupo :(
+        </span>
+      </li>
+    }
+    @else {
+      @for (group of groups.listGroups; track $index) {
+      <li class="list-group-item p-4 text-break" id={{group.groupId}} (click)="getGroup(group.groupId)"
+        [class.selected]="isSelectedGroup(group.groupId)">
+        <span style="align-items: center; display: flex; justify-content: center;">
+          {{ group.name }}
+        </span>
+      </li>
+      }
+    }
+  }
+</ul>

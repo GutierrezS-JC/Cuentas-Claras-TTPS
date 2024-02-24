@@ -1,0 +1,68 @@
+@font-face {
+    font-family: "Poppins SemiBold";
+    src: url("../../../assets/fonts/Poppins/SemiBold/Poppins-SemiBold.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: "Popins Regular";
+    src: url("../../../assets/fonts/Poppins/Regular/Poppins-Regular.ttf") format('truetype');
+}
+
+h1 {
+    font-family: "Poppins SemiBold", sans-serif;
+    font-size: 5em;
+}
+
+.card-body h5 {
+    font-family: "Poppins SemiBold", sans-serif;
+    font-size: 2em;
+    text-transform: uppercase;
+}
+
+.option {
+    width: 19rem;
+    height: 20rem;
+    background-color: #d4d4d4;
+    border: none;
+    color: #000;
+    transition: ease-in background-color .8s;
+    cursor: pointer;
+}
+
+.option:hover {
+    background: #181a1b;
+    color: white;
+    transition: ease-out background-color .8s;
+}
+
+.default-text {
+    transition: visibility 1s ease-in; 
+    transition: visibility 0s ease-out; 
+    visibility: visible;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #212529;
+}
+
+.hover-text {
+    transition: visibility 0s ease-in;
+    visibility: hidden;
+}
+
+.option:hover .default-text {
+    visibility: hidden;
+}
+
+.option:hover .hover-text {
+    visibility: visible;
+    color: white;
+    font-family: "Poppins Regular", sans-serif;
+    font-size: .95em;
+    text-align: justify;
+}
+
+.option:hover .hover-container {
+    padding: 1em;
+}

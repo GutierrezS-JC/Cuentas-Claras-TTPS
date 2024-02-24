@@ -1,0 +1,10 @@
+.file {
+    align-items: center;
+    display: flex;
+    width: fit-content;
+}
+
+.file:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
